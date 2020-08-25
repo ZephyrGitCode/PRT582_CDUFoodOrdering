@@ -1,0 +1,473 @@
+/* General */
+
+body{
+  background-color: rgb(31, 31, 31);
+}
+
+
+.btn{
+  background-color: #1154AB;
+  color: #ffffff;
+}
+
+.btn:hover{
+  background-color: #0F4892;
+  color: #ffffff;
+}
+
+ /*Sign up and Login Page Start*/
+
+ form{
+  margin: 0px 10px 0px 10px;
+  padding: 0px 10px 10px 10px;
+}
+
+.form-container{
+  width: 90%;
+  text-align: center;
+}
+.container{
+  padding-left: 0px;
+  padding-right: 0;
+}
+
+.log-h2{
+  text-align: center;
+  color:#ddd;
+  font-weight:400;
+  margin-bottom:25px;
+}
+
+label{
+  display: block;
+  text-align: left;
+}
+
+input{
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+}
+
+.log-button{
+  background-color: #1154AB;
+  text-align:center;
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.log-button:hover{
+  background-color: #0F4892;
+}
+
+a{
+  color: #B6B1A6;
+}
+
+a:hover{
+  color: #C8C4BC;
+}
+/* Sign up and Login Page End*/
+
+/* Home start */
+.dashbody{
+  margin: 18px 0 0 18px;
+  overflow-y: scroll;
+}
+
+.artlist{
+  display: flex;
+}
+
+.artimage{
+  width: 60px;
+  height: 60px;
+  border-radius: 50px;
+}
+
+.dimage{
+  margin: 10px;
+  margin-left: 0px;
+}
+
+.inspect{
+  color: #a469b3;
+  text-decoration: underline;
+}
+/* Home End*/
+
+/* Side navigation Start - Code modifed from original (https://www.w3schools.com/howto/howto_js_sidenav.asp)*/
+.navbar{
+  background-color: #59136b;
+  padding-bottom: 12px;
+}
+
+.menu{
+  font-size: 26px;
+  color: white;
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  /*background-color: #59136b;*/
+  background-color: #181A1B;
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  /*color: #BAB5AB;*/
+  color: #ffffff;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  padding-top: 0;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+.navforms{
+  margin: 15px 0px 10px 15px;
+}
+
+.forms{
+  margin: 0px 0px 10px 0px;
+  padding-left:5px;
+  background-color: #59136b;
+  /*background-color: #1A1C1D;*/
+}
+
+.navforms a{
+  font-size: 1.3rem;
+  padding-left: 0px;
+}
+
+
+.form-h2{
+  /*color:#BAB5AB;*/
+  color: #ffffff;
+  font-weight:400;
+  font-size: 1.4rem;
+}
+
+.main-h2{
+  margin-top: auto;
+  margin-bottom: auto;
+  color: #E2E2E2;
+  font-size:1.2rem;
+}
+
+.logo-nav{
+    display: inline-block;
+    margin: 25px 10px;
+  }
+
+@media only screen and (max-width: 360px) {
+  .main-h2 {font-size: 1.3rem;}
+}
+
+.usericon{
+  font-size: 2rem;
+  padding: 7px 8px 0 5px;
+  right: 0;
+}
+
+
+/* Side navigation End */
+
+
+/* Other form styles start */
+input[type="date"]{
+  background-color: #f5f5f5;
+}
+
+input[type="number"]{
+  text-align: right;
+}
+
+#smalltext{
+  font-size: .8rem;
+}
+
+textarea{
+  width: 100%;
+}
+
+/* Other form styles End */
+
+/* Products flex container start, single art page */
+
+
+.productcontainer
+{
+  margin :0 auto;
+  display:inline-block;
+  padding: 20px 40px 40px;
+  max-width: 640px;
+}
+
+.product-card {
+  flex: 1 16%;
+}
+
+.productimage{
+  width: 50%;
+  margin-right:10px;
+}
+
+.price
+{
+  color: #FE980F;
+  font-size: 26px;
+  font-weight: bold;
+  padding-top: 20px;
+}
+
+.productinput
+{
+  border: 1px solid #ccc;
+  font-weight: bold;
+  height: 30px;
+  text-align: center;
+  width: 50px;
+}
+
+.product-info {
+  margin-top: auto;
+}
+
+.productlabel {
+  width: 75px;
+  float:left;
+}
+
+.showcart{
+  padding: 10px;
+  display: none;
+  position: fixed;
+  z-index: 1;
+  top: 10%;
+  right: 5px;
+  /* background-color: #59136b; */
+  background-color: rgb(50, 53, 54);
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+.showcart a{
+  position: absolute;
+  font-size: 36px;
+  margin-left: 70%;
+}
+
+/* Products flex container end */
+
+/* My Account styles start */
+/*
+.accountBody
+{
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  color: #ffffff;
+}
+*/
+.userBox
+{
+  top: 50%;
+  left: 50%;
+  background: #2B2B2B;
+  border-radius: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.userPic
+{
+  margin: 0 auto;
+  display: block;
+  margin-bottom: 20px;
+  background-image: url(https://i.imgur.com/thCKquB.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.userPic > img {
+  vertical-align: top;
+}
+
+.userPic > img:hover {
+  opacity: 0;
+}
+
+.accounth3
+{
+  margin: 0;
+  padding: 0 0 20px;
+  text-align: center;
+}
+
+.userBox input
+{
+  color: #ffffff;
+}
+
+.userBox input[type="text"],
+.userBox input[type="password"]
+{
+  border: none;
+  border-bottom: 2px solid #262626;
+  outline: none;
+  height: 40px;
+  background: transparent;
+  font-size: 16px;
+  padding-left: 20px;
+  box-sizing: border-box;
+}
+
+.userBox input[type="text"]:focus,
+.userBox input[type="password"]:focus
+{
+  border-bottom: 2px solid #FE980F;
+}
+
+.inputBox
+{
+  position: relative;
+  display:inline-block;
+}
+
+.inputBox span
+{
+  position: absolute;
+  top: 10px;
+}
+
+.userBox input[type="submit"]
+{
+  border: none;
+  outline: none;
+  height: 40px;
+  font-size: 16px;
+  background: #FE980F;
+  color: #2B2B2B;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.userBox input[type="submit"]:hover
+{
+  color: #ffffff;
+}
+
+.userBox a
+{
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  display: block;
+}
+
+.titledrop{
+  color: white;
+  background-color: #2b2b2b;
+}
+.acctext{
+  margin-top: 1rem;
+  margin-bottom: 2px;
+}
+
+/* My Account styles end */
+
+/* Change Password */
+
+.changepass input[type="submit"] {
+  border: none;
+  outline: none;
+  height: 40px;
+  font-size: 16px;
+  background: #FE980F;
+  color: #2B2B2B;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* cart */
+
+#delbtn{
+  border: none;
+  outline: none;
+  height: 40px;
+  font-size: 16px;
+  background-color: #a469b3;
+  color: #ffffff;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.checkout{
+  position: absolute;
+  top: 16%;
+  right: 10%;
+}
+
+#checkoutbtn{
+  border: none;
+  outline: none;
+  height: 40px;
+  font-size: 18px;
+  background: #FE980F;
+  color: #2B2B2B;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+
+/* testimonials */
+
+.test{
+  
+  border-radius: 20px;
+}
+
+.testimonials input[type="submit"] {
+  border: none;
+  outline: none;
+  height: 40px;
+  font-size: 16px;
+  background: #FE980F;
+  color: #2B2B2B;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+#processing{
+  display: none;
+  padding: 10px;
+  position: absolute;
+  top: 12%;
+  right: 30%;
+  background-color: #59136b;
+}
