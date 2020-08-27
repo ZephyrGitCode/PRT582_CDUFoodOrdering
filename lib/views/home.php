@@ -3,6 +3,18 @@
 <?php
 // email test
 //mail("zephyr.dobson@outlook.com", "hello", "Hello");
+?>
+
+<p>User worked?</p>
+<?php
+foreach($user As $person){
+  $name = htmlspecialchars($person['fname'],ENT_QUOTES, 'UTF-8');
+  echo $name;
+}
+?>
+<?php
+
+
 if(!empty($arts)){
   echo "<h2>Artworks</h2>";
   
