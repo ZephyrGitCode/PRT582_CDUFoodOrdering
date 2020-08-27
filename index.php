@@ -25,7 +25,7 @@ require APP;
 /* The following are just examples of how you might set up a basic app with authentication */
 
 get("/",function($app){
-   //$app->force_to_http("/");
+   $app->force_to_https("/");
    $app->set_message("title","CDU Food Ordering");
    $app->set_message("message","Welcome to CDU Food ordering.");
    require MODEL;
@@ -40,7 +40,7 @@ get("/",function($app){
 
 
 get("/signup",function($app){
-   $app->force_to_http("/signup");  
+   $app->force_to_https("/signup");  
    require MODEL;
    $is_authenticated=false;
    
@@ -55,7 +55,7 @@ get("/signup",function($app){
    if($is_authenticated){
        $app->set_message("message","You are already signed in.");
        $app->set_flash("message","You are already signed in."); 
-       $app->force_to_http("/");
+       $app->force_to_https("/");
        header("location: /");
    }
    else if(!$is_authenticated ){
@@ -71,7 +71,7 @@ get("/signup",function($app){
 });
 
 get("/signin",function($app){
-   $app->force_to_http("/signin");
+   $app->force_to_https("/signin");
    $app->set_message("title","Sign in");
    require MODEL;
    try{
@@ -112,7 +112,7 @@ get("/myaccount/:id;[\d]+",function($app){
 });
 
 get("/art/:id;[\d]+",function($app){
-   //$app->force_to_http("/art/1");
+   $app->force_to_https("/art/1");
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Welcome");
    require MODEL;
@@ -169,7 +169,7 @@ get("/change/:id;[\d]+",function($app){
 
 get("/signout",function($app){
    // should this be GET or POST or PUT?????
-   $app->force_to_http("/signout");
+   $app->force_to_https("/signout");
    require MODEL;
    if(is_authenticated()){
       try{
@@ -337,7 +337,7 @@ put("/myaccount/:id[\d]+",function($app){
 
 put("/change/:id[\d]+",function($app){
    $id = $app->route_var("id");
-   $app->force_to_http("/change");
+   $app->force_to_https("/change");
    $app->set_message("title","Change password");
    require MODEL;
    try{
