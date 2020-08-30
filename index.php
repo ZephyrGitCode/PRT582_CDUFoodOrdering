@@ -22,47 +22,40 @@ DEFINE("LAYOUT","standard");
 require APP;
 
 /* Here is our Controller code i.e. API if you like.  */
-/* The following are just examples of how you might set up a basic app with authentication */
 
 get("/",function($app){
    $app->set_message("title","CDU Food Ordering");
    $app->set_message("message","Welcome to CDU Food ordering.");
    require MODEL;
    try{
-      //$app->set_message("arts",get_products());
+      //$app->set_message("food",get_products());
       $app->set_message("user",get_user(1));
+
    }catch(Exception $e){
       // Failed to load DB
    }
    $app->render(LAYOUT,"home");
 });
 
-
 get("/signup",function($app){ 
    require MODEL;
    $is_authenticated=false;
-   
    try{
       $is_authenticated = is_authenticated();
    }
    catch(Exception $e){
-      $app->set_flash("We have a problem with DB. The gerbils are working on it."); 
+      $app->set_flash("Failed to "); 
       $app->redirect_to("/"); 
    }   
-   
    if($is_authenticated){
        $app->set_message("message","You are already signed in.");
        $app->set_flash("message","You are already signed in."); 
        header("location: /");
    }
-   else if(!$is_authenticated ){
-      //$app->set_message("error","You are the SUPER USER. This account cannot be deleted. You are the boss. The only way to clear the SUPER USER from the database is to DROP the entire table. Please sign in after you have finished signing up.");  
-   }
    else{
-      $app->set_flash("You are not authorised to access this resource yet. I'm gonna tell your mum if you don't sign in."); 
+      $app->set_flash("Please signin"); 
       $app->redirect_to("/signin");        
    }
-   
   $app->set_message("title","Sign up");
   $app->render(LAYOUT,"signup");
 });
@@ -72,7 +65,7 @@ get("/signin",function($app){
    require MODEL;
    try{
      if(is_authenticated()){
-        $app->set_message("message","Why on earth do you want to sign in again. You are already signed in. Perhaps you want to sign out first.");
+        $app->set_message("message","You are already signed in.");
         $app->set_flash("You are already signed in");
         $app->redirect_to("/"); 
       }   
@@ -107,15 +100,13 @@ get("/myaccount/:id;[\d]+",function($app){
    $app->render(LAYOUT,"signin");
 });
 
-get("/art/:id;[\d]+",function($app){
-   $app->set_message("title","Darwin Art Company");
-   $app->set_message("message","Welcome");
+get("/food/:id;[\d]+",function($app){
    require MODEL;
    $id = $app->route_var("id");
-   $app->set_message("arts", get_products());
+   $app->set_message("food", get_products());
    $app->set_message("id", $id);
-   $app->set_message("testimonials", get_testimonials($id));
-   $app->render(LAYOUT,"art");
+   //$app->set_message("testimonials", get_testimonials($id));
+   $app->render(LAYOUT,"food");
 });
 
 
