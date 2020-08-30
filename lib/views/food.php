@@ -4,6 +4,11 @@ session_start();
 $usertype = $_SESSION['usertype'];
 session_write_close();
 
+
+
+
+/*
+// Can utilize the following code for single food info
 if(!empty($arts)){
     echo "<h2>Artworks</h2>";
     foreach($arts As $art){
@@ -103,15 +108,12 @@ if(!empty($arts)){
       echo "<h4>No previous testiments</h4>";
     }
     ?>
-
+    */
     
   </div>
 </div>
 <script>
-
-  // Dev tool, remove all local storage
-  //localStorage.clear();
-  
+  /* Convert this to session storage stuff - Maybe Alvin
   document.querySelector(".cart").addEventListener('click', addtocart);
 
   function addtocart(evt){
@@ -133,5 +135,5 @@ if(!empty($arts)){
   function closecart() {
     document.getElementById("showcart").style.display = "none";
   }
-
+  */
 </script>

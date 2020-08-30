@@ -17,7 +17,7 @@
   <body>
 
     <?php
-    require PARTIALS."/header.html.php";
+      require PARTIALS."/header.html.php";
     ?>
     
     <div class="bodycontent">
