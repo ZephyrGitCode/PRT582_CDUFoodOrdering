@@ -3,6 +3,21 @@
 <?php
 // email test
 //mail("zephyr.dobson@outlook.com", "hello", "Hello");
+?>
+
+<?php
+if(!empty($user)){
+  echo "<h2>Database Worked</h2>";
+  echo "<h2>Users</h2>";
+  foreach($user As $person){
+    $name = htmlspecialchars($person['fname'],ENT_QUOTES, 'UTF-8');
+    echo "Name: {$name}";
+  }
+}
+?>
+<?php
+
+/*
 if(!empty($arts)){
   echo "<h2>Artworks</h2>";
   
@@ -34,6 +49,7 @@ if(!empty($arts)){
   else{
     echo "<h2>Database Failed to load.</h2>";
 }
+*/
 ?>
 
 

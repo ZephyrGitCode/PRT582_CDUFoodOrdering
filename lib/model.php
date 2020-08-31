@@ -2,9 +2,8 @@
 
 function get_db(){
     $db = null;
-
     try{
-        $db = new PDO('mysql:host=localhost;dbname=art_db', 'root','');
+        $db = new PDO('mysql:host=nwhazdrp7hdpd4a4.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;dbname=pqah8dmlwqbvnqav', 'doontmefp1191ii9','xgeggg4zpq4ttehc');
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
     catch(PDOException $e){
@@ -36,14 +35,15 @@ function get_user($id){
 }
 
 function get_products(){
-   $arts = null;
+   $food = null;
    try{
       $db = get_db();
-      $query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
+      $query = "SELECT * from users";
+      //$query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
       $statement = $db->prepare($query);
       $statement -> execute();
-      $arts = $statement->fetchall(PDO::FETCH_ASSOC);
-      return $arts;
+      $food = $statement->fetchall(PDO::FETCH_ASSOC);
+      return $food;
    }
    catch(PDOException $e){
       throw new Exception($e->getMessage());
@@ -322,36 +322,6 @@ function purchaseitem($id, $purchaseno, $artno, $quantity, $pdate, $total){
    }
 }
 
-function is_db_empty(){
-   $is_empty = false;
-   try{
-      $db = get_db();  
-      $query = "SELECT id FROM users WHERE id=?";
-      if($statement = $db->prepare($query)){
-	     $id=1;
-         $binding = array($id);
-         if(!$statement -> execute($binding)){
-                 throw new Exception("Could not execute query.");
-         }
-         else{
-            $result = $statement->fetch(PDO::FETCH_ASSOC);
-            if(empty($result)){
-	          $is_empty = true;
-            }
-         }
-      }
-      else{
-            throw new Exception("Could not prepare statement.");
-      }
-
-   }
-   catch(Exception $e){
-      throw new Exception($e->getMessage());
-   }
-   return $is_empty;	
-	
-}
-
 function set_authenticated_session($email,$password_hash, $userno, $usertype){
       session_start();  
       
@@ -388,7 +358,7 @@ function validate_passwords($password, $password_confirm){
 }
 
 function validate_password($password){
-  //Does the password pass the strong password tests
+  //strong password test, i.e. Regular expression
   return true;
 }
 
