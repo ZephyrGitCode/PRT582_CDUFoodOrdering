@@ -1,10 +1,21 @@
 <section class="products">
 <?php
 session_start();
-$usertype = $_SESSION['usertype'];
+$isadmin = $_SESSION['isadmin'];
 session_write_close();
+?>
 
-
+<?php
+if(!empty($items)){
+  echo "<h2>Items</h2>";
+  foreach($items As $item){
+    $itemno = htmlspecialchars($item['itemNo'], ENT_QUOTES, 'UTF-8');
+    if ($itemno == $id){
+      $itemname = htmlspecialchars($item['itemName'], ENT_QUOTES, 'UTF-8');
+    }
+    echo "Item Name: ".$itemname;
+  }
+}
 
 
 /*
@@ -108,32 +119,34 @@ if(!empty($arts)){
       echo "<h4>No previous testiments</h4>";
     }
     ?>
-    */
     
+
   </div>
 </div>
 <script>
-  /* Convert this to session storage stuff - Maybe Alvin
+   //Convert this to session storage stuff - Maybe Alvin
   document.querySelector(".cart").addEventListener('click', addtocart);
 
   function addtocart(evt){
     var quant = document.getElementById("quantity").value;
-    if ("art"+<?php echo $id ?> in localStorage){
-      var localdata = JSON.parse(localStorage.getItem("art"+<?php echo $id ?>));
+    if ("art"+<?php //echo $id ?> in localStorage){
+      var localdata = JSON.parse(localStorage.getItem("art"+<?php //echo $id ?>));
       var localquant = localdata["quantity"];
       var quant = parseInt(localquant) + parseInt(quant);
     }
-    artdata = {"artno":<?php echo $id ?>,"quantity":parseInt(quant),"title":"<?php echo $title ?>", "price":<?php echo $price ?>, "url":"<?php echo $image ?>"};
+    artdata = {"artno":<?php //echo $id ?>,"quantity":parseInt(quant),"title":"<?php echo $title ?>", "price":<?php echo $price ?>, "url":"<?php echo $image ?>"};
     var saveinputs = JSON.stringify(artdata);
     var totalkeys = localStorage.length;
-    localStorage.setItem("art"+<?php echo $id ?>, saveinputs);
+    localStorage.setItem("art"+<?php //echo $id ?>, saveinputs);
     
-    document.getElementById("artadd").innerHTML="Artwork: "+"<?php echo $title ?>"+". Quantity: "+quant;
+    document.getElementById("artadd").innerHTML="Artwork: "+"<?php //echo $title ?>"+". Quantity: "+quant;
     document.getElementById("showcart").style.display = "block";
   }
   
   function closecart() {
     document.getElementById("showcart").style.display = "none";
   }
-  */
+
 </script>
+*/
+?>

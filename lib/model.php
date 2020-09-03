@@ -38,7 +38,7 @@ function get_products(){
    $food = null;
    try{
       $db = get_db();
-      $query = "SELECT * from users";
+      $query = "SELECT * from items";
       //$query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
       $statement = $db->prepare($query);
       $statement -> execute();
@@ -152,8 +152,8 @@ function get_user_name(){
 
 function sign_in($useremail,$password){
    try{
-      $db = get_db();  
-      $query = "SELECT id, email, salt, usertype, hashed_password FROM users WHERE email=?";
+      $db = get_db();
+      $query = "SELECT id, email, salt, isadmin, hashed_password FROM users WHERE email=?";
       if($statement = $db->prepare($query)){
          $binding = array($useremail);
          if(!$statement -> execute($binding)){
@@ -162,21 +162,21 @@ function sign_in($useremail,$password){
          else{
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             $salt = $result['salt'];
+            $isadmin = $result['isadmin'];
             session_start();
             $_SESSION['result'] = $result;
             $_SESSION['salt'] = $salt;
             $_SESSION['hash'] = $result['hashed_password'];
-            $usertype = $result['usertype'];
             session_write_close();
             $hashed_password = $result['hashed_password'];
             
             if(generate_password_hash($password,$salt) != $hashed_password){
-                throw new Exception("Account does not exist! .");
+               throw new Exception("Password incorrect.");
             }
             else{
                $email = $result["email"];
                $userno = $result["id"];
-               set_authenticated_session($email,$hashed_password, $userno, $usertype);
+               set_authenticated_session($email, $hashed_password, $userno, $isadmin);
             }
          }
       }
@@ -322,20 +322,19 @@ function purchaseitem($id, $purchaseno, $artno, $quantity, $pdate, $total){
    }
 }
 
-function set_authenticated_session($email,$password_hash, $userno, $usertype){
-      session_start();  
-      
-      //Make it a bit harder to session hijack
+function set_authenticated_session($email,$password_hash, $userno, $isadmin){
+      session_start();
+      // Make it a bit harder to session hijack
       session_regenerate_id(true);
       $_SESSION["userno"] = $userno;
       $_SESSION["email"] = $email;
-      $_SESSION["usertype"] = $usertype;
+      $_SESSION["isadmin"] = $isadmin;
       $_SESSION["hash"] = $password_hash;
       session_write_close();
 }
 
 function generate_password_hash($password,$salt){
-      return hash("sha256", $password.$salt, false);
+   return hash("sha256", $password.$salt, false);
 }
 
 function generate_salt(){
