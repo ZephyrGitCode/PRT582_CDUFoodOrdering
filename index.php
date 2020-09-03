@@ -96,13 +96,22 @@ get("/myaccount/:id;[\d]+",function($app){
    $app->render(LAYOUT,"signin");
 });
 
+get("/catalogue/:id;[\d]+",function($app){
+   require MODEL;
+   $id = $app->route_var("id");
+   $app->set_message("items", get_products());
+   $app->set_message("id", $id);
+   //$app->set_message("testimonials", get_testimonials($id));
+   $app->render(LAYOUT,"catalogue");
+});
+
 get("/food/:id;[\d]+",function($app){
    require MODEL;
    $id = $app->route_var("id");
    $app->set_message("items", get_products());
    $app->set_message("id", $id);
    //$app->set_message("testimonials", get_testimonials($id));
-   $app->render(LAYOUT,"food");
+   $app->render(LAYOUT,"singleitem");
 });
 
 
