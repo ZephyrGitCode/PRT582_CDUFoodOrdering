@@ -44,17 +44,13 @@ get("/signup",function($app){
       $is_authenticated = is_authenticated();
    }
    catch(Exception $e){
-      $app->set_flash("Failed to "); 
+      $app->set_flash("Failed to signup"); 
       $app->redirect_to("/"); 
    }   
    if($is_authenticated){
        $app->set_message("message","You are already signed in.");
        $app->set_flash("message","You are already signed in."); 
        header("location: /");
-   }
-   else{
-      $app->set_flash("Please signin"); 
-      $app->redirect_to("/signin");        
    }
   $app->set_message("title","Sign up");
   $app->render(LAYOUT,"signup");
@@ -100,13 +96,22 @@ get("/myaccount/:id;[\d]+",function($app){
    $app->render(LAYOUT,"signin");
 });
 
+get("/catalogue/:id;[\d]+",function($app){
+   require MODEL;
+   $id = $app->route_var("id");
+   $app->set_message("items", get_products());
+   $app->set_message("id", $id);
+   //$app->set_message("testimonials", get_testimonials($id));
+   $app->render(LAYOUT,"catalogue");
+});
+
 get("/food/:id;[\d]+",function($app){
    require MODEL;
    $id = $app->route_var("id");
-   $app->set_message("food", get_products());
+   $app->set_message("items", get_products());
    $app->set_message("id", $id);
    //$app->set_message("testimonials", get_testimonials($id));
-   $app->render(LAYOUT,"food");
+   $app->render(LAYOUT,"singleitem");
 });
 
 
