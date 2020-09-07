@@ -34,7 +34,7 @@ if(!empty($arts)){
         $image = htmlspecialchars($art['link'],ENT_QUOTES, 'UTF-8');
       ?>
       <div class="productcontainer">
-        <img class="productimage" src="<?php echo "{$image}" ?>" class="artimage"/>
+        <img class="productimage" src="<?php echo "{$image}" ?>" class="itemimage"/>
         <div class="producttext">
           <h2><i><?php echo "{$title}"?></i></h2>
           <p><b>Author: 0nyxheart<?php //echo "{$author}" ?></b></p>

@@ -75,17 +75,17 @@ a:hover{
   overflow-y: scroll;
 }
 
-.artlist{
+.itemlist{
   display: flex;
 }
 
-.artimage{
+.itemimage{
   width: 60px;
   height: 60px;
   border-radius: 50px;
 }
 
-.dimage{
+.fimage{
   margin: 10px;
   margin-left: 0px;
 }
@@ -93,12 +93,24 @@ a:hover{
 .inspect{
   color: #a469b3;
   text-decoration: underline;
+  margin: auto;
 }
+
+.vendorimage{
+  padding: 5px;
+  border-radius: 40px;
+}
+
+.singlelist{
+  list-style: none;
+  margin: auto;
+}
+
 /* Home End*/
 
 /* Side navigation Start - Code modifed from original (https://www.w3schools.com/howto/howto_js_sidenav.asp)*/
 .navbar{
-  background-color: #59136b;
+  background-color: #056571;
   padding-bottom: 12px;
 }
 
@@ -155,7 +167,7 @@ a:hover{
 .forms{
   margin: 0px 0px 10px 0px;
   padding-left:5px;
-  background-color: #59136b;
+  background-color: #056571;
   /*background-color: #1A1C1D;*/
 }
 
@@ -176,7 +188,7 @@ a:hover{
   margin-top: auto;
   margin-bottom: auto;
   color: #E2E2E2;
-  font-size:1.2rem;
+  font-size: 1rem;
 }
 
 .logo-nav{
@@ -184,8 +196,8 @@ a:hover{
     margin: 25px 10px;
   }
 
-@media only screen and (max-width: 360px) {
-  .main-h2 {font-size: 1.3rem;}
+@media (min-width: 500px) {
+  .main-h2 {font-size: 1.6rem;}
 }
 
 .usericon{

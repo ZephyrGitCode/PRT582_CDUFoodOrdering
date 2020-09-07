@@ -34,14 +34,33 @@ function get_user($id){
       }
 }
 
-function get_products(){
+function get_item($id){
    $food = null;
    try{
       $db = get_db();
-      $query = "SELECT * from items";
+      $query = "SELECT * from items WHERE itemNo = ?";
       //$query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
       $statement = $db->prepare($query);
-      $statement -> execute();
+      $binding = array($id);
+      $statement -> execute($binding);
+      $food = $statement->fetchall(PDO::FETCH_ASSOC);
+      return $food;
+   }
+   catch(PDOException $e){
+      throw new Exception($e->getMessage());
+      return "";
+      }
+}
+
+function get_products($id){
+   $food = null;
+   try{
+      $db = get_db();
+      $query = "SELECT * from items WHERE vendorNo = ?";
+      //$query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
+      $statement = $db->prepare($query);
+      $binding = array($id);
+      $statement -> execute($binding);
       $food = $statement->fetchall(PDO::FETCH_ASSOC);
       return $food;
    }
