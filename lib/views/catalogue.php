@@ -1,40 +1,30 @@
 <p><?php echo $message ?></p>
 
 <?php
-if(!empty($user)){
-  echo "<h2>Database Worked</h2>";
-  echo "<h2>Users</h2>";
-  foreach($user As $person){
-    $name = htmlspecialchars($person['fname'],ENT_QUOTES, 'UTF-8');
-    echo "Name: {$name}";
-  }
-}
-?>
-<?php
-
-/*
-if(!empty($arts)){
-  echo "<h2>Artworks</h2>";
+if(!empty($items)){
+  echo "<h2>Menu</h2>";
   
-  foreach($arts As $art){
-    $artno = htmlspecialchars($art['artNo'],ENT_QUOTES, 'UTF-8');
-    $title = htmlspecialchars($art['title'],ENT_QUOTES, 'UTF-8');
-    $artdesc = htmlspecialchars($art['artdesc'],ENT_QUOTES, 'UTF-8');
-    $price = htmlspecialchars($art['price'],ENT_QUOTES, 'UTF-8');
-    $category = htmlspecialchars($art['category'],ENT_QUOTES, 'UTF-8');
-    $size = htmlspecialchars($art['size'],ENT_QUOTES, 'UTF-8');
-    $image = htmlspecialchars($art['link'],ENT_QUOTES, 'UTF-8');
+  foreach($items As $item){
+    $itemno = htmlspecialchars($item['itemNo'],ENT_QUOTES, 'UTF-8');
+    $vendorno = htmlspecialchars($item['vendorNo'],ENT_QUOTES, 'UTF-8');
+    $itemname = htmlspecialchars($item['itemName'],ENT_QUOTES, 'UTF-8');
+    $itemdesc = htmlspecialchars($item['itemDesc'],ENT_QUOTES, 'UTF-8');
+    $price = htmlspecialchars($item['price'],ENT_QUOTES, 'UTF-8');
+    $itemimage = htmlspecialchars($item['itemImage'],ENT_QUOTES, 'UTF-8');
     ?>
-    <div class="artlist">
-    <a href="<?php echo "/"."art/"."{$artno}"?>">
-          <div class="dimage">
-            <img href="" src="<?php echo "{$image}"?>" class="artimage"/>
+    <div class="itemlist">
+    <a href="<?php echo "/"."singleitem/"."{$itemno}"?>">
+          <div class="fimage">
+            <img href="" src="<?php echo "{$itemimage}"?>" class="itemimage"/>
           </div>
         </a>
 <?php
-      echo "<li>{$title}, {$artdesc}, {$price}, {$category}, {$size}</li>";
-      ?>
-      <a href="<?php echo "/"."art/"."{$artno}"?>" class="inspect"><p>Inspect</p></a>
+      echo "<div class=\"singlelist\">";
+      echo "<li>{$itemname}</li>";
+      echo "<li>\${$price}</li>";
+      echo "</div>";
+?>
+      <a href="<?php echo "/"."singleitem/"."{$itemno}"?>" class="inspect"><p>Inspect</p></a>
       <?php
 ?>
       </div>
@@ -44,7 +34,4 @@ if(!empty($arts)){
   else{
     echo "<h2>Database Failed to load.</h2>";
 }
-*/
 ?>
-
-

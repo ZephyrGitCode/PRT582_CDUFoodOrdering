@@ -1,14 +1,14 @@
 <header class="navbar">
   <span style="font-size:30px;cursor:pointer;color:white" onclick="openNav()">&#9776;</span>
-  <a href="/"><span><img class="main-h2" src="https://i.imgur.com/YWZxuTE.png" width="50px" height="50px"></span></a>
-  <h2 class="main-h2" style="font-size: 1rem;" >CDU Food Ordering</h2>
+  <a href="/"><span><img src="https://ask.cdu.edu.au/euf/assets/images/edm/logos/intl-wedge-left-base-hd.png" width="50px" height="50px"></span></a>
+  <h2 class="main-h2">CDU Food Ordering</h2>
   <a href="<?php if ($_SESSION['userno'] != ""){echo "/myaccount/{$_SESSION['userno']}";}else{echo "/myaccount/123";}?>"><span class="material-icons usericon">&#xe8a6</span></a>
   <a href="/cart"><span class="material-icons usericon">&#xe854</span></a>
   <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     
     
-    <h2 class="form-h2 navforms"><img class="logo-nav" src="https://i.imgur.com/YWZxuTE.png" width="50px" height="45px">CDU Food Ordering</h2>
+    <h2 class="form-h2 navforms"><img class="logo-nav" src="https://www.eesysoft.com/wp-content/uploads/2018/08/charles-logo-1024x296.png" width="220px"></h2>
     <hr style="margin-bottom:0;"/>
     <h2 class="form-h2 navforms">Browse</h2>
     <hr style="margin-bottom:0;"/>

@@ -23,9 +23,10 @@ require APP;
 
 /* Here is our Controller code i.e. API if you like.  */
 
+// Start get ---------------------------------------
 get("/",function($app){
    $app->set_message("title","CDU Food Ordering");
-   $app->set_message("message","Welcome to CDU Food ordering.");
+   $app->set_message("message","Welcome to CDU Food ordering. Please select a vendor.");
    require MODEL;
    try{
       //$app->set_message("food",get_products());
@@ -99,16 +100,16 @@ get("/myaccount/:id;[\d]+",function($app){
 get("/catalogue/:id;[\d]+",function($app){
    require MODEL;
    $id = $app->route_var("id");
-   $app->set_message("items", get_products());
+   $app->set_message("items", get_products($id));
    $app->set_message("id", $id);
    //$app->set_message("testimonials", get_testimonials($id));
    $app->render(LAYOUT,"catalogue");
 });
 
-get("/food/:id;[\d]+",function($app){
+get("/singleitem/:id;[\d]+",function($app){
    require MODEL;
    $id = $app->route_var("id");
-   $app->set_message("items", get_products());
+   $app->set_message("items", get_item($id));
    $app->set_message("id", $id);
    //$app->set_message("testimonials", get_testimonials($id));
    $app->render(LAYOUT,"singleitem");
@@ -177,9 +178,8 @@ get("/signout",function($app){
         $app->redirect_to("/signin");
    }   
 });
-
-// End get
-
+// End get ----------------------------------------
+// Start Post -------------------------------------
 post("/signup",function($app){
     require MODEL;
     try{
@@ -239,7 +239,7 @@ post("/signin",function($app){
   $app->redirect_to("/");
 });
 
-post("/art/:id[\d]+",function($app){
+post("/singleitem/:id[\d]+",function($app){
    require MODEL;
    $artno = $app->route_var("id");
    $id = get_user_id();
@@ -287,6 +287,8 @@ post("/cart", function($app){
    
 });
 
+// End post ----------------------------------------
+// Start put ---------------------------------------
 put("/myaccount/:id[\d]+",function($app){
    $app->set_message("title","Darwin Art Company Account");
    require MODEL;
@@ -361,7 +363,7 @@ put("/change/:id[\d]+",function($app){
    }
 });
 
-put("/art/:id;[\d]+",function($app){
+put("/singleitem/:id;[\d]+",function($app){
    require MODEL;
    $id = $app->route_var("id");
    $app->set_flash("Approval attempt");
@@ -375,8 +377,8 @@ put("/art/:id;[\d]+",function($app){
    }
    $app->redirect_to("/");
 });
-
-
+// End put ---------------------------------------
+// Start delete ----------------------------------
 # The Delete call back is left for you to work out
 delete("/user",function($app){
    //query to delete
