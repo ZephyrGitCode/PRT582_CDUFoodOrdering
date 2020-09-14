@@ -115,25 +115,13 @@ get("/singleitem/:id;[\d]+",function($app){
    $app->render(LAYOUT,"singleitem");
 });
 
-
 get("/cart",function($app){
-   $app->set_message("title","Shopping Cart");
    require MODEL;
-   try{
-     if(is_authenticated()){
-         $app->set_message("arts", get_products());
-         date_default_timezone_set("Australia/Darwin");
-         $datetime = date('Y/m/d H:i:s');
-         $app->set_message("datetime", $datetime);
-         $app->render(LAYOUT,"cart");
-      }   
-   }
-   catch(Exception $e){
-      $app->set_flash("You must be signed in to see your cart.");
-      $app->redirect_to("/"); 
-   }
-   $app->set_flash("You must be signed in to see your cart.");
-   $app->redirect_to("/"); 
+   $userid = get_user_id();
+   $app->set_message("cartitems", get_cartitems($userid));
+   $app->set_message("id", $userid);
+   //$app->set_message("testimonials", get_testimonials($id));
+   $app->render(LAYOUT,"cart");
 });
 
 get("/change/:id;[\d]+",function($app){
@@ -260,31 +248,36 @@ post("/singleitem/:id[\d]+",function($app){
    }
    $app->set_flash("Failed");  
    $app->redirect_to("/art/".$artno);        
- });
+});
 
  
-post("/cart", function($app){
+
+
+post("/singleitem", function($app){
    require MODEL;
-   $id = get_user_id();
-   $artno = $app->form('artno');
    $quantity = $app->form('quantity');
-   $pdate = $app->form('date');
-   $total = $app->form('total');
-   $purchaseno = "";
-   try{
-      $purchaseno = purchase($id, $pdate);
-   }catch(Exception $e){
-      $app->set_flash("Purchase Failed. ".$e->getMessage());  
-      $app->redirect_to("/cart".$id);        
+   $itemNo = $app->form('itemNo');
+   $userid = get_user_id();
+   $cartitems = get_cartitems($userid);
+   foreach($cartitems As $item){
+   if($itemNo == $item["itemNo"]){
+      try{
+         updatequantity($quantity, $itemNo,$userid);
+      }
+      catch(Exception $e){
+         $app->set_flash("Failed to add testimonial. {$e->getMessage()}");   
+       }
+
    }
-   try{
-      purchaseitem($id, $purchaseno, $artno, $quantity, $pdate, $total);
-      $app->set_flash("Purchase Successful!");
-   }catch(Exception $e){
-      $app->set_flash("Purchase Failed. ".$e->getMessage());  
-      $app->redirect_to("/cart".$id);        
-   }
-   
+   else{
+      try{
+         addtocart($itemNo, $quantity,$userid);
+      }
+      catch(Exception $e){
+         $app->set_flash("Failed to add testimonial. {$e->getMessage()}");   
+       }
+   }}
+   $app->redirect_to("/catalogue"); 
 });
 
 // End post ----------------------------------------

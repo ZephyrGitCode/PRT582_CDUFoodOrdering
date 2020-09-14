@@ -3,54 +3,44 @@
 session_start();
 $isadmin = $_SESSION['isadmin'];
 session_write_close();
-?>
-
-<?php
-if(!empty($items)){
-  echo "<h2>Items</h2>";
-  foreach($items As $item){
-    $itemno = htmlspecialchars($item['itemNo'], ENT_QUOTES, 'UTF-8');
-    if ($itemno == $id){
-      $itemname = htmlspecialchars($item['itemName'], ENT_QUOTES, 'UTF-8');
-    }
-    echo "Item Name: ".$itemname;
-  }
-}
 
 
-/*
+
+
 // Can utilize the following code for single food info
-if(!empty($arts)){
+if(!empty($items)){
     echo "<h2>Artworks</h2>";
-    foreach($arts As $art){
-      $artno = htmlspecialchars($art['artNo'],ENT_QUOTES, 'UTF-8');
-      if ($artno == $id){
-        $title = htmlspecialchars($art['title'],ENT_QUOTES, 'UTF-8');
-        //$author = htmlspecialchars($art['author'],ENT_QUOTES, 'UTF-8');
-        $artdesc = htmlspecialchars($art['artdesc'],ENT_QUOTES, 'UTF-8');
-        $price = htmlspecialchars($art['price'],ENT_QUOTES, 'UTF-8');
-        $category = htmlspecialchars($art['category'],ENT_QUOTES, 'UTF-8');
-        $size = htmlspecialchars($art['size'],ENT_QUOTES, 'UTF-8');
-        $image = htmlspecialchars($art['link'],ENT_QUOTES, 'UTF-8');
-      ?>
+    foreach($items As $item){
+      $itemno = htmlspecialchars($item['itemNo'],ENT_QUOTES, 'UTF-8');
+      if ($itemno == $id){
+        $title = htmlspecialchars($item['itemName'],ENT_QUOTES, 'UTF-8');
+        $itemdesc = htmlspecialchars($item['itemDesc'],ENT_QUOTES, 'UTF-8');
+        $price = htmlspecialchars($item['price'],ENT_QUOTES, 'UTF-8');
+        $image = htmlspecialchars($item['itemImage'],ENT_QUOTES, 'UTF-8');
+      
+    
+  ?>
       <div class="productcontainer">
         <img class="productimage" src="<?php echo "{$image}" ?>" class="itemimage"/>
         <div class="producttext">
           <h2><i><?php echo "{$title}"?></i></h2>
-          <p><b>Author: 0nyxheart<?php //echo "{$author}" ?></b></p>
+          <p class="itemdesc"><?php echo "{$itemdesc}" ?></p>
           <p class="price">AUD $<?php echo "{$price}" ?></p>
-          <p><b>Size: </b><?php echo "{$size}" ?></P>
-
-          <label class="productlabel">Quantity:</label>
-          <input class="productinput" id="quantity" type="number" value="1" min=0 oninput="validity.valid||(value='');">
-          <?php 
-          if (is_authenticated()){
-          ?>
-          <button type="button" class="btn btn-default cart" >Add to cart</button>
+          
+          <form action="/singleitem" method="POST">
+            <input type='hidden' name='_method' value='post' />
+            <input type='hidden' name='itemNo' value='<?php echo($itemno) ?>' />
+            <label  class="productlabel">Quantity:</label>
+            <input name="quantity" class="productinput" id="quantity" type="number" value="1" min=0 oninput="validity.valid||(value='');">
+            <?php 
+            if (is_authenticated()){
+            ?>
+            <input type="submit" class="btn btn-default cart" name="Add to Cart">
+          </form>
           <?php
           }else{
           ?>
-          <button type="button" class="btn btn-default cart" disabled>Please sign in to add to cart</button>
+          <a href='/signin'><button type="button" class="btn btn-default cart" >Please sign in to add to cart</button></a>
           <?php
           }
           ?>
@@ -63,7 +53,7 @@ if(!empty($arts)){
   else{
     echo "<h2>Artwork failed to load</h2>";
 }
-
+/*
 ?>
 
 <div id="showcart" class="showcart">
