@@ -1,5 +1,10 @@
 <p><?php echo $message ?></p>
 
+<ol class="breadcrumb">
+  <li><a href="/home">Home</a></li>
+  <li class="active"><a href="#">The Lunch Room</a></li>
+</ol>
+
 <?php
 if(!empty($items)){
   echo "<h2>Menu</h2>";

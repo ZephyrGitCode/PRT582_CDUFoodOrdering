@@ -93,33 +93,26 @@ function get_testimonials($artno){
 
 function sign_up($fname, $lname, $email, $password, $password_confirm){
    try{
-     $db = get_db();
-     
-     if(validate_user_name($db,$fname) && validate_passwords($password,$password_confirm)){
-          $salt = generate_salt();
-          $password_hash = generate_password_hash($password,$salt);
-          $query = "INSERT INTO users (fname,lname,email,salt,hashed_password) VALUES (?,?,?,?,?)";
-          if($statement = $db->prepare($query)){
-             $binding = array($fname,$lname,$email,$salt,$password_hash);
-             if(!$statement -> execute($binding)){
-                 throw new Exception("Could not execute query.");
-             }
-          }
-          else{
-            throw new Exception("Could not prepare statement.");
-
-          }
-     }
-     else{
-        throw new Exception("Invalid data.");
-     }
-     
-
+      $db = get_db();
+      if (validate_passwords($password,$password_confirm) === false){
+         throw new Exception("Password incorrect. Password must contain at least 8 characters, one Capital letter and one number");
+      }
+      $salt = generate_salt();
+      $password_hash = generate_password_hash($password,$salt);
+      $query = "INSERT INTO users (fname,lname,email,salt,hashed_password) VALUES (?,?,?,?,?)";
+      if($statement = $db->prepare($query)){
+        $binding = array($fname,$lname,$email,$salt,$password_hash);
+        if(!$statement -> execute($binding)){
+           throw new Exception("Could not execute query.");
+         }
+      }
+      else{
+         throw new Exception("Could not prepare statement.");
+      }
    }
    catch(Exception $e){
-       throw new Exception($e->getMessage());
+      throw new Exception($e->getMessage());
    }
-
 }
 
 function get_user_id(){
@@ -172,6 +165,9 @@ function get_user_name(){
 function sign_in($useremail,$password){
    try{
       $db = get_db();
+      if (validate_user_email($db,$useremail)){
+         throw new Exception("Email does not exist");
+      }
       $query = "SELECT id, email, salt, isadmin, hashed_password FROM users WHERE email=?";
       if($statement = $db->prepare($query)){
          $binding = array($useremail);
@@ -190,7 +186,7 @@ function sign_in($useremail,$password){
             $hashed_password = $result['hashed_password'];
             
             if(generate_password_hash($password,$salt) != $hashed_password){
-               throw new Exception("Password incorrect.");
+               throw new Exception("Password incorrect. Password must contain at least 8 characters, one Capital letter and one number.");
             }
             else{
                $email = $result["email"];
@@ -211,7 +207,7 @@ function sign_in($useremail,$password){
 function update_details($id,$title,$fname,$lname,$email,$phone,$city,$state,$country,$postcode,$shipping_address){
    try{
      $db = get_db();
-     if(validate_user_name($db,$fname)){
+     if(validate_user_email($db,$email)){
          $query = "UPDATE users SET title=?, fname=?, lname=?, email=?, phone=?, city=?, shipping_state=?, shipping_address=?, country=?, postcode=? WHERE id=?";
          if($statement = $db->prepare($query)){
             $binding = array($title,$fname,$lname,$email,$phone,$city,$state,$shipping_address,$country,$postcode,$id);
@@ -361,23 +357,48 @@ function generate_salt(){
     return str_shuffle($chars);
 }
 
-function validate_user_name($db,$user_name){
-    // is it a valid name?
-    // use get_user_id function. if empty then it doesn't exist
-    // if all good return true, other return false
-    return true;
+function validate_user_email($db,$email){
+   try{
+      $db = get_db();
+      $query = "SELECT hashed_password FROM users WHERE email=?";
+      if($statement = $db->prepare($query)){
+        $binding = array($email);
+        if(!$statement -> execute($binding)){
+           return false;
+        }
+        else{
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            if($result['email'] === $email){
+              return true;
+            }else{
+               return false;
+            }
+        }
+      }
+   }
+   catch(Exception $e){
+      throw new Exception("Authentication not working properly. {$e->getMessage()}");
+   }
 }
 
 function validate_passwords($password, $password_confirm){
-   if($password === $password_confirm && validate_password($password)){
+   if($password === $password_confirm && validate_password($password) === true){
       return true;
+   }else{
+      return false;
    }
-   return false;
 }
 
 function validate_password($password){
-  //strong password test, i.e. Regular expression
-  return true;
+   $uppercase = preg_match('@[A-Z]@', $password);
+   $lowercase = preg_match('@[a-z]@', $password);
+   $number    = preg_match('@[0-9]@', $password);
+
+   if($uppercase && $lowercase && $number && strlen($password) >= 8) {
+      return true;
+   }else{
+      return false;
+   }
 }
 
 

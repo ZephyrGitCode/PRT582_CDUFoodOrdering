@@ -232,8 +232,9 @@ post("/signin",function($app){
     }
   }
   else{
-       $app->set_flash("Something wrong with name or password. Try again.");
-       $app->redirect_to("/signin");
+     //$app->set_flash("Could not sign you in. Try again. {$e->getMessage()}");
+     //$app->set_flash("Something wrong with name or password. Try again.");
+     $app->redirect_to("/signin");
   }
   $app->set_message("note","Lovely, you are now signed in!");
   $app->redirect_to("/");
