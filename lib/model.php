@@ -52,6 +52,24 @@ function get_item($id){
       }
 }
 
+function get_cartitems($id){
+   $food = null;
+   try{
+      $db = get_db();
+      $query = "SELECT * FROM cartitems,items WHERE cartitems.userId = ? AND cartitems.itemNo = items.itemNo";
+      //$query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
+      $statement = $db->prepare($query);
+      $binding = array($id);
+      $statement -> execute($binding);
+      $food = $statement->fetchall(PDO::FETCH_ASSOC);
+      return $food;
+   }
+   catch(PDOException $e){
+      throw new Exception($e->getMessage());
+      return "";
+      }
+}
+
 function get_products($id){
    $food = null;
    try{
@@ -252,7 +270,45 @@ function get_testimonials($artno){
    catch(PDOException $e){
       throw new Exception($e->getMessage());
       return "";
+   }
+}
+
+function addtocart($itemNo, $quantity,$userid){
+   try{
+      $db = get_db();
+      $query = "INSERT INTO cartitems(itemNo, quantity, userId) VALUES (?,?,?)";
+      if($statement = $db->prepare($query)){
+         $binding = array($itemNo, $quantity,$userid);
+         if(!$statement -> execute($binding)){
+            throw new Exception("Could not execute query.");
+         }
       }
+      else{
+      throw new Exception("Could not prepare statement.");
+      }
+   }
+   catch(Exception $e){
+      throw new Exception($e->getMessage());
+  }
+}
+
+function updatequantity($quantity, $itemNo,$userid){
+   try{
+      $db = get_db();
+      $query = "UPDATE cartitems SET quantity = ? WHERE itemNo=? AND userId =?";
+      if($statement = $db->prepare($query)){
+         $binding = array($quantity,$itemNo,$userid);
+         if(!$statement -> execute($binding)){
+            throw new Exception("Could not execute query.");
+         }
+      }
+      else{
+      throw new Exception("Could not prepare statement.");
+      }
+   }
+   catch(Exception $e){
+      throw new Exception($e->getMessage());
+  }
 }
 
 function add_testimonial($id,$artno,$test){
@@ -521,3 +577,6 @@ function approve($id){
    }
 
 }
+
+
+
