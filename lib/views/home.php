@@ -1,4 +1,3 @@
-<p><?php echo $message ?></p>
 <div class="VendorSelect">
 
   

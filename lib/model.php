@@ -3,15 +3,15 @@
 function get_db(){
     $db = null;
     try{
-        $db = new PDO('mysql:host=nwhazdrp7hdpd4a4.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;dbname=pqah8dmlwqbvnqav', 'doontmefp1191ii9','xgeggg4zpq4ttehc');
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $db = new PDO('mysql:host=nwhazdrp7hdpd4a4.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;
+         dbname=pqah8dmlwqbvnqav', 'doontmefp1191ii9','xgeggg4zpq4ttehc');
+      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
     catch(PDOException $e){
-        // notice how we THROW the exception. You can catch this in your controller code in the usual way
-        throw new Exception("Something wrong with the database: ".$e->getMessage());
+        throw new Exception("Something wrong with the database connection!".$e->getMessage());
     }
+    echo "connection made";
     return $db;
-
 }
 
 function get_user($id){

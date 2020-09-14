@@ -30,7 +30,7 @@ get("/",function($app){
    require MODEL;
    try{
       //$app->set_message("food",get_products());
-      $app->set_message("user",get_user(1));
+      //$app->set_message("user",get_user(1));
 
    }catch(Exception $e){
       // Failed to load DB
