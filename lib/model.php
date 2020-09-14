@@ -70,27 +70,6 @@ function get_products($id){
       }
 }
 
-function get_testimonials($artno){
-   $testimonials = null;
-   try{
-      $db = get_db();
-      $query = "SELECT * FROM testimonial WHERE artno=?";
-      if($statement = $db->prepare($query)){
-         $binding = array($artno);
-         if(!$statement -> execute($binding)){
-             throw new Exception("Could not execute query.");
-         }
-      }
-      $testimonials = $statement->fetchall(PDO::FETCH_ASSOC);
-      return $testimonials;
-   }
-   catch(PDOException $e){
-      throw new Exception($e->getMessage());
-      return "";
-      }
-}
-
-
 function sign_up($fname, $lname, $email, $password, $password_confirm){
    try{
       $db = get_db();
@@ -115,58 +94,14 @@ function sign_up($fname, $lname, $email, $password, $password_confirm){
    }
 }
 
-function get_user_id(){
-   $id="";
-   session_start();  
-   if(!empty($_SESSION["userno"])){
-      $id = $_SESSION["userno"];
-   }
-   session_write_close();
-   return $id;	
-}
-
-function get_user_name(){
-   $id="";
-   $name="";
-   session_start();  
-   if(!empty($_SESSION["userno"])){
-      $id = $_SESSION["userno"];
-   }
-   session_write_close();
-   
-   if(empty($id)){
-     throw new Exception("User has no valid id");	
-   }
-	
-   try{
-      $db = get_db();  
-      $query = "SELECT fname FROM users WHERE id=?";
-      if($statement = $db->prepare($query)){
-         $binding = array($id);
-         if(!$statement -> execute($binding)){
-                 throw new Exception("Could not execute query.");
-         }
-         else{
-            $result = $statement->fetch(PDO::FETCH_ASSOC);
-            $name = $result['fname'];
-         }
-      }
-      else{
-            throw new Exception("Could not prepare statement.");
-      }
-
-   }
-   catch(Exception $e){
-      throw new Exception($e->getMessage());
-   }
-   return $name;	
-}
-
 function sign_in($useremail,$password){
    try{
       $db = get_db();
       if (validate_user_email($db,$useremail)){
          throw new Exception("Email does not exist");
+      }
+      if (validate_password($password) === false){
+         throw new Exception("Password incorrect. Password must contain at least 8 characters, one Capital letter and one number");
       }
       $query = "SELECT id, email, salt, isadmin, hashed_password FROM users WHERE email=?";
       if($statement = $db->prepare($query)){
@@ -204,6 +139,71 @@ function sign_in($useremail,$password){
    }
 }
 
+function validate_passwords($password, $password_confirm){
+   if($password === $password_confirm && validate_password($password) === true){
+      return true;
+   }else{
+      return false;
+   }
+}
+
+function validate_password($password){
+   $uppercase = preg_match('@[A-Z]@', $password);
+   $lowercase = preg_match('@[a-z]@', $password);
+   $number    = preg_match('@[0-9]@', $password);
+
+   if($uppercase && $lowercase && $number && strlen($password) >= 8) {
+      return true;
+   }else{
+      return false;
+   }
+}
+
+function get_user_id(){
+   $id="";
+   session_start();  
+   if(!empty($_SESSION["userno"])){
+      $id = $_SESSION["userno"];
+   }
+   session_write_close();
+   return $id;	
+}
+
+function get_user_name(){
+   $id="";
+   $name="";
+   session_start();  
+   if(!empty($_SESSION["userno"])){
+      $id = $_SESSION["userno"];
+   }
+   session_write_close();
+   if(empty($id)){
+     throw new Exception("User has no valid id");	
+   }
+   try{
+      $db = get_db();  
+      $query = "SELECT fname FROM users WHERE id=?";
+      if($statement = $db->prepare($query)){
+         $binding = array($id);
+         if(!$statement -> execute($binding)){
+                 throw new Exception("Could not execute query.");
+         }
+         else{
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            $name = $result['fname'];
+         }
+      }
+      else{
+            throw new Exception("Could not prepare statement.");
+      }
+
+   }
+   catch(Exception $e){
+      throw new Exception($e->getMessage());
+   }
+   return $name;	
+}
+
 function update_details($id,$title,$fname,$lname,$email,$phone,$city,$state,$country,$postcode,$shipping_address){
    try{
      $db = get_db();
@@ -233,6 +233,26 @@ function update_details($id,$title,$fname,$lname,$email,$phone,$city,$state,$cou
        throw new Exception($e->getMessage());
    }
 
+}
+
+function get_testimonials($artno){
+   $testimonials = null;
+   try{
+      $db = get_db();
+      $query = "SELECT * FROM testimonial WHERE artno=?";
+      if($statement = $db->prepare($query)){
+         $binding = array($artno);
+         if(!$statement -> execute($binding)){
+             throw new Exception("Could not execute query.");
+         }
+      }
+      $testimonials = $statement->fetchall(PDO::FETCH_ASSOC);
+      return $testimonials;
+   }
+   catch(PDOException $e){
+      throw new Exception($e->getMessage());
+      return "";
+      }
 }
 
 function add_testimonial($id,$artno,$test){
@@ -378,26 +398,6 @@ function validate_user_email($db,$email){
    }
    catch(Exception $e){
       throw new Exception("Authentication not working properly. {$e->getMessage()}");
-   }
-}
-
-function validate_passwords($password, $password_confirm){
-   if($password === $password_confirm && validate_password($password) === true){
-      return true;
-   }else{
-      return false;
-   }
-}
-
-function validate_password($password){
-   $uppercase = preg_match('@[A-Z]@', $password);
-   $lowercase = preg_match('@[a-z]@', $password);
-   $number    = preg_match('@[0-9]@', $password);
-
-   if($uppercase && $lowercase && $number && strlen($password) >= 8) {
-      return true;
-   }else{
-      return false;
    }
 }
 
