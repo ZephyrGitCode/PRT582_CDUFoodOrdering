@@ -31,6 +31,7 @@
                         $itemimage = htmlspecialchars($item['itemImage'],ENT_QUOTES, 'UTF-8');
                         $quantity = htmlspecialchars($item['quantity'],ENT_QUOTES, 'UTF-8');
                         $cost = $price * $quantity;
+
                 ?>
             
                 <tr>
@@ -48,7 +49,7 @@
             </form>
                 </td>
                 </tr>           
-            </table>
             
-                    <?php }}
-    ?>
+            
+                    <?php }}   ?>
+                    </table>

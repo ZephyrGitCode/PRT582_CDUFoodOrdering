@@ -272,26 +272,38 @@ post("/singleitem", function($app){
    $itemNo = $app->form('itemNo');
    $userid = get_user_id();
    $cartitems = get_cartitems($userid);
-   
-      if(!empty($cartitems)){
-         foreach($cartitems As $item){
-            if($itemNo == $item["itemNo"]){
-               try{
-                  updatequantity($quantity, $itemNo,$userid);
-               }
-               catch(Exception $e){
-                  $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
-               }
 
-      }}}
-      else{
-         try{
-            addtocart($itemNo, $quantity,$userid);
-         }
-         catch(Exception $e){
-            $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
-         }
+   foreach($cartitems as $cartitem){
+      $item[]=$cartitem["itemNo"];
    }
+   if(empty($cartitems)){
+      try{
+         addtocart($itemNo, $quantity,$userid);
+      }
+      catch(Exception $e){
+         $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
+      }
+   }
+   else{
+         if(in_array($itemNo,$item)){
+
+            try{
+               updatequantity($quantity, $itemNo,$userid);
+            }
+            catch(Exception $e){
+               $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
+            }
+         }
+         else{
+            try{
+            addtocart($itemNo, $quantity,$userid);
+            }
+            catch(Exception $e){
+            $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
+            }
+         }
+      }  
+   
    $app->redirect_to("/singleitem"); 
 });
 
