@@ -5,9 +5,10 @@
 <body class="accountBody">
     <p id="response"></p>
     <div class="userBox">
-        
+      
         <?php
-            if(!empty($cartitems)){
+            require MODEL;
+             if(!empty($cartitems)){
                 echo"<h3>Shopping Cart</h3>"; 
         ?>
         <div>Item</div>
@@ -40,7 +41,7 @@
                 </tr>           
             </table>
             
-                    <?php }}else{
+                    <?php } }else{
             echo "<h2>Database Failed to load.</h2>";
-            }
+            } 
     ?>

@@ -117,11 +117,23 @@ get("/singleitem/:id;[\d]+",function($app){
 
 get("/cart",function($app){
    require MODEL;
-   $userid = get_user_id();
-   $app->set_message("cartitems", get_cartitems($userid));
-   $app->set_message("id", $userid);
-   //$app->set_message("testimonials", get_testimonials($id));
-   $app->render(LAYOUT,"cart");
+   try{
+      if(is_authenticated()){
+         try{
+         $userid = get_user_id();
+         $app->set_message("cartitems", get_cartitems($userid));
+         $app->set_message("id", $userid);
+         //$app->set_message("testimonials", get_testimonials($id));
+         $app->render(LAYOUT,"cart");
+         }catch(Exception $e){
+            // Failed to load DB
+         }
+      }
+   }  catch(Exception $e){
+      $app->set_message("message",$e->getMessage($app));
+  }
+ $app->set_message("note", "You must be logged in to access the shopping cart");
+ $app->render(LAYOUT,"/signin");
 });
 
 get("/change/:id;[\d]+",function($app){
