@@ -240,7 +240,7 @@ post("/signin",function($app){
   $app->redirect_to("/");
 });
 
-post("/singleitem/:id[\d]+",function($app){
+/*post("/singleitem/:id[\d]+",function($app){
    require MODEL;
    $artno = $app->route_var("id");
    $id = get_user_id();
@@ -261,7 +261,7 @@ post("/singleitem/:id[\d]+",function($app){
    }
    $app->set_flash("Failed");  
    $app->redirect_to("/art/".$artno);        
-});
+});*/
 
  
 
@@ -272,25 +272,27 @@ post("/singleitem", function($app){
    $itemNo = $app->form('itemNo');
    $userid = get_user_id();
    $cartitems = get_cartitems($userid);
-   foreach($cartitems As $item){
-   if($itemNo == $item["itemNo"]){
-      try{
-         updatequantity($quantity, $itemNo,$userid);
-      }
-      catch(Exception $e){
-         $app->set_flash("Failed to add testimonial. {$e->getMessage()}");   
-       }
+   
+      if(!empty($cartitems)){
+         foreach($cartitems As $item){
+            if($itemNo == $item["itemNo"]){
+               try{
+                  updatequantity($quantity, $itemNo,$userid);
+               }
+               catch(Exception $e){
+                  $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
+               }
 
+      }}}
+      else{
+         try{
+            addtocart($itemNo, $quantity,$userid);
+         }
+         catch(Exception $e){
+            $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
+         }
    }
-   else{
-      try{
-         addtocart($itemNo, $quantity,$userid);
-      }
-      catch(Exception $e){
-         $app->set_flash("Failed to add testimonial. {$e->getMessage()}");   
-       }
-   }}
-   $app->redirect_to("/catalogue"); 
+   $app->redirect_to("/singleitem"); 
 });
 
 // End post ----------------------------------------
@@ -386,6 +388,15 @@ put("/singleitem/:id;[\d]+",function($app){
 // End put ---------------------------------------
 // Start delete ----------------------------------
 # The Delete call back is left for you to work out
+
+post("/cart", function($app){
+   require MODEL;
+   $id = $app->form("cartNo");
+   removefromcart($id);
+   $app->set_flash("item has been removed from cart");
+   $app->redirect_to("/cart");
+});
+
 delete("/user",function($app){
    //query to delete
    $app->set_flash("User has been deleted");

@@ -108,6 +108,20 @@ function get_testimonials($artno){
       }
 }
 
+function removefromcart($cartNo){
+   try{
+      $db = get_db();
+      $query = "DELETE FROM cartitems WHERE cartNo=?";
+      if($statement = $db-> prepare($query)){
+         $binding = array($cartNo);
+         if(!$statement -> execute($binding)){
+            throw new Exception("Could not execute query.");
+        }
+      }
+   } catch(Exception $e){
+      throw new Exception($e->getMessage());
+   }
+}
 
 function sign_up($fname, $lname, $email, $password, $password_confirm){
    try{
