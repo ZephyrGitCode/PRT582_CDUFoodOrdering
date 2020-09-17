@@ -77,8 +77,7 @@ function get_orders(){
       $query = "SELECT * FROM orders";
       //$query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
       $statement = $db->prepare($query);
-      $binding = array($id);
-      $statement -> execute($binding);
+      $statement -> execute();
       $food = $statement->fetchall(PDO::FETCH_ASSOC);
       return $food;
    }
