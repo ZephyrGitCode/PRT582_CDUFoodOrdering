@@ -306,6 +306,26 @@ post("/singleitem", function($app){
    
    $app->redirect_to("/singleitem"); 
 });
+post("/cart",function($app){
+   require MODEL;
+   $unixtime = strtotime($app->form('pickup_time'));
+   $pickuptime = date('Y-m-d h:i:s',$unixtime);
+   $userid = get_user_id();
+   $cartitems = get_cartitems($userid);
+   $orders = get_orders($userid);
+   $orderNo = 1;
+   foreach($orders as $order){
+      $orderNo = $orderNo+1;
+   }
+   checkout($orderNo, $userid, $pickuptime);
+   foreach($cartitems as $item){
+      checkoutitem($orderNo, $item['itemNo'], $item['quantity']);
+      removefromcart($item['cartNo']);
+
+   }
+   $app->redirect_to("/");
+});
+
 
 // End post ----------------------------------------
 // Start put ---------------------------------------
@@ -401,7 +421,7 @@ put("/singleitem/:id;[\d]+",function($app){
 // Start delete ----------------------------------
 # The Delete call back is left for you to work out
 
-post("/cart", function($app){
+delete("/cart", function($app){
    require MODEL;
    $id = $app->form("cartNo");
    removefromcart($id);

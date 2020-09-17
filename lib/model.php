@@ -70,6 +70,25 @@ function get_cartitems($id){
       }
 }
 
+function get_orders(){
+   $food = null;
+   try{
+      $db = get_db();
+      $query = "SELECT * FROM orders";
+      //$query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
+      $statement = $db->prepare($query);
+      $binding = array($id);
+      $statement -> execute($binding);
+      $food = $statement->fetchall(PDO::FETCH_ASSOC);
+      return $food;
+   }
+   catch(PDOException $e){
+      throw new Exception($e->getMessage());
+      return "";
+      }
+}
+
+
 function get_products($id){
    $food = null;
    try{
@@ -265,6 +284,44 @@ function update_details($id,$title,$fname,$lname,$email,$phone,$city,$state,$cou
        throw new Exception($e->getMessage());
    }
 
+}
+
+function checkout($orderNo, $userNo, $pickuptime){
+   try{
+      $db = get_db();
+      $query = "INSERT INTO orders(orderNo, userNo, pickuptime) VALUES (?,?,?)";
+      if($statement = $db->prepare($query)){
+         $binding = array($orderNo, $userNo,$pickuptime);
+         if(!$statement -> execute($binding)){
+            throw new Exception("Could not execute query.");
+         }
+      }
+      else{
+      throw new Exception("Could not prepare statement.");
+      }
+   }
+   catch(Exception $e){
+      throw new Exception($e->getMessage());
+  }
+}
+
+function checkoutitem($orderNo, $itemNo, $quantity){
+   try{
+      $db = get_db();
+      $query = "INSERT INTO orderitems(orderNo, itemNo, quantity) VALUES (?,?,?)";
+      if($statement = $db->prepare($query)){
+         $binding = array($orderNo, $itemNo, $quantity);
+         if(!$statement -> execute($binding)){
+            throw new Exception("Could not execute query.");
+         }
+      }
+      else{
+      throw new Exception("Could not prepare statement.");
+      }
+   }
+   catch(Exception $e){
+      throw new Exception($e->getMessage());
+  }
 }
 
 function addtocart($itemNo, $quantity,$userid){
