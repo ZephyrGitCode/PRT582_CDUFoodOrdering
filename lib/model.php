@@ -169,8 +169,9 @@ function validate_password($password){
    $uppercase = preg_match('@[A-Z]@', $password);
    $lowercase = preg_match('@[a-z]@', $password);
    $number    = preg_match('@[0-9]@', $password);
+   $symbol    = preg_match('@[!-*]@', $password);
 
-   if($uppercase && $lowercase && $number && strlen($password) >= 8) {
+   if($uppercase && $lowercase && $number && $symbol && strlen($password) >= 8) {
       return true;
    }else{
       return false;

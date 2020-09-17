@@ -251,8 +251,6 @@ post("/singleitem/:id[\d]+",function($app){
    $app->redirect_to("/art/".$artno);        
 });
 
- 
-
 
 post("/singleitem", function($app){
    require MODEL;
