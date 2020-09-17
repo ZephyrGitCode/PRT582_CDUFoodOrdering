@@ -311,7 +311,7 @@ post("/cart",function($app){
    $pickuptime = $app->form('pickup_time');
    $userid = get_user_id();
    $cartitems = get_cartitems($userid);
-   $orders = get_orders($userid);
+   $orders = get_orders();
    $orderNo = 1;
    foreach($orders as $order){
       $orderNo = $orderNo+1;
