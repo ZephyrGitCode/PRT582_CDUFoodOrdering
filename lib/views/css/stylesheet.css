@@ -274,6 +274,18 @@ textarea{
   float:left;
 }
 
+.pickup_time{
+  display:inline-flex;
+  
+}
+.pickup_time label{
+  padding:6.5px;
+}
+
+.shoppingcart td ,th{
+  padding:10px;
+  text-align: center;
+}
 .showcart{
   padding: 10px;
   display: none;

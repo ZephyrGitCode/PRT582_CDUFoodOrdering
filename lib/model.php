@@ -70,6 +70,25 @@ function get_cartitems($id){
       }
 }
 
+function get_orders(){
+   $food = null;
+   try{
+      $db = get_db();
+      $query = "SELECT * FROM orders";
+      //$query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
+      $statement = $db->prepare($query);
+      $binding = array($id);
+      $statement -> execute($binding);
+      $food = $statement->fetchall(PDO::FETCH_ASSOC);
+      return $food;
+   }
+   catch(PDOException $e){
+      throw new Exception($e->getMessage());
+      return "";
+      }
+}
+
+
 function get_products($id){
    $food = null;
    try{
@@ -111,6 +130,8 @@ function sign_up($fname, $lname, $email, $password, $password_confirm){
       throw new Exception($e->getMessage());
    }
 }
+
+
 
 function sign_in($useremail,$password){
    try{
@@ -254,24 +275,43 @@ function update_details($id,$title,$fname,$lname,$email,$phone,$city,$state,$cou
 
 }
 
-function get_testimonials($artno){
-   $testimonials = null;
+
+function checkout($orderNo, $userNo, $pickuptime){
    try{
       $db = get_db();
-      $query = "SELECT * FROM testimonial WHERE artno=?";
+      $query = "INSERT INTO orders(orderNo, userNo, pickuptime) VALUES (?,?,?)";
       if($statement = $db->prepare($query)){
-         $binding = array($artno);
+         $binding = array($orderNo, $userNo,$pickuptime);
          if(!$statement -> execute($binding)){
-             throw new Exception("Could not execute query.");
+            throw new Exception("Could not execute query.");
          }
       }
-      $testimonials = $statement->fetchall(PDO::FETCH_ASSOC);
-      return $testimonials;
+      else{
+      throw new Exception("Could not prepare statement.");
+      }
    }
-   catch(PDOException $e){
+   catch(Exception $e){
       throw new Exception($e->getMessage());
-      return "";
+  }
+}
+
+function checkoutitem($orderNo, $itemNo, $quantity){
+   try{
+      $db = get_db();
+      $query = "INSERT INTO orderitems(orderNo, itemNo, quantity) VALUES (?,?,?)";
+      if($statement = $db->prepare($query)){
+         $binding = array($orderNo, $itemNo, $quantity);
+         if(!$statement -> execute($binding)){
+            throw new Exception("Could not execute query.");
+         }
+      }
+      else{
+      throw new Exception("Could not prepare statement.");
+      }
    }
+   catch(Exception $e){
+      throw new Exception($e->getMessage());
+  }
 }
 
 function addtocart($itemNo, $quantity,$userid){
@@ -310,6 +350,21 @@ function updatequantity($quantity, $itemNo,$userid){
    catch(Exception $e){
       throw new Exception($e->getMessage());
   }
+}
+
+function removefromcart($cartNo){
+   try{
+      $db = get_db();
+      $query = "DELETE FROM cartitems WHERE cartNo=?";
+      if($statement = $db-> prepare($query)){
+         $binding = array($cartNo);
+         if(!$statement -> execute($binding)){
+            throw new Exception("Could not execute query.");
+        }
+      }
+   } catch(Exception $e){
+      throw new Exception($e->getMessage());
+   }
 }
 
 function add_testimonial($id,$artno,$test){

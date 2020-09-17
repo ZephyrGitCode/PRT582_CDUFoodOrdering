@@ -117,11 +117,23 @@ get("/singleitem/:id;[\d]+",function($app){
 
 get("/cart",function($app){
    require MODEL;
-   $userid = get_user_id();
-   $app->set_message("cartitems", get_cartitems($userid));
-   $app->set_message("id", $userid);
-   //$app->set_message("testimonials", get_testimonials($id));
-   $app->render(LAYOUT,"cart");
+   try{
+      if(is_authenticated()){
+         try{
+         $userid = get_user_id();
+         $app->set_message("cartitems", get_cartitems($userid));
+         $app->set_message("id", $userid);
+         //$app->set_message("testimonials", get_testimonials($id));
+         $app->render(LAYOUT,"cart");
+         }catch(Exception $e){
+            // Failed to load DB
+         }
+      }
+   }  catch(Exception $e){
+      $app->set_message("message",$e->getMessage($app));
+  }
+ $app->set_message("note", "You must be logged in to access the shopping cart");
+ $app->render(LAYOUT,"/signin");
 });
 
 get("/change/:id;[\d]+",function($app){
@@ -228,7 +240,7 @@ post("/signin",function($app){
   $app->redirect_to("/");
 });
 
-post("/singleitem/:id[\d]+",function($app){
+/*post("/singleitem/:id[\d]+",function($app){
    require MODEL;
    $artno = $app->route_var("id");
    $id = get_user_id();
@@ -249,7 +261,7 @@ post("/singleitem/:id[\d]+",function($app){
    }
    $app->set_flash("Failed");  
    $app->redirect_to("/art/".$artno);        
-});
+});*/
 
 
 post("/singleitem", function($app){
@@ -258,26 +270,60 @@ post("/singleitem", function($app){
    $itemNo = $app->form('itemNo');
    $userid = get_user_id();
    $cartitems = get_cartitems($userid);
-   foreach($cartitems As $item){
-   if($itemNo == $item["itemNo"]){
-      try{
-         updatequantity($quantity, $itemNo,$userid);
-      }
-      catch(Exception $e){
-         $app->set_flash("Failed to add testimonial. {$e->getMessage()}");   
-       }
 
+   foreach($cartitems as $cartitem){
+      $item[]=$cartitem["itemNo"];
    }
-   else{
+   if(empty($cartitems)){
       try{
          addtocart($itemNo, $quantity,$userid);
       }
       catch(Exception $e){
-         $app->set_flash("Failed to add testimonial. {$e->getMessage()}");   
-       }
-   }}
-   $app->redirect_to("/catalogue"); 
+         $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
+      }
+   }
+   else{
+         if(in_array($itemNo,$item)){
+
+            try{
+               updatequantity($quantity, $itemNo,$userid);
+            }
+            catch(Exception $e){
+               $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
+            }
+         }
+         else{
+            try{
+            addtocart($itemNo, $quantity,$userid);
+            }
+            catch(Exception $e){
+            $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
+            }
+         }
+      }  
+   
+   $app->redirect_to("/singleitem"); 
 });
+post("/cart",function($app){
+   require MODEL;
+   $unixtime = strtotime($app->form('pickup_time'));
+   $pickuptime = date('Y-m-d h:i:s',$unixtime);
+   $userid = get_user_id();
+   $cartitems = get_cartitems($userid);
+   $orders = get_orders($userid);
+   $orderNo = 1;
+   foreach($orders as $order){
+      $orderNo = $orderNo+1;
+   }
+   checkout($orderNo, $userid, $pickuptime);
+   foreach($cartitems as $item){
+      checkoutitem($orderNo, $item['itemNo'], $item['quantity']);
+      removefromcart($item['cartNo']);
+
+   }
+   $app->redirect_to("/");
+});
+
 
 // End post ----------------------------------------
 // Start put ---------------------------------------
@@ -372,6 +418,15 @@ put("/singleitem/:id;[\d]+",function($app){
 // End put ---------------------------------------
 // Start delete ----------------------------------
 # The Delete call back is left for you to work out
+
+delete("/cart", function($app){
+   require MODEL;
+   $id = $app->form("cartNo");
+   removefromcart($id);
+   $app->set_flash("item has been removed from cart");
+   $app->redirect_to("/cart");
+});
+
 delete("/user",function($app){
    //query to delete
    $app->set_flash("User has been deleted");
