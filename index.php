@@ -308,8 +308,7 @@ post("/singleitem", function($app){
 });
 post("/cart",function($app){
    require MODEL;
-   $unixtime = strtotime($app->form('pickup_time'));
-   $pickuptime = date('Y-m-d h:i:s',$unixtime);
+   $pickuptime = $app->form('pickup_time');
    $userid = get_user_id();
    $cartitems = get_cartitems($userid);
    $orders = get_orders($userid);
