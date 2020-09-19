@@ -30,7 +30,7 @@ get("/",function($app){
    require MODEL;
    try{
       //$app->set_message("food",get_products());
-      $app->set_message("user",get_user(1));
+      //$app->set_message("user",get_user(1));
 
    }catch(Exception $e){
       // Failed to load DB
@@ -262,8 +262,6 @@ post("/signin",function($app){
    $app->set_flash("Failed");  
    $app->redirect_to("/art/".$artno);        
 });*/
-
- 
 
 
 post("/singleitem", function($app){
