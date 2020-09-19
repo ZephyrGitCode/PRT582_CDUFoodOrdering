@@ -275,6 +275,22 @@ textarea{
   padding-top: 20px;
 }
 
+.input-group-field{
+  width:100px;
+}
+
+.input-custom{
+  padding-left:20px;
+  padding-right:20px;
+}
+
+
+.plus-minus-input .input-group-button .circle {
+  border-radius: 50%;
+  padding: 0.25em 0.8em;
+}
+
+
 .productinput
 {
   border: 1px solid #ccc;
