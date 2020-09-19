@@ -128,9 +128,11 @@ function sign_up($fname, $lname, $email, $password, $password_confirm){
 function sign_in($useremail,$password){
    try{
       $db = get_db();
+      
       if (validate_user_email($db,$useremail)){
          throw new Exception("Email does not exist");
       }
+      
       if (validate_password($password) === false){
          throw new Exception("Password incorrect. Password must contain at least 8 characters, one Capital letter and one number");
       }
@@ -190,6 +192,182 @@ function validate_password($password){
    }
 }
 
+function set_authenticated_session($email,$password_hash, $userno, $isadmin){
+   session_start();
+   // Make it a bit harder to session hijack
+   session_regenerate_id(true);
+   $_SESSION["userno"] = $userno;
+   $_SESSION["email"] = $email;
+   $_SESSION["isadmin"] = $isadmin;
+   $_SESSION["hash"] = $password_hash;
+   session_write_close();
+}
+
+function generate_password_hash($password,$salt){
+return hash("sha256", $password.$salt, false);
+}
+
+function generate_salt(){
+ $chars = "0123456789ABCDEF";
+ return str_shuffle($chars);
+}
+
+function validate_user_email($db,$email){
+try{
+   $db = get_db();
+   $query = "SELECT hashed_password FROM users WHERE email=?";
+   if($statement = $db->prepare($query)){
+     $binding = array($email);
+     if(!$statement -> execute($binding)){
+        return false;
+     }
+     else{
+         $result = $statement->fetch(PDO::FETCH_ASSOC);
+         if($result['email'] === $email){
+           return true;
+         }else{
+            return false;
+         }
+     }
+   }
+}
+catch(Exception $e){
+   throw new Exception("Authentication not working properly. {$e->getMessage()}");
+}
+}
+
+
+function is_authenticated(){
+ $email = "";
+ $hash="";
+ 
+ session_start();
+ if(!empty($_SESSION["email"]) && !empty($_SESSION["hash"])){
+    $email = $_SESSION["email"];
+    $hash = $_SESSION["hash"];
+ }
+ session_write_close();
+
+ if(!empty($email) && !empty($hash)){
+
+     try{
+        $db = get_db();
+        $query = "SELECT hashed_password FROM users WHERE email=?";
+        if($statement = $db->prepare($query)){
+          $binding = array($email);
+          if(!$statement -> execute($binding)){
+             return false;
+          }
+          else{
+              $result = $statement->fetch(PDO::FETCH_ASSOC);
+              if($result['hashed_password'] === $hash){
+                return true;
+              }
+          }
+        }
+         
+     }
+     catch(Exception $e){
+        throw new Exception("Authentication not working properly. {$e->getMessage()}");
+     }
+ 
+ }
+ return false;
+
+}
+
+function sign_out(){
+ session_start();
+ if( !empty($_SESSION["email"]) && !empty($_SESSION["hash"]) && !empty($_SESSION["userno"]) ){
+    $_SESSION["email"] = "";
+    $_SESSION["hash"] = "";
+    $_SESSION["userno"] == "";
+    $_SESSION = array();
+    session_destroy();                     
+ }
+ session_write_close();
+}
+
+
+function change_password($id, $old_pw, $new_pw, $pw_confirm){
+try{
+   $db = get_db();
+   $query = "SELECT salt, hashed_password FROM users WHERE id=?";
+   if($statement = $db->prepare($query)){
+      $binding = array($id);
+      if(!$statement -> execute($binding)){
+              throw new Exception("Could not execute query.");
+      }
+      else{
+         $result = $statement->fetch(PDO::FETCH_ASSOC);
+         $salt = $result['salt'];
+         $hash = $result['hashed_password'];
+         if(generate_password_hash($old_pw,$salt) != $hash){
+            throw new Exception("Old Password does not match.");
+        }
+        else{
+            if (validate_passwords($new_pw, $pw_confirm)){
+               $salt = generate_salt();
+               $password_hash = generate_password_hash($new_pw,$salt);
+               $query = "UPDATE users SET hashed_password=?, salt=? WHERE id=?";
+               if($statement = $db->prepare($query)){
+                  $binding = array($password_hash, $salt, $id);
+                  if(!$statement -> execute($binding)){
+                        throw new Exception("Could not execute query.");
+                  }else{
+                     sign_out();
+                  }
+               }
+               else{
+               throw new Exception("Could not prepare statement.");
+               }
+            }else{
+               throw new Exception("New password and confirm password did not match.");
+            }
+         }
+      }
+   }
+   else{
+   throw new Exception("Could not prepare statement.");
+   }
+
+ }
+ catch(Exception $e){
+     throw new Exception($e->getMessage());
+ }
+}
+
+function update_details($id,$title,$fname,$lname,$email,$phone,$city,$state,$country,$postcode,$shipping_address){
+   try{
+     $db = get_db();
+     if(validate_user_email($db,$email)){
+         $query = "UPDATE users SET title=?, fname=?, lname=?, email=?, phone=?, city=?, shipping_state=?, shipping_address=?, country=?, postcode=? WHERE id=?";
+         if($statement = $db->prepare($query)){
+            $binding = array($title,$fname,$lname,$email,$phone,$city,$state,$shipping_address,$country,$postcode,$id);
+            if(!$statement -> execute($binding)){
+               throw new Exception("Could not execute query.");
+            }else{
+               session_start();  
+               $_SESSION["email"] = $email;
+               session_write_close();
+            }
+         }
+         else{
+         throw new Exception("Could not prepare statement.");
+         }
+     }
+     else{
+        throw new Exception("Invalid data.");
+     }
+     
+
+   }
+   catch(Exception $e){
+       throw new Exception($e->getMessage());
+   }
+
+}
+
 function get_user_id(){
    $id="";
    session_start();  
@@ -234,38 +412,6 @@ function get_user_name(){
    }
    return $name;	
 }
-
-function update_details($id,$title,$fname,$lname,$email,$phone,$city,$state,$country,$postcode,$shipping_address){
-   try{
-     $db = get_db();
-     if(validate_user_email($db,$email)){
-         $query = "UPDATE users SET title=?, fname=?, lname=?, email=?, phone=?, city=?, shipping_state=?, shipping_address=?, country=?, postcode=? WHERE id=?";
-         if($statement = $db->prepare($query)){
-            $binding = array($title,$fname,$lname,$email,$phone,$city,$state,$shipping_address,$country,$postcode,$id);
-            if(!$statement -> execute($binding)){
-               throw new Exception("Could not execute query.");
-            }else{
-               session_start();  
-               $_SESSION["email"] = $email;
-               session_write_close();
-            }
-         }
-         else{
-         throw new Exception("Could not prepare statement.");
-         }
-     }
-     else{
-        throw new Exception("Invalid data.");
-     }
-     
-
-   }
-   catch(Exception $e){
-       throw new Exception($e->getMessage());
-   }
-
-}
-
 
 function checkout($orderNo, $userNo, $pickuptime){
    try{
@@ -460,150 +606,7 @@ function purchaseitem($id, $purchaseno, $artno, $quantity, $pdate, $total){
    }
 }
 
-function set_authenticated_session($email,$password_hash, $userno, $isadmin){
-      session_start();
-      // Make it a bit harder to session hijack
-      session_regenerate_id(true);
-      $_SESSION["userno"] = $userno;
-      $_SESSION["email"] = $email;
-      $_SESSION["isadmin"] = $isadmin;
-      $_SESSION["hash"] = $password_hash;
-      session_write_close();
-}
 
-function generate_password_hash($password,$salt){
-   return hash("sha256", $password.$salt, false);
-}
-
-function generate_salt(){
-    $chars = "0123456789ABCDEF";
-    return str_shuffle($chars);
-}
-
-function validate_user_email($db,$email){
-   try{
-      $db = get_db();
-      $query = "SELECT hashed_password FROM users WHERE email=?";
-      if($statement = $db->prepare($query)){
-        $binding = array($email);
-        if(!$statement -> execute($binding)){
-           return false;
-        }
-        else{
-            $result = $statement->fetch(PDO::FETCH_ASSOC);
-            if($result['email'] === $email){
-              return true;
-            }else{
-               return false;
-            }
-        }
-      }
-   }
-   catch(Exception $e){
-      throw new Exception("Authentication not working properly. {$e->getMessage()}");
-   }
-}
-
-
-function is_authenticated(){
-    $email = "";
-    $hash="";
-    
-    session_start();
-    if(!empty($_SESSION["email"]) && !empty($_SESSION["hash"])){
-       $email = $_SESSION["email"];
-       $hash = $_SESSION["hash"];
-    }
-    session_write_close();
- 
-    if(!empty($email) && !empty($hash)){
-
-        try{
-           $db = get_db();
-           $query = "SELECT hashed_password FROM users WHERE email=?";
-           if($statement = $db->prepare($query)){
-             $binding = array($email);
-             if(!$statement -> execute($binding)){
-                return false;
-             }
-             else{
-                 $result = $statement->fetch(PDO::FETCH_ASSOC);
-                 if($result['hashed_password'] === $hash){
-                   return true;
-                 }
-             }
-           }
-            
-        }
-        catch(Exception $e){
-           throw new Exception("Authentication not working properly. {$e->getMessage()}");
-        }
-    
-    }
-    return false;
-
-}
-
-function sign_out(){
-    session_start();
-    if( !empty($_SESSION["email"]) && !empty($_SESSION["hash"]) && !empty($_SESSION["userno"]) ){
-       $_SESSION["email"] = "";
-       $_SESSION["hash"] = "";
-       $_SESSION["userno"] == "";
-       $_SESSION = array();
-       session_destroy();                     
-    }
-    session_write_close();
-}
-
-
-function change_password($id, $old_pw, $new_pw, $pw_confirm){
-   try{
-      $db = get_db();
-      $query = "SELECT salt, hashed_password FROM users WHERE id=?";
-      if($statement = $db->prepare($query)){
-         $binding = array($id);
-         if(!$statement -> execute($binding)){
-                 throw new Exception("Could not execute query.");
-         }
-         else{
-            $result = $statement->fetch(PDO::FETCH_ASSOC);
-            $salt = $result['salt'];
-            $hash = $result['hashed_password'];
-            if(generate_password_hash($old_pw,$salt) != $hash){
-               throw new Exception("Old Password does not match.");
-           }
-           else{
-               if (validate_passwords($new_pw, $pw_confirm)){
-                  $salt = generate_salt();
-                  $password_hash = generate_password_hash($new_pw,$salt);
-                  $query = "UPDATE users SET hashed_password=?, salt=? WHERE id=?";
-                  if($statement = $db->prepare($query)){
-                     $binding = array($password_hash, $salt, $id);
-                     if(!$statement -> execute($binding)){
-                           throw new Exception("Could not execute query.");
-                     }else{
-                        sign_out();
-                     }
-                  }
-                  else{
-                  throw new Exception("Could not prepare statement.");
-                  }
-               }else{
-                  throw new Exception("New password and confirm password did not match.");
-               }
-            }
-         }
-      }
-      else{
-      throw new Exception("Could not prepare statement.");
-      }
- 
-    }
-    catch(Exception $e){
-        throw new Exception($e->getMessage());
-    }
-}
 
 function approve($id){
    try{
