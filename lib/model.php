@@ -128,11 +128,9 @@ function sign_up($fname, $lname, $email, $password, $password_confirm){
 function sign_in($useremail,$password){
    try{
       $db = get_db();
-      
       if (validate_user_email($db,$useremail)){
          throw new Exception("Email does not exist");
       }
-      
       if (validate_password($password) === false){
          throw new Exception("Password incorrect. Password must contain at least 8 characters, one Capital letter and one number");
       }
@@ -147,12 +145,10 @@ function sign_in($useremail,$password){
             $salt = $result['salt'];
             $isadmin = $result['isadmin'];
             session_start();
-            $_SESSION['result'] = $result;
             $_SESSION['salt'] = $salt;
             $_SESSION['hash'] = $result['hashed_password'];
             session_write_close();
             $hashed_password = $result['hashed_password'];
-            
             if(generate_password_hash($password,$salt) != $hashed_password){
                throw new Exception("Password incorrect. Password must contain at least 8 characters, one Capital letter and one number.");
             }
