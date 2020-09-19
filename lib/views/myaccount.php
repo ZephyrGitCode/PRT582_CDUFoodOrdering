@@ -28,6 +28,7 @@
             <div class="inputBox">
                 <input type="text" name="email" id="email" value="<?php echo $user['email']?>">
                 <span><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                <p id="emailtext"></p>
             </div>
 
             <p class="acctext">First Name:</p>
@@ -60,13 +61,16 @@
 
     <script>
         var email = document.getElementById('email');
+        var etext = document.getElementById('emailtext');
         var regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
         email.addEventListener('input', function() {
             if (email.value.match(regex))
             {
-                console.log("Valid email")
+                etext.style.color = "Green"
+                etext.innerHTML = "Email is Valid"
             }else{
-                console.log("Invalid email")
+                etext.style.color = "Red"
+                etext.innerHTML = "Invalid Email"
             }
         });
     </script>
