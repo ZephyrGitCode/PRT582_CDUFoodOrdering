@@ -10,7 +10,6 @@ function get_db(){
     catch(PDOException $e){
         throw new Exception("Something wrong with the database connection!".$e->getMessage());
     }
-    echo "connection made";
     return $db;
 }
 
@@ -39,7 +38,6 @@ function get_item($id){
    try{
       $db = get_db();
       $query = "SELECT * from items WHERE itemNo = ?";
-      //$query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
       $statement = $db->prepare($query);
       $binding = array($id);
       $statement -> execute($binding);
@@ -57,7 +55,6 @@ function get_cartitems($id){
    try{
       $db = get_db();
       $query = "SELECT * FROM cartitems,items WHERE cartitems.userId = ? AND cartitems.itemNo = items.itemNo";
-      //$query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
       $statement = $db->prepare($query);
       $binding = array($id);
       $statement -> execute($binding);
@@ -75,7 +72,6 @@ function get_orders(){
    try{
       $db = get_db();
       $query = "SELECT * FROM orders";
-      //$query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
       $statement = $db->prepare($query);
       $statement -> execute();
       $food = $statement->fetchall(PDO::FETCH_ASSOC);
@@ -87,13 +83,11 @@ function get_orders(){
       }
 }
 
-
 function get_products($id){
    $food = null;
    try{
       $db = get_db();
       $query = "SELECT * from items WHERE vendorNo = ?";
-      //$query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
       $statement = $db->prepare($query);
       $binding = array($id);
       $statement -> execute($binding);
@@ -103,14 +97,15 @@ function get_products($id){
    catch(PDOException $e){
       throw new Exception($e->getMessage());
       return "";
-      }
+   }
 }
 
 function sign_up($fname, $lname, $email, $password, $password_confirm){
    try{
       $db = get_db();
-      if (validate_passwords($password,$password_confirm) === false){
-         throw new Exception("Password incorrect. Password must contain at least 8 characters, one Capital letter and one number");
+      if (validate_passwords($password, $password_confirm)){
+         throw new Exception("Error: Passwords must match and Password 
+            must contain at least 8 characters, one Capital letter and one number.");
       }
       $salt = generate_salt();
       $password_hash = generate_password_hash($password,$salt);
@@ -129,8 +124,6 @@ function sign_up($fname, $lname, $email, $password, $password_confirm){
       throw new Exception($e->getMessage());
    }
 }
-
-
 
 function sign_in($useremail,$password){
    try{
@@ -189,9 +182,8 @@ function validate_password($password){
    $uppercase = preg_match('@[A-Z]@', $password);
    $lowercase = preg_match('@[a-z]@', $password);
    $number    = preg_match('@[0-9]@', $password);
-   $symbol    = preg_match('@[!-*]@', $password);
 
-   if($uppercase && $lowercase && $number && $symbol && strlen($password) >= 8) {
+   if($uppercase && $lowercase && $number && strlen($password) >= 8) {
       return true;
    }else{
       return false;

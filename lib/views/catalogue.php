@@ -5,9 +5,13 @@
   <li class="active"><a href="#">The Lunch Room</a></li>
 </ol>
 
+<h2>Menu</h2>
+
+<div class="foodmenu">
+  
 <?php
 if(!empty($items)){
-  echo "<h2>Menu</h2>";
+  
   
   foreach($items As $item){
     $itemno = htmlspecialchars($item['itemNo'],ENT_QUOTES, 'UTF-8');
@@ -17,7 +21,7 @@ if(!empty($items)){
     $price = htmlspecialchars($item['price'],ENT_QUOTES, 'UTF-8');
     $itemimage = htmlspecialchars($item['itemImage'],ENT_QUOTES, 'UTF-8');
     ?>
-    <div class="itemlist">
+    <div class="menuitem">
     <a href="<?php echo "/"."singleitem/"."{$itemno}"?>">
           <div class="fimage">
             <img href="" src="<?php echo "{$itemimage}"?>" class="itemimage"/>
@@ -40,3 +44,4 @@ if(!empty($items)){
     echo "<h2>Database Failed to load.</h2>";
 }
 ?>
+</div>

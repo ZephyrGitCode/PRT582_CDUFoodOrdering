@@ -4,10 +4,7 @@
 
 <body class="accountBody">
     <div class="userBox">
-        <h3 class="accounth3">My Account</h3>
-        <label class="userPic" for="userImage">
-        <input type="file" name="userImage" id="userImage" style="display:none;">
-        <img class="userPic" src="https://i.imgur.com/cmDNHJ7.png" id="avatar" style="cursor:pointer"/>
+        <h3 class="accounth3">My Account - Update Details</h3>
         </label>
         <?php
         $user = $user[0];
@@ -16,7 +13,6 @@
         ?>
         <form action='/myaccount/<?php if(!empty($user['id']))echo $user['id']?>' method='POST'>
             <input type='hidden' name='_method' value='put' />
-            <h4>User Details</h4>
             
             <p class="acctext">Title:</p>
             <select name="title" class="titledrop">
@@ -52,37 +48,6 @@
                 <span><i class="fa fa-user" aria-hidden="true"></i></span>
             </div>
 
-            <h4>Shipping Details</h4>
-            <p class="acctext">Country:</p>
-            <div class="inputBox">
-                <input type="text" id="country" name="country" value="<?php echo $user['country']?>">
-                <span><i class="fa fa-user" aria-hidden="true"></i></span>
-            </div>
-
-            <p class="acctext">Address:</p>
-            <div class="inputBox">
-                <input type="text" id="address" name="address" value="<?php echo $user['city']?>">
-                <span><i class="fa fa-user" aria-hidden="true"></i></span>
-            </div>
-            
-            <p class="acctext">Shipping State:</p>
-            <div class="inputBox">
-                <input type="text" id="state" name="state" value="<?php echo $user['shipping_state']?>">
-                <span><i class="fa fa-user" aria-hidden="true"></i></span>
-            </div>
-
-            <p class="acctext">City:</p>
-            <div class="inputBox">
-                <input type="text" id="city" name="city" value="<?php echo $user['city']?>">
-                <span><i class="fa fa-user" aria-hidden="true"></i></span>
-            </div>
-
-            <p class="acctext">Postcode:</p>
-            <div class="inputBox">
-                <input type="text" id="postcode" name="postcode" value="<?php echo $user['postcode']?>">
-                <span><i class="fa fa-user" aria-hidden="true"></i></span>
-            </div>
-
             <input type="submit" name="" value="Save">
         </form>
         <?php
@@ -92,4 +57,17 @@
         ?>
 
     </div>
+
+    <script>
+        var email = document.getElementById('email');
+        var regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+        email.addEventListener('input', function() {
+            if (email.value.match(regex))
+            {
+                console.log("Valid email")
+            }else{
+                console.log("Invalid email")
+            }
+        });
+    </script>
 </body>

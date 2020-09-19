@@ -67,6 +67,19 @@ a{
 a:hover{
   color: #C8C4BC;
 }
+
+.signup-body{
+  max-width: 411px;
+}
+
+meter {
+  /* Reset the default appearance */
+  margin: 0 auto 1em;
+  width: 100%;
+  height: 0.7em;
+}
+
+
 /* Sign up and Login Page End*/
 
 /* Home start */
@@ -75,14 +88,20 @@ a:hover{
   overflow-y: scroll;
 }
 
-.itemlist{
+.foodmenu{
   display: flex;
+  flex-flow: wrap;
+}
+
+.menuitem{
+  width: 40%;
+  height: 40%;
 }
 
 .itemimage{
-  width: 60px;
-  height: 60px;
-  border-radius: 50px;
+  width: 80px;
+  height: 80px;
+  border-radius: 30px;
 }
 
 .fimage{
