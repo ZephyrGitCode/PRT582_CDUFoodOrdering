@@ -55,7 +55,6 @@ if(!empty($items)){
 }
 /*
 ?>
-
 <div id="showcart" class="showcart">
   <a href="javascript:void(0)" class="closecart" onclick="closecart()">×</a>
   <br/>
@@ -63,17 +62,14 @@ if(!empty($items)){
   <h4>Artwork added to cart</h4>
   <p id="artadd"></p>
 </div>
-
 <div class="testimonials">
   <form action="/art/<?php echo $id ?>" method='POST'>
     <input type='hidden' name='_method' value='post' />
     <h4>Testimonials</h4>
     <p class="acctext">Share a message about this artwork</p>
     <textarea id="test" name="test"></textarea>
-
     <input type="submit" name="" value="Send Message">
   </form>
-
   <div class="test-list">
     <?php
     if(!empty($testimonials)){
@@ -88,7 +84,6 @@ if(!empty($items)){
       <p style="font-weight: 500; margin: .2rem 1rem;">User id: <?php echo $userno ?></p>
       <p style="margin: .2rem 1rem";><?php echo $testtext ?></p>
       <?php
-
       if ($usertype == 'admin' && $approved == 'false'){
         //echo "admin";
         ?>
@@ -110,13 +105,11 @@ if(!empty($items)){
     }
     ?>
     
-
   </div>
 </div>
 <script>
    //Convert this to session storage stuff - Maybe Alvin
   document.querySelector(".cart").addEventListener('click', addtocart);
-
   function addtocart(evt){
     var quant = document.getElementById("quantity").value;
     if ("art"+<?php //echo $id ?> in localStorage){
@@ -136,7 +129,6 @@ if(!empty($items)){
   function closecart() {
     document.getElementById("showcart").style.display = "none";
   }
-
 </script>
 */
 ?>
