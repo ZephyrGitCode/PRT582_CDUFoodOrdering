@@ -324,19 +324,12 @@ put("/myaccount/:id[\d]+",function($app){
    try{
        if(is_authenticated()){
          $id = get_user_id();
-         $title = $app->form('title');
          $fname = $app->form('fname');
          $lname = $app->form('lname');
          $email = $app->form('email');
          $phone = $app->form('phone');
-         $city = $app->form('city');
-         $state = $app->form('state');
-         $country = $app->form('country');
-         $postcode = $app->form('postcode');
-         $shipping_address = $app->form('address');
-  
          try{
-            update_details($id,$title,$fname,$lname,$email,$phone,$city,$state,$country,$postcode,$shipping_address);
+            update_details($id,$fname,$lname,$email,$phone);
             $app->set_flash("Details Successfully updated");
             $app->redirect_to("/");   
          }

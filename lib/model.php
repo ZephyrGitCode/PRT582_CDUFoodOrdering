@@ -127,7 +127,7 @@ function sign_up($fname, $lname, $email, $password, $password_confirm){
 function sign_in($useremail,$password){
    try{
       $db = get_db();
-      if (validate_user_email($db,$useremail)){
+      if (validate_user_email($useremail)){
          throw new Exception("Email does not exist");
       }
       if (validate_password($password) === false){
@@ -207,7 +207,7 @@ function generate_salt(){
  return str_shuffle($chars);
 }
 
-function validate_user_email($db,$email){
+function validate_user_email($email){
 try{
    $db = get_db();
    $query = "SELECT hashed_password FROM users WHERE email=?";
@@ -235,16 +235,13 @@ catch(Exception $e){
 function is_authenticated(){
  $email = "";
  $hash="";
- 
  session_start();
  if(!empty($_SESSION["email"]) && !empty($_SESSION["hash"])){
     $email = $_SESSION["email"];
     $hash = $_SESSION["hash"];
  }
  session_write_close();
-
  if(!empty($email) && !empty($hash)){
-
      try{
         $db = get_db();
         $query = "SELECT hashed_password FROM users WHERE email=?";
@@ -260,7 +257,6 @@ function is_authenticated(){
               }
           }
         }
-         
      }
      catch(Exception $e){
         throw new Exception("Authentication not working properly. {$e->getMessage()}");
@@ -282,7 +278,6 @@ function sign_out(){
  }
  session_write_close();
 }
-
 
 function change_password($id, $old_pw, $new_pw, $pw_confirm){
 try{
@@ -332,13 +327,13 @@ try{
  }
 }
 
-function update_details($id,$title,$fname,$lname,$email,$phone,$city,$state,$country,$postcode,$shipping_address){
+function update_details($id,$fname,$lname,$email,$phone){
    try{
      $db = get_db();
-     if(validate_user_email($db,$email)){
-         $query = "UPDATE users SET title=?, fname=?, lname=?, email=?, phone=?, city=?, shipping_state=?, shipping_address=?, country=?, postcode=? WHERE id=?";
+     if(!validate_user_email($email)){
+         $query = "UPDATE users SET fname=?, lname=?, email=?, phone=? WHERE id=?";
          if($statement = $db->prepare($query)){
-            $binding = array($title,$fname,$lname,$email,$phone,$city,$state,$shipping_address,$country,$postcode,$id);
+            $binding = array($fname,$lname,$email,$phone,$id);
             if(!$statement -> execute($binding)){
                throw new Exception("Could not execute query.");
             }else{
@@ -354,13 +349,10 @@ function update_details($id,$title,$fname,$lname,$email,$phone,$city,$state,$cou
      else{
         throw new Exception("Invalid data.");
      }
-     
-
    }
    catch(Exception $e){
        throw new Exception($e->getMessage());
    }
-
 }
 
 function get_user_id(){

@@ -13,16 +13,6 @@
         ?>
         <form action='/myaccount/<?php if(!empty($user['id']))echo $user['id']?>' method='POST'>
             <input type='hidden' name='_method' value='put' />
-            
-            <p class="acctext">Title:</p>
-            <select name="title" class="titledrop">
-                <option value="Mr."> Mr.</option>
-                <option value="Mrs."> Mrs.</option>
-                <option value="Miss"> Miss</option>
-                <option value="Ms."> Ms.</option>
-                <option value="Dr."> Dr.</option>
-            </select>
-            <br/>
 
             <p class="acctext">Email:</p>
             <div class="inputBox">
