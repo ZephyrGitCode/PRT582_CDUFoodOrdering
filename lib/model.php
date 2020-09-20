@@ -103,9 +103,8 @@ function get_products($id){
 function sign_up($fname, $lname, $email, $password, $password_confirm){
    try{
       $db = get_db();
-      if (validate_passwords($password, $password_confirm)){
-         throw new Exception("Error: Passwords must match and Password 
-            must contain at least 8 characters, one Capital letter and one number.");
+      if (validate_passwords($password, $password_confirm) != true){
+         throw new Exception("Error: Passwords must match and Password must contain at least 8 characters, one Capital letter and one number.");
       }
       $salt = generate_salt();
       $password_hash = generate_password_hash($password,$salt);
