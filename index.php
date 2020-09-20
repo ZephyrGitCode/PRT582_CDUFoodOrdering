@@ -28,13 +28,6 @@ get("/",function($app){
    $app->set_message("title","CDU Food Ordering");
    $app->set_message("message","Welcome to CDU Food ordering. Please select a vendor.");
    require MODEL;
-   try{
-      //$app->set_message("food",get_products());
-      //$app->set_message("user",get_user(1));
-
-   }catch(Exception $e){
-      // Failed to load DB
-   }
    $app->render(LAYOUT,"home");
 });
 
@@ -46,7 +39,7 @@ get("/signup",function($app){
    }
    catch(Exception $e){
       $app->set_flash("Failed to signup"); 
-      $app->redirect_to("/"); 
+      $app->redirect_to("/");
    }   
    if($is_authenticated){
        $app->set_message("message","You are already signed in.");
@@ -120,11 +113,11 @@ get("/cart",function($app){
    try{
       if(is_authenticated()){
          try{
-         $userid = get_user_id();
-         $app->set_message("cartitems", get_cartitems($userid));
-         $app->set_message("id", $userid);
-         //$app->set_message("testimonials", get_testimonials($id));
-         $app->render(LAYOUT,"cart");
+            $userid = get_user_id();
+            $app->set_message("cartitems", get_cartitems($userid));
+            $app->set_message("id", $userid);
+            //$app->set_message("testimonials", get_testimonials($id));
+            $app->render(LAYOUT,"cart");
          }catch(Exception $e){
             // Failed to load DB
          }
@@ -132,8 +125,8 @@ get("/cart",function($app){
    }  catch(Exception $e){
       $app->set_message("message",$e->getMessage($app));
   }
- $app->set_message("note", "You must be logged in to access the shopping cart");
- $app->render(LAYOUT,"/signin");
+  $app->set_message("note", "You must be logged in to access the shopping cart");
+  $app->render(LAYOUT,"/signin");
 });
 
 get("/change/:id;[\d]+",function($app){
@@ -149,8 +142,7 @@ get("/change/:id;[\d]+",function($app){
          }catch(Exception $e){
             // Failed to load DB
          }
-         
-       }   
+       }
     }
     catch(Exception $e){
         $app->set_message("message",$e->getMessage($app));
@@ -232,15 +224,15 @@ post("/signin",function($app){
     }
   }
   else{
-     //$app->set_flash("Could not sign you in. Try again. {$e->getMessage()}");
-     //$app->set_flash("Something wrong with name or password. Try again.");
+     $app->set_flash("Something wrong with your email or password. Please try again.");
      $app->redirect_to("/signin");
   }
-  $app->set_message("note","Lovely, you are now signed in!");
+  $app->set_flash("Lovely, you are now signed in!");
   $app->redirect_to("/");
 });
 
-/*post("/singleitem/:id[\d]+",function($app){
+/*
+post("/singleitem/:id[\d]+",function($app){
    require MODEL;
    $artno = $app->route_var("id");
    $id = get_user_id();
@@ -332,19 +324,12 @@ put("/myaccount/:id[\d]+",function($app){
    try{
        if(is_authenticated()){
          $id = get_user_id();
-         $title = $app->form('title');
          $fname = $app->form('fname');
          $lname = $app->form('lname');
          $email = $app->form('email');
          $phone = $app->form('phone');
-         $city = $app->form('city');
-         $state = $app->form('state');
-         $country = $app->form('country');
-         $postcode = $app->form('postcode');
-         $shipping_address = $app->form('address');
-  
          try{
-            update_details($id,$title,$fname,$lname,$email,$phone,$city,$state,$country,$postcode,$shipping_address);
+            update_details($id,$fname,$lname,$email,$phone);
             $app->set_flash("Details Successfully updated");
             $app->redirect_to("/");   
          }
