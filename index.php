@@ -294,19 +294,20 @@ post("/singleitem", function($app){
          }
       }  
    
-   $app->redirect_to("/singleitem"); 
+   $app->redirect_to("/catalogue"); 
 });
 post("/cart",function($app){
    require MODEL;
    $pickuptime = $app->form('pickup_time');
    $userid = get_user_id();
    $cartitems = get_cartitems($userid);
+   $date =  date("Y-m-d h:i:s");
    $orders = get_orders();
    $orderNo = 1;
    foreach($orders as $order){
       $orderNo = $orderNo+1;
    }
-   checkout($orderNo, $userid, $pickuptime);
+   checkout($orderNo, $userid, $pickuptime,$date);
    foreach($cartitems as $item){
       checkoutitem($orderNo, $item['itemNo'], $item['quantity']);
       removefromcart($item['cartNo']);

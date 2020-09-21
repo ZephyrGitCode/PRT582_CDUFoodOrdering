@@ -321,6 +321,11 @@ textarea{
   padding:10px;
   text-align: center;
 }
+
+.shoppingcart{
+  margin-bottom:50px;
+}
+
 .showcart{
   padding: 10px;
   display: none;
