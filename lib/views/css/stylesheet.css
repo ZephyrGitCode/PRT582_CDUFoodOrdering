@@ -555,7 +555,7 @@ textarea{
 }
 
 body{
-  background: #fdc75b;
+  background: #1F1F1F;
   color: #555555;
 
 }
@@ -563,7 +563,7 @@ body{
 .rice{
   position: absolute;
   top: 35%;
-  left: 50%;
+  left: 40%;
   transform: transform (-50%,-50%);
 
 }
