@@ -131,6 +131,13 @@ function sign_in($useremail,$password){
          throw new Exception("Email does not exist");
       }
       if (validate_password($password) === false){
+         session_start();
+         $_SESSION['logincount'] += 1;
+
+         if ($_SESSION['logincount'] > 5){
+            throw new Exception("Too many failed login attempts, please try again later.");
+         }
+         session_write_close();
          throw new Exception("Password incorrect. Password must contain at least 8 characters, one Capital letter and one number");
       }
       $query = "SELECT id, email, salt, isadmin, hashed_password FROM users WHERE email=?";

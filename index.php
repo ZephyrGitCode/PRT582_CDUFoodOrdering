@@ -224,7 +224,7 @@ post("/signin",function($app){
     }
   }
   else{
-     $app->set_flash("Something wrong with your email or password. Please try again.");
+     $app->set_flash("Invalid email or password, please enter all fields and try again.");
      $app->redirect_to("/signin");
   }
   $app->set_flash("Lovely, you are now signed in!");

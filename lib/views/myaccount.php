@@ -35,7 +35,7 @@
 
             <p class="acctext">Phone:</p>
             <div class="inputBox">
-                <input type="text" id="phone" name="phone" value="<?php echo $user['phone']?>">
+                <input type="text" id="phone" name="phone" value="<?php echo $user['phone']?>" pattern="^[0-9]*$" onkeyup="trigger()">
                 <span><i class="fa fa-user" aria-hidden="true"></i></span>
             </div>
 
@@ -64,4 +64,5 @@
             }
         });
     </script>
+    
 </body>
