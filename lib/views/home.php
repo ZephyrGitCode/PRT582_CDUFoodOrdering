@@ -1,4 +1,4 @@
-<div class="VendorSelect">
+<div class="vendorselect">
 
   
   <a href="catalogue/1">

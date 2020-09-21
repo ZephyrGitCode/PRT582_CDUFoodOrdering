@@ -330,7 +330,7 @@ try{
 function update_details($id,$fname,$lname,$email,$phone){
    try{
      $db = get_db();
-     if(!validate_user_email($email)){
+     if(validate_user_email($email) !== true ){
          $query = "UPDATE users SET fname=?, lname=?, email=?, phone=? WHERE id=?";
          if($statement = $db->prepare($query)){
             $binding = array($fname,$lname,$email,$phone,$id);
@@ -347,7 +347,7 @@ function update_details($id,$fname,$lname,$email,$phone){
          }
      }
      else{
-        throw new Exception("Invalid data.");
+        throw new Exception("Please specify a unique email.");
      }
    }
    catch(Exception $e){
