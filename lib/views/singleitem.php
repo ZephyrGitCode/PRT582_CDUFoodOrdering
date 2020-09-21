@@ -59,7 +59,7 @@ if(!empty($items)){
     });
 });
     </script>
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
       <div class="productcontainer">
         <img class="productimage" src="<?php echo "{$image}" ?>" class="itemimage"/>
         <div class="producttext">
@@ -88,7 +88,6 @@ if(!empty($items)){
               </div>
             </div>
    
-
             <?php 
             if (is_authenticated()){
             ?>
@@ -97,7 +96,7 @@ if(!empty($items)){
           <?php
           }else{
           ?>
-          <a href='/signin'><button type="button" class="btn btn-default cart" >Please sign in to add to cart</button></a>
+          <a href='/signin'><button type="button" class="btn btn-default cart">Please sign in to add to cart</button></a>
           <?php
           }
           ?>
@@ -108,7 +107,7 @@ if(!empty($items)){
     }
   }
   else{
-    echo "<h2>Artwork failed to load</h2>";
+    echo "<h2>Food item failed to load</h2>";
 }
 /*
 ?>
