@@ -89,9 +89,10 @@ if(!empty($items)){
             </div>
    
             <?php 
+            
             if (is_authenticated()){
             ?>
-            <input type="submit" class="btn btn-default cart" name="Add to Cart">
+            <input type="submit" class="btn btn-default cart" value="Add to Cart" name="Add to Cart">
           </form>
           <?php
           }else{

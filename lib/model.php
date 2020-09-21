@@ -400,12 +400,12 @@ function get_user_name(){
    return $name;	
 }
 
-function checkout($orderNo, $userNo, $pickuptime){
+function checkout($orderNo, $userNo, $pickuptime, $date){
    try{
       $db = get_db();
-      $query = "INSERT INTO orders(orderNo, userNo, pickuptime) VALUES (?,?,?)";
+      $query = "INSERT INTO orders(orderNo, userNo, pickuptime, orderdate) VALUES (?,?,?,?)";
       if($statement = $db->prepare($query)){
-         $binding = array($orderNo, $userNo,$pickuptime);
+         $binding = array($orderNo, $userNo,$pickuptime, $date);
          if(!$statement -> execute($binding)){
             throw new Exception("Could not execute query.");
          }
