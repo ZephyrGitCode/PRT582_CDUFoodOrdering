@@ -120,9 +120,8 @@ meter {
   border-radius: 40px;
 }
 
-.vendorselect{
-  margin: auto;
-  width: 80%;
+@media (min-width: 500px) {
+  .vendorselect{margin: auto;width: 80%;}
 }
 
 .singlelist{
