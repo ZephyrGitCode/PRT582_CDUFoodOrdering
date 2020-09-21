@@ -14,7 +14,7 @@
         
     <table class="shoppingcart">
         <tr>
-        <th style="text-align:center;" colspan ="2">Item</th>
+        <th>Item</th>
         <th>Qty</th>
         <th>Cost</th>
         <th></th>
@@ -37,8 +37,8 @@
         <tr>
         <td><div class="fimage">
         <img href="" src="<?php echo "{$itemimage}"?>" class="itemimage"/>
-        </div></td>
-        <td><?php echo "{$itemname}"?></td>
+        </div>
+        <?php echo "{$itemname}"?></td>
         <td><?php echo "{$quantity}"?></td>
         <td>$<?php echo "{$cost}"?></td>
         <td>
@@ -56,10 +56,11 @@
     <form action="/cart" method="POST">
             <input type='hidden' name='_method' value='post' />
             <div class="pickup_time">
-            <label for="pickup_time">Pickup Time:</label>
+            <label for="pickup_time">Pickup time:</label>
             <input style="width:200px; text-align:center;" type ='time' name='pickup_time'  id='pickup_time'/>
             </div>
            
             <input type="submit" class="btn btn-default cart" name="Checkout" value="Checkout">
     </form>
+    </div>
         
