@@ -292,8 +292,9 @@ post("/singleitem", function($app){
             $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
             }
          }
-      }  
-   // TO DO: Redireect to previous catalogue ID, for now default to 1
+      }
+   $app->set_flash("Item Added to cart");
+   // TO DO, set redirect to correct catalogue number
    $app->redirect_to("/catalogue/1"); 
 });
 post("/cart",function($app){
