@@ -293,8 +293,9 @@ post("/singleitem", function($app){
             }
          }
       }  
+   $app->set_flash("Item Added to cart");
+   $app->redirect_to("/catalogue/1"); 
    
-   $app->redirect_to("/catalogue"); 
 });
 post("/cart",function($app){
    require MODEL;
