@@ -131,6 +131,13 @@ function sign_in($useremail,$password){
          throw new Exception("Email does not exist");
       }
       if (validate_password($password) === false){
+         session_start();
+         $_SESSION['logincount'] += 1;
+
+         if ($_SESSION['logincount'] > 5){
+            throw new Exception("Too many failed login attempts, please try again later.");
+         }
+         session_write_close();
          throw new Exception("Password incorrect. Password must contain at least 8 characters, one Capital letter and one number");
       }
       $query = "SELECT id, email, salt, isadmin, hashed_password FROM users WHERE email=?";
@@ -330,7 +337,7 @@ try{
 function update_details($id,$fname,$lname,$email,$phone){
    try{
      $db = get_db();
-     if(!validate_user_email($email)){
+     if(validate_user_email($email) !== true ){
          $query = "UPDATE users SET fname=?, lname=?, email=?, phone=? WHERE id=?";
          if($statement = $db->prepare($query)){
             $binding = array($fname,$lname,$email,$phone,$id);
@@ -347,7 +354,7 @@ function update_details($id,$fname,$lname,$email,$phone){
          }
      }
      else{
-        throw new Exception("Invalid data.");
+        throw new Exception("Please specify a unique email.");
      }
    }
    catch(Exception $e){

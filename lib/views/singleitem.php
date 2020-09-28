@@ -1,24 +1,19 @@
 <section class="products">
 <?php
+
 session_start();
 $isadmin = $_SESSION['isadmin'];
 session_write_close();
-
-
-
-
+$item = $item[0];
 // Can utilize the following code for single food info
-if(!empty($items)){
-    echo "<h2>Artworks</h2>";
-    foreach($items As $item){
-      $itemno = htmlspecialchars($item['itemNo'],ENT_QUOTES, 'UTF-8');
-      if ($itemno == $id){
-        $title = htmlspecialchars($item['itemName'],ENT_QUOTES, 'UTF-8');
-        $itemdesc = htmlspecialchars($item['itemDesc'],ENT_QUOTES, 'UTF-8');
-        $price = htmlspecialchars($item['price'],ENT_QUOTES, 'UTF-8');
-        $image = htmlspecialchars($item['itemImage'],ENT_QUOTES, 'UTF-8');
-      
-    
+if(!empty($item)){
+    //foreach($items As $item){
+    $itemno = htmlspecialchars($item['itemNo'],ENT_QUOTES, 'UTF-8');
+    if ($itemno == $id){
+      $title = htmlspecialchars($item['itemName'],ENT_QUOTES, 'UTF-8');
+      $itemdesc = htmlspecialchars($item['itemDesc'],ENT_QUOTES, 'UTF-8');
+      $price = htmlspecialchars($item['price'],ENT_QUOTES, 'UTF-8');
+      $image = htmlspecialchars($item['itemImage'],ENT_QUOTES, 'UTF-8');
   ?>
     <script src='jquery-3.2.1.min.js'></script>
     <script type="text/javascript">
@@ -59,7 +54,7 @@ if(!empty($items)){
     });
 });
     </script>
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
       <div class="productcontainer">
         <img class="productimage" src="<?php echo "{$image}" ?>" class="itemimage"/>
         <div class="producttext">
@@ -70,8 +65,15 @@ if(!empty($items)){
           <form action="/singleitem" method="POST">
             <input type='hidden' name='_method' value='post' />
             <input type='hidden' name='itemNo' value='<?php echo($itemno) ?>' />
-            <label  class="productlabel">Quantity:</label>
+            
 
+            <?php
+            // Start if NOT combo
+            if (!preg_match('/Combo/', $title))
+            {
+              ?>
+              
+            <label  class="productlabel">Quantity:</label>
             <div class="input-group plus-minus-input">
               <div class="input-group-button">
                 <button type="button" class="button hollow circle" data-quantity="minus" data-field="quantity">
@@ -87,29 +89,54 @@ if(!empty($items)){
                 </button>
               </div>
             </div>
-   
 
-            <?php 
-            
-            if (is_authenticated()){
+            <?php
+            // Start Add to cart submit
+              if (is_authenticated()){
             ?>
-            <input type="submit" class="btn btn-default cart" value="Add to Cart" name="Add to Cart">
+              <input type="submit" class="btn btn-default cart" value="Add to Cart" name="Add to Cart">
+          
+            <?php
+              }else{
+            ?>
+              <a href='/signin'><button type="button" class="btn btn-default cart">Please sign in to add to cart</button></a>
+            <?php
+              }
+            // End add to cart submit
+            ?>
+
+            <?php
+              // End if Notcombo
+            }
+            else
+            {
+              
+              // start if combo
+              if (preg_match('/Small/', $title))
+              {
+                echo "<a href='#' ><button class='btn btn-default'>Combo selection Small</button></a>";
+              }elseif (preg_match('/Medium/', $title))
+              {
+                echo "<a href='#' ><button class='btn btn-default'>Combo selection Medium</button></a>";
+              }elseif (preg_match('/Large/', $title))
+              {
+                echo "<a href='#' ><button class='btn btn-default'>Combo selection Large</button></a>";
+              }
+              // end if combo
+            }
+            
+            ?>
+           
+            
           </form>
-          <?php
-          }else{
-          ?>
-          <a href='/signin'><button type="button" class="btn btn-default cart" >Please sign in to add to cart</button></a>
-          <?php
-          }
-          ?>
-          </div>
+        </div>
       </div>
 <?php
-      }
+      //}
     }
   }
   else{
-    echo "<h2>Artwork failed to load</h2>";
+    echo "<h2>Food item failed to load</h2>";
 }
 /*
 ?>

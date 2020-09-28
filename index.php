@@ -102,7 +102,7 @@ get("/catalogue/:id;[\d]+",function($app){
 get("/singleitem/:id;[\d]+",function($app){
    require MODEL;
    $id = $app->route_var("id");
-   $app->set_message("items", get_item($id));
+   $app->set_message("item", get_item($id));
    $app->set_message("id", $id);
    //$app->set_message("testimonials", get_testimonials($id));
    $app->render(LAYOUT,"singleitem");
@@ -224,7 +224,7 @@ post("/signin",function($app){
     }
   }
   else{
-     $app->set_flash("Something wrong with your email or password. Please try again.");
+     $app->set_flash("Invalid email or password, please enter all fields and try again.");
      $app->redirect_to("/signin");
   }
   $app->set_flash("Lovely, you are now signed in!");
@@ -268,7 +268,7 @@ post("/singleitem", function($app){
    }
    if(empty($cartitems)){
       try{
-         addtocart($itemNo, $quantity,$userid);
+         addtocart($itemNo, $quantity, $userid);
       }
       catch(Exception $e){
          $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
@@ -278,7 +278,7 @@ post("/singleitem", function($app){
          if(in_array($itemNo,$item)){
 
             try{
-               updatequantity($quantity, $itemNo,$userid);
+               updatequantity($quantity, $itemNo, $userid);
             }
             catch(Exception $e){
                $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
@@ -286,16 +286,16 @@ post("/singleitem", function($app){
          }
          else{
             try{
-            addtocart($itemNo, $quantity,$userid);
+            addtocart($itemNo, $quantity, $userid);
             }
             catch(Exception $e){
             $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
             }
          }
-      }  
+      }
    $app->set_flash("Item Added to cart");
+   // TO DO, set redirect to correct catalogue number
    $app->redirect_to("/catalogue/1"); 
-   
 });
 post("/cart",function($app){
    require MODEL;
