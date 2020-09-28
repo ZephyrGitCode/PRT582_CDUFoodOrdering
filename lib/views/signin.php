@@ -19,8 +19,8 @@
     <p style="color:red;text-align:center;"><?php echo $error ?> </p>   
 	<div class="container form-container">
 		<?php 
-			if ($loginattempts !== null){
-				$remaining = 5 - $loginattempts;
+			if ($loginattempts !== null && $loginattempts > 1){
+				$remaining = 5 - $loginattempts;	
 				echo "<p class='text-danger'>Login attempts left: {$remaining}</p>";
 			}
 		?>
