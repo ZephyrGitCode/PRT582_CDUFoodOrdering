@@ -1,27 +1,33 @@
-<div class="rice">
+<div class="wrapper">
   <div class="title">
     Menu (Vendor based)
   </div>
-  <div class="select_rice">
+  <div class="select_wrap">
     <ul class="default_option">
       <li>
-        <div class="option pasta">
+        <div class="option size">
           <div class="image"></div>
-            <p>pasta</p>
+            <p>Size</p>
         </div>
       </li>
     </ul>
     <ul class="select_ul">
       <li>
-        <div class="option curry">
+        <div class="option small">
           <div class="image"></div>
-            <p>curry</p>
+            <p>Small</p>
         </div>
       </li>
       <li>
-        <div class="option seafood">
+        <div class="option medium">
           <div class="image"></div>
-            <p>seafood</p>
+            <p>Medium</p>
+        </div>
+      </li>
+      <li>
+        <div class="option large">
+          <div class="image"></div>
+            <p>Large</p>
         </div>
       </li>
     </ul>
