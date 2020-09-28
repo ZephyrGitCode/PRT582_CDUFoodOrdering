@@ -104,6 +104,9 @@ get("/singleitem/:id;[\d]+",function($app){
    $id = $app->route_var("id");
    $app->set_message("item", get_item($id));
    $app->set_message("id", $id);
+   session_start();
+   $app->set_message("isadmin", $_SESSION['isadmin']);
+   session_write_close();
    //$app->set_message("testimonials", get_testimonials($id));
    $app->render(LAYOUT,"singleitem");
 });
@@ -224,7 +227,7 @@ post("/signin",function($app){
     }
   }
   else{
-     $app->set_flash("Something wrong with your email or password. Please try again.");
+     $app->set_flash("Invalid email or password, please enter all fields and try again.");
      $app->redirect_to("/signin");
   }
   $app->set_flash("Lovely, you are now signed in!");
@@ -392,7 +395,7 @@ put("/singleitem/:id;[\d]+",function($app){
    $id = $app->route_var("id");
    $app->set_flash("Approval attempt");
    try{
-      approve($id);
+      //approve($id);
       $app->set_flash("Testimonial approved.");
       $app->render(LAYOUT,"home");
    }catch(Exception $e){

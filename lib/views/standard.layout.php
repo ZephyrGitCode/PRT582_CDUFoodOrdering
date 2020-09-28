@@ -36,7 +36,6 @@
         ?>
       </div> <!-- end content -->
     </div> <!-- end main -->
-
     <?php
     require PARTIALS."/navscript.html.php";
     ?>

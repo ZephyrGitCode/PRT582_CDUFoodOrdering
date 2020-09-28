@@ -1,10 +1,5 @@
 <p><?php echo $message ?></p>
 
-<ol class="breadcrumb">
-  <li><a href="/home">Home</a></li>
-  <li class="active"><a href="#">The Lunch Room</a></li>
-</ol>
-
 <h2>Menu</h2>
 
 <div class="foodmenu">
@@ -33,9 +28,7 @@ if(!empty($items)){
       echo "<li>\${$price}</li>";
       echo "</div>";
 ?>
-      <a href="<?php echo "/"."singleitem/"."{$itemno}"?>" class="inspect"><p>Inspect</p></a>
-      <?php
-?>
+      <!-- <a href="<?php //echo "/"."singleitem/"."{$itemno}"?>" class="inspect"><p>Inspect</p></a>-->
       </div>
 <?php
     }
@@ -45,3 +38,7 @@ if(!empty($items)){
 }
 ?>
 </div>
+
+<?php
+  require PARTIALS."/footer.html.php";
+?>

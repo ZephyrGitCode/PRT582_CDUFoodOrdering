@@ -15,3 +15,7 @@
 
 
 </div>
+
+<?php
+  require PARTIALS."/footer.html.php";
+?>

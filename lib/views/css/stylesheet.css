@@ -120,9 +120,8 @@ meter {
   border-radius: 40px;
 }
 
-.vendorselect{
-  margin: auto;
-  width: 80%;
+@media (min-width: 500px) {
+  .vendorselect{margin: auto;width: 80%;}
 }
 
 .singlelist{
@@ -272,7 +271,7 @@ textarea{
   margin-right:10px;
 }
 
-.price
+#price
 {
   color: #FE980F;
   font-size: 26px;
@@ -538,6 +537,13 @@ textarea{
   top: 12%;
   right: 30%;
   background-color: #59136b;
+}
+
+/* Footer CSS */
+
+.footer{
+  bottom: 5px;
+  margin: 5px;
 }
 
 
