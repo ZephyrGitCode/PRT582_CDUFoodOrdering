@@ -9,7 +9,7 @@
         <?php
         $user = $user[0];
         // if user is not empty
-        if(!empty($user) && $user['id'] == get_user_id()){
+        if(!empty($user) && $user['userNo'] == get_user_id()){
         ?>
         <form action='/myaccount/<?php if(!empty($user['id']))echo $user['id']?>' method='POST'>
             <input type='hidden' name='_method' value='put' />

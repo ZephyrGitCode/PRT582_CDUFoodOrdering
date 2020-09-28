@@ -395,7 +395,7 @@ put("/singleitem/:id;[\d]+",function($app){
    $id = $app->route_var("id");
    $app->set_flash("Approval attempt");
    try{
-      approve($id);
+      //approve($id);
       $app->set_flash("Testimonial approved.");
       $app->render(LAYOUT,"home");
    }catch(Exception $e){

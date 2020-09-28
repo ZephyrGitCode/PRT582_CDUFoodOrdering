@@ -28,9 +28,7 @@ if(!empty($items)){
       echo "<li>\${$price}</li>";
       echo "</div>";
 ?>
-      <a href="<?php echo "/"."singleitem/"."{$itemno}"?>" class="inspect"><p>Inspect</p></a>
-      <?php
-?>
+      <!-- <a href="<?php //echo "/"."singleitem/"."{$itemno}"?>" class="inspect"><p>Inspect</p></a>-->
       </div>
 <?php
     }
