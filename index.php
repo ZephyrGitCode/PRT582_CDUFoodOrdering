@@ -104,6 +104,9 @@ get("/singleitem/:id;[\d]+",function($app){
    $id = $app->route_var("id");
    $app->set_message("item", get_item($id));
    $app->set_message("id", $id);
+   session_start();
+   $app->set_message("isadmin", $_SESSION['isadmin']);
+   session_write_close();
    //$app->set_message("testimonials", get_testimonials($id));
    $app->render(LAYOUT,"singleitem");
 });

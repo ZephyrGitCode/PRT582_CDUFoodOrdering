@@ -539,6 +539,15 @@ textarea{
   background-color: #59136b;
 }
 
+/* Footer CSS */
+
+.footer{
+  bottom: 5px;
+  margin: 5px;
+}
+
+
+
 /* Menu CSS */
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
 
@@ -554,7 +563,6 @@ textarea{
 body{
   background: #1F1F1F;
   color: #555555;
-
 }
 
 .rice{
