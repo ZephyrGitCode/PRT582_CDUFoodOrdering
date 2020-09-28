@@ -8,7 +8,7 @@
         
     <?php
         echo"<h3>Shopping Cart</h3>"; 
-            
+        $total =0;  
                 
     ?>
         
@@ -40,7 +40,7 @@
         </div>
         <?php echo "{$itemname}"?></td>
         <td><?php echo "{$quantity}"?></td>
-        <td>$<?php echo "{$cost}"?></td>
+        <td>$<?php echo "{$cost}"; $total += $cost?></td>
         <td>
         <form action="/cart" method="POST">
             <input type='hidden' name='_method' value='delete' />
@@ -53,6 +53,7 @@
         <?php }}   ?>    
         
     </table>
+    <p style="text-align:center">Total : $<?php echo"$total"?>
     <form action="/cart" method="POST">
             <input type='hidden' name='_method' value='post' />
             <div class="pickup_time">
