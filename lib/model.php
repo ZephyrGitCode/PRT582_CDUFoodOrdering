@@ -140,7 +140,7 @@ function sign_in($useremail,$password){
          session_write_close();
          throw new Exception("Password incorrect. Password must contain at least 8 characters, one Capital letter and one number");
       }
-      $query = "SELECT id, email, salt, isadmin, hashed_password FROM users WHERE email=?";
+      $query = "SELECT userNo, email, salt, isadmin, hashed_password FROM users WHERE email=?";
       if($statement = $db->prepare($query)){
          $binding = array($useremail);
          if(!$statement -> execute($binding)){
@@ -160,7 +160,7 @@ function sign_in($useremail,$password){
             }
             else{
                $email = $result["email"];
-               $userno = $result["id"];
+               $userno = $result["userNo"];
                set_authenticated_session($email, $hashed_password, $userno, $isadmin);
             }
          }

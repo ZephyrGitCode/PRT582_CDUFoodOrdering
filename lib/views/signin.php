@@ -1,16 +1,29 @@
 <?php
 	session_start();
-	if ($_SESSION['logincount'] === null){
-		$_SESSION['logincount'] = 0;
-	}else{
+	$loginattempts = $_SESSION['logincount'];
+	session_write_close();
+
+	if ($loginattempts === null){
+		$loginattempts = 0;
+	}elseif($loginattempts > 5)
+	{
+		$loginattempts = 5;
+		$lockout = true;
+	}
+	else{
 		$loginattempts = $_SESSION['logincount'];
 	}
-	session_write_close();
 ?>
 <div class="container signup-body">
 	<h2 class="log-h2">Sign In</h2>
-    <p style="color:red;text-align:center;"><?php echo $error ?> </p>      
+    <p style="color:red;text-align:center;"><?php echo $error ?> </p>   
 	<div class="container form-container">
+		<?php 
+			if ($loginattempts !== null){
+				$remaining = 5 - $loginattempts;
+				echo "<p class='text-danger'>Login attempts left: {$remaining}</p>";
+			}
+		?>
 		<form action='/signin' method='POST'>
 			<input type='hidden' name='_method' value='post' />
 			<?php
