@@ -6,8 +6,6 @@
   
 <?php
 if(!empty($items)){
-  
-  
   foreach($items As $item){
     $itemno = htmlspecialchars($item['itemNo'],ENT_QUOTES, 'UTF-8');
     $vendorno = htmlspecialchars($item['vendorNo'],ENT_QUOTES, 'UTF-8');

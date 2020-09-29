@@ -50,6 +50,23 @@ function get_item($id){
       }
 }
 
+function get_selections(){
+   $selections = null;
+   try{
+      $db = get_db();
+      $query = "SELECT * from selections";
+      $statement = $db->prepare($query);
+      $statement -> execute();
+      $selections = $statement->fetchall(PDO::FETCH_ASSOC);
+      return $selections;
+   }
+   catch(PDOException $e){
+      throw new Exception($e->getMessage());
+      return "";
+   }
+}
+
+
 function get_cartitems($id){
    $food = null;
    try{
@@ -215,30 +232,28 @@ function generate_salt(){
 }
 
 function validate_user_email($email){
-try{
-   $db = get_db();
-   $query = "SELECT hashed_password FROM users WHERE email=?";
-   if($statement = $db->prepare($query)){
-     $binding = array($email);
-     if(!$statement -> execute($binding)){
-        return false;
-     }
-     else{
-         $result = $statement->fetch(PDO::FETCH_ASSOC);
-         if($result['email'] === $email){
-           return true;
-         }else{
+   try{
+      $db = get_db();
+      $query = "SELECT hashed_password FROM users WHERE email=?";
+      if($statement = $db->prepare($query)){
+      $binding = array($email);
+         if(!$statement -> execute($binding)){
             return false;
          }
-     }
+         else{
+               $result = $statement->fetch(PDO::FETCH_ASSOC);
+               if($result['email'] === $email){
+               return true;
+               }else{
+                  return false;
+               }
+            }
+         }
+      }
+   catch(Exception $e){
+      throw new Exception("Authentication not working properly. {$e->getMessage()}");
    }
 }
-catch(Exception $e){
-   throw new Exception("Authentication not working properly. {$e->getMessage()}");
-}
-}
-
-
 function is_authenticated(){
  $email = "";
  $hash="";
