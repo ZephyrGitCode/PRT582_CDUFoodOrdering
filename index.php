@@ -111,6 +111,20 @@ get("/singleitem/:id;[\d]+",function($app){
    $app->render(LAYOUT,"singleitem");
 });
 
+get("/combobox/:id;[\d]+",function($app){
+   require MODEL;
+   $id = $app->route_var("id");
+   if ($id < 1 || $id > 2){
+      $id = 1;
+      $app->set_message("error", "Entered id was out of range, defaulting to samll combo.");
+      $app->redirect_to("/combobox/".$id."");
+      
+   }
+   //$app->set_message("selection", get_selections($id));
+   $app->set_message("id", $id);
+   $app->render(LAYOUT,"combobox");
+});
+
 get("/cart",function($app){
    require MODEL;
    try{

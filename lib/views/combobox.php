@@ -2,6 +2,7 @@
   <div class="title">
     Menu (Vendor based)
   </div>
+  <p class="danger"><?php echo $error ?></p>
   <div class="select_wrap">
     <ul class="default_option">
       <li>

@@ -47,9 +47,9 @@ document.getElementById('price').innerHTML=price;
 
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
       <div class="productcontainer">
-        <img class="productimage" src="<?php echo "{$image}" ?>" class="itemimage"/>
+        <img class="productimage" src="<?php echo "{$image}" ?>"/>
         <div class="producttext">
-          <h2><i><?php echo "{$title}"?></i></h2>
+          <h3><i><?php echo "{$title}"?></i></h3>
           <p class="itemdesc"><?php echo "{$itemdesc}" ?></p>
           <p id="price">AUD $<?php echo "{$price}" ?></p>
           
@@ -57,7 +57,6 @@ document.getElementById('price').innerHTML=price;
             <input type='hidden' name='_method' value='post' />
             <input type='hidden' name='itemNo' value='<?php echo($itemno) ?>' />
             
-
             <?php
             // Start if NOT combo
             if (!preg_match('/Combo/', $title))
@@ -81,9 +80,6 @@ document.getElementById('price').innerHTML=price;
               </div>
             </div>
 
-
-
-
             <?php
             // Start Add to cart submit
               if (is_authenticated()){
@@ -96,33 +92,25 @@ document.getElementById('price').innerHTML=price;
               <a href='/signin'><button type="button" class="btn btn-default cart">Please sign in to add to cart</button></a>
             <?php
               }
-            // End add to cart submit
-            ?>
-
-            <?php
-              // End if Notcombo
+              // End add to cart submit
             }
-            else
-            {
-              
-              // start if combo
-              if (preg_match('/Small/', $title))
-              {
-                echo "<a href='#' ><button class='btn btn-default'>Combo selection Small</button></a>";
-              }elseif (preg_match('/Medium/', $title))
-              {
-                echo "<a href='#' ><button class='btn btn-default'>Combo selection Medium</button></a>";
-              }elseif (preg_match('/Large/', $title))
-              {
-                echo "<a href='#' ><button class='btn btn-default'>Combo selection Large</button></a>";
-              }
-              // end if combo
-            }
-            
+            // End if Notcombo
             ?>
-           
-            
           </form>
+          <?php
+            // start if combo
+            if (preg_match('/Small/', $title))
+            {
+              echo "<a href='/combobox/1' ><button href='/combobox/1' class='btn btn-default'>Combo selection Small</button></a>";
+            }elseif (preg_match('/Medium/', $title))
+            {
+              echo "<a href='/combobox/2' ><button class='btn btn-default'>Combo selection Medium</button></a>";
+            }elseif (preg_match('/Large/', $title))
+            {
+              echo "<a href='/combobox/2' ><button class='btn btn-default'>Combo selection Large</button></a>";
+            }
+            // end if combo
+            ?>
         </div>
       </div>
 <?php

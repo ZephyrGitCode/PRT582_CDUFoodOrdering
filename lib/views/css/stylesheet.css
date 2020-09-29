@@ -268,7 +268,12 @@ textarea{
 
 .productimage{
   width: 50%;
-  margin-right:10px;
+  border-radius: 20%;
+  margin-left: 25%;
+}
+
+.producttext{
+  margin-top: 10px;
 }
 
 #price
