@@ -552,6 +552,12 @@ textarea{
 }
 
 
+/* Combobox */
+
+.selections{
+  margin: 10px;
+}
+
 
 /* Menu CSS */
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');

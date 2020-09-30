@@ -9,34 +9,77 @@
     window.history.back();
   }
 </script>
+<p>Message to self: Need to create a "combo" SQL table.</p>
+<div class="productcontainer">
 
-<?php
-// Can utilize the following code for single food info
-if(!empty($selection)){
-    //foreach($items As $item){
-    foreach($selection As $selection){
-      $selectionNo = htmlspecialchars($selection['selectionNo'],ENT_QUOTES, 'UTF-8');
-      $selectionName = htmlspecialchars($selection['selectionName'],ENT_QUOTES, 'UTF-8');
-      $selectionDesc = htmlspecialchars($selection['selectionDesc'],ENT_QUOTES, 'UTF-8');
-  ?>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-      <div class="productcontainer">
-        <div class="producttext">
-          <h3><i><?php echo "{$selectionName}"?></i></h3>
-          <p class="itemdesc"><?php echo "{$selectionDesc}" ?></p>
-        </div>
-      </div>
-<?php
+  <div class="selections">
+    <select>
+    <?php
+    // setting permanant variable
+    $selections = $selection;
+    if(!empty($selections)){
+      //foreach($items As $item){
+      foreach($selections As $selection){
+        $selectionNo = htmlspecialchars($selection['selectionNo'],ENT_QUOTES, 'UTF-8');
+        $selectionName = htmlspecialchars($selection['selectionName'],ENT_QUOTES, 'UTF-8');
+        $selectionDesc = htmlspecialchars($selection['selectionDesc'],ENT_QUOTES, 'UTF-8');
+    ?>
+      <option value="<?php echo "{$selectionNo}"?>"><?php echo "{$selectionName}"?></option>
+    <?php
+      }
     }
-  }
-  else{
-    echo "<h2>Selections failed to load</h2>";
-}
-?>
+    else{
+      echo "<h2>Selections failed to load</h2>";
+    }
+    ?>
+    </select>
+  </div>
+
+  <div class="selections">
+    <select>
+    <?php
+    if(!empty($selection)){
+      //foreach($items As $item){
+      foreach($selections As $selection){
+        $selectionNo = htmlspecialchars($selection['selectionNo'],ENT_QUOTES, 'UTF-8');
+        $selectionName = htmlspecialchars($selection['selectionName'],ENT_QUOTES, 'UTF-8');
+        $selectionDesc = htmlspecialchars($selection['selectionDesc'],ENT_QUOTES, 'UTF-8');
+    ?>
+      <option value="<?php echo "{$selectionNo}"?>"><?php echo "{$selectionName}"?></option>
+    <?php
+      }
+    }
+    else{
+      echo "<h2>Selections failed to load</h2>";
+    }
+    ?>
+    </select>
+  </div>
+  <div class="selections">
+    <select>
+    <?php
+    if(!empty($selection)){
+      //foreach($items As $item){
+      foreach($selections As $selection){
+        $selectionNo = htmlspecialchars($selection['selectionNo'],ENT_QUOTES, 'UTF-8');
+        $selectionName = htmlspecialchars($selection['selectionName'],ENT_QUOTES, 'UTF-8');
+        $selectionDesc = htmlspecialchars($selection['selectionDesc'],ENT_QUOTES, 'UTF-8');
+    ?>
+      <option value="<?php echo "{$selectionNo}"?>"><?php echo "{$selectionName}"?></option>
+    <?php
+      }
+    }
+    else{
+      echo "<h2>Selections failed to load</h2>";
+    }
+    ?>
+    </select>
+  </div>
+</div>
 
 <form action="/combobox" method="POST">
   <input type='hidden' name='_method' value='post' />
-  <input name='selectionOne' value='' />
-  <input name='selectionTwo' value='' />
-  <input name='selectionThree' value='' />
+  <input type = 'hidden' name='selectionOne' value='' />
+  <input type = 'hidden' name='selectionTwo' value='' />
+  <input type = 'hidden' name='selectionThree' value='' />
 </form>
