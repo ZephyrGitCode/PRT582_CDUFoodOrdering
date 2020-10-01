@@ -13,7 +13,6 @@
     <h2 class="form-h2 navforms">Browse</h2>
     <hr style="margin-bottom:0;"/>
     <div class="navforms forms">
-      <a href="/"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;vertical-align: bottom;">&#xe3ad</span><span style="margin-bottom:5px;">Vendor Select</span></p></a>
       <a href="/catalogue/1"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;vertical-align: bottom;">&#xe3ad</span><span style="margin-bottom:5px;">Lunch Room</span></p></a>
       <a href="/catalogue/2"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;vertical-align: bottom;">&#xe3ad</span><span style="margin-bottom:5px;">Ugly Duckling</span></p></a>
       <a href="/catalogue/3"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;vertical-align: bottom;">&#xe3ad</span><span style="margin-bottom:5px;">Art House</span></p></a>

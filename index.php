@@ -114,11 +114,13 @@ get("/singleitem/:id;[\d]+",function($app){
 get("/combobox/:id;[\d]+",function($app){
    require MODEL;
    $id = $app->route_var("id");
-   if ($id < 1 || $id > 2){
-      $id = 1;
-      $app->set_message("error", "Entered id was out of range, defaulting to samll combo.");
+   if ($id != 17 && $id != 18 && $id != 19){
+      $id = 17;
       $app->redirect_to("/combobox/".$id."");
    }
+   session_start();
+   $app->set_message("comboitemno", $_SESSION['itemno']);
+   session_write_close();
    $app->set_message("selection", get_selections());
    $app->set_message("id", $id);
    $app->render(LAYOUT,"combobox");
@@ -271,7 +273,6 @@ post("/singleitem/:id[\d]+",function($app){
    $app->redirect_to("/art/".$artno);        
 });*/
 
-
 post("/singleitem", function($app){
    require MODEL;
    $quantity = $app->form('quantity');
@@ -291,28 +292,29 @@ post("/singleitem", function($app){
       }
    }
    else{
-         if(in_array($itemNo,$item)){
+      if(in_array($itemNo,$item)){
 
-            try{
-               updatequantity($quantity, $itemNo, $userid);
-            }
-            catch(Exception $e){
-               $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
-            }
+         try{
+            updatequantity($quantity, $itemNo, $userid);
          }
-         else{
-            try{
-            addtocart($itemNo, $quantity, $userid);
-            }
-            catch(Exception $e){
+         catch(Exception $e){
             $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
-            }
          }
       }
+      else{
+         try{
+         addtocart($itemNo, $quantity, $userid);
+         }
+         catch(Exception $e){
+         $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
+         }
+      }
+   }
    $app->set_flash("Item Added to cart");
    // TO DO, set redirect to correct catalogue number
    $app->redirect_to("/catalogue/1"); 
 });
+
 post("/cart",function($app){
    require MODEL;
    $pickuptime = $app->form('pickup_time');
@@ -330,6 +332,57 @@ post("/cart",function($app){
       removefromcart($item['cartNo']);
 
    }
+   $app->redirect_to("/");
+});
+
+
+post("/combobox",function($app){
+   require MODEL;
+   $selectionone = $app->form('selectionone');
+   $selectiontwo = $app->form('selectiontwo');
+   $selectionthree = $app->form('selectionthree');
+   try{
+      $comboNo = add_combo($selectionone, $selectiontwo, $selectionthree);
+   }
+   catch(Exception $e){
+      $app->set_flash("Failed to add combo to cart. {$e->getMessage()}");   
+   }
+
+   $itemNo = $app->form('itemNo');
+   $quantity = 1;
+   $userid = get_user_id();
+
+   foreach($cartitems as $cartitem){
+      $item[]=$cartitem["itemNo"];
+   }
+   if(empty($cartitems)){
+      try{
+         addtocart($itemNo, $quantity, $userid, $comboNo);
+      }
+      catch(Exception $e){
+         $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
+      }
+   }
+   else{
+      if(in_array($itemNo,$item)){
+
+         try{
+            updatequantity($quantity, $itemNo, $userid);
+         }
+         catch(Exception $e){
+            $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
+         }
+      }
+      else{
+         try{
+            addtocart($itemNo, $quantity, $userid, $comboNo);
+         }
+         catch(Exception $e){
+         $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
+         }
+      }
+   }
+   $app->set_message("note", "Item(s) successfully added to your cart.");
    $app->redirect_to("/");
 });
 

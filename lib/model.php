@@ -47,7 +47,7 @@ function get_item($id){
    catch(PDOException $e){
       throw new Exception($e->getMessage());
       return "";
-      }
+   }
 }
 
 function get_selections(){
@@ -66,12 +66,11 @@ function get_selections(){
    }
 }
 
-
 function get_cartitems($id){
    $food = null;
    try{
       $db = get_db();
-      $query = "SELECT * FROM cartitems,items WHERE cartitems.userId = ? AND cartitems.itemNo = items.itemNo";
+      $query = "SELECT * FROM cartitems,items,combos WHERE cartitems.userId = ? AND cartitems.itemNo = items.itemNo AND combos.comboNo = cartitems.comboNo";
       $statement = $db->prepare($query);
       $binding = array($id);
       $statement -> execute($binding);
@@ -460,12 +459,21 @@ function checkoutitem($orderNo, $itemNo, $quantity){
   }
 }
 
-function addtocart($itemNo, $quantity,$userid){
+function addtocart($itemNo, $quantity,$userid, $comboNo = 0){
    try{
       $db = get_db();
-      $query = "INSERT INTO cartitems(itemNo, quantity, userId) VALUES (?,?,?)";
+      if ($comboNo != 0){
+      $query = "INSERT INTO cartitems(itemNo, quantity, userId, comboNo) VALUES (?,?,?,?)";
+      }else{
+         $query = "INSERT INTO cartitems(itemNo, quantity, userId) VALUES (?,?,?)";
+      }
       if($statement = $db->prepare($query)){
-         $binding = array($itemNo, $quantity,$userid);
+         if ($comboNo != 0){
+            $binding = array($itemNo, $quantity,$userid, $comboNo);
+         }
+         else{
+            $binding = array($itemNo, $quantity,$userid);
+         }
          if(!$statement -> execute($binding)){
             throw new Exception("Could not execute query.");
          }
@@ -476,7 +484,7 @@ function addtocart($itemNo, $quantity,$userid){
    }
    catch(Exception $e){
       throw new Exception($e->getMessage());
-  }
+   }
 }
 
 function updatequantity($quantity, $itemNo,$userid){
@@ -511,6 +519,26 @@ function removefromcart($cartNo){
    } catch(Exception $e){
       throw new Exception($e->getMessage());
    }
+}
+
+function add_combo($selectionone, $selectiontwo, $selectionthree){
+   try{
+      $db = get_db();
+      $query = "INSERT INTO combos(selectionOne, selectionTwo, selectionThree) VALUES (?,?,?)";
+      if($statement = $db->prepare($query)){
+         $binding = array($selectionone, $selectiontwo, $selectionthree);
+         if(!$statement -> execute($binding)){
+            throw new Exception("Could not execute query.");
+         }
+      }
+      else{
+      throw new Exception("Could not prepare statement.");
+      }
+   }
+   catch(Exception $e){
+      throw new Exception($e->getMessage());
+  }
+  return ($db->lastInsertId());
 }
 
 /*

@@ -98,18 +98,26 @@ document.getElementById('price').innerHTML=price;
             ?>
           </form>
           <?php
+                      
+          // Start Add to cart submit
+            if (is_authenticated()){
             // start if combo
             if (preg_match('/Small/', $title))
             {
-              echo "<a href='/combobox/1' ><button href='/combobox/1' class='btn btn-default'>Combo selection Small</button></a>";
+              echo "<a href='/combobox/{$id}' ><button class='btn btn-default cart'>Create Small Combo</button></a>";
             }elseif (preg_match('/Medium/', $title))
             {
-              echo "<a href='/combobox/2' ><button class='btn btn-default'>Combo selection Medium</button></a>";
+              echo "<a href='/combobox/{$id}' ><button class='btn btn-default cart'>Create Medium Combo</button></a>";
             }elseif (preg_match('/Large/', $title))
             {
-              echo "<a href='/combobox/2' ><button class='btn btn-default'>Combo selection Large</button></a>";
+              echo "<a href='/combobox/{$id}' ><button class='btn btn-default cart'>Create Large Combo</button></a>";
             }
             // end if combo
+            }else{
+              ?>
+                <a href='/signin'><button type="button" class="btn btn-default cart">Please sign in to add to cart</button></a>
+              <?php
+              }
             ?>
         </div>
       </div>

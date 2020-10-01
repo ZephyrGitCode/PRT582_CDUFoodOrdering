@@ -39,6 +39,14 @@
         <img href="" src="<?php echo "{$itemimage}"?>" class="itemimage"/>
         </div>
         <?php echo "{$itemname}"?></td>
+        <?php
+        if (preg_match('/Combo/', $title)){
+            echo "{$itemdesc}</td>";
+        }else{
+            // Ze[hyr TO DO ------ Pull selections and put items here ---------------
+            echo "{$selections}</td>";
+        }
+        ?>
         <td><?php echo "{$quantity}"?></td>
         <td>$<?php echo "{$cost}"; $total += $cost?></td>
         <td>
