@@ -249,30 +249,6 @@ post("/signin",function($app){
   $app->redirect_to("/");
 });
 
-/*
-post("/singleitem/:id[\d]+",function($app){
-   require MODEL;
-   $artno = $app->route_var("id");
-   $id = get_user_id();
-   $test = $app->form('test');
-   if($artno && $id && $test){
-     try{
-        add_testimonial($id,$artno,$test);
-        $app->redirect_to("/art/".$artno);
-     }
-     catch(Exception $e){
-       $app->set_flash("Failed to add testimonial. {$e->getMessage()}");
-       $app->redirect_to("/art/".$artno);      
-     }
-   }
-   else{
-        $app->set_flash("Please enter all fields.");
-        $app->redirect_to("/art/".$artno);
-   }
-   $app->set_flash("Failed");  
-   $app->redirect_to("/art/".$artno);        
-});*/
-
 post("/singleitem", function($app){
    require MODEL;
    $quantity = $app->form('quantity');
@@ -318,6 +294,7 @@ post("/singleitem", function($app){
 post("/cart",function($app){
    require MODEL;
    $pickuptime = $app->form('pickup_time');
+   $total = $app->form('total');
    $userid = get_user_id();
    $cartitems = get_cartitems($userid);
    $date =  date("Y-m-d h:i:s");
@@ -326,7 +303,7 @@ post("/cart",function($app){
    foreach($orders as $order){
       $orderNo = $orderNo+1;
    }
-   checkout($orderNo, $userid, $pickuptime,$date);
+   checkout($orderNo, $userid, $pickuptime,$date, $total);
    foreach($cartitems as $item){
       checkoutitem($orderNo, $item['itemNo'], $item['quantity']);
       removefromcart($item['cartNo']);
@@ -385,6 +362,28 @@ post("/combobox",function($app){
    $app->set_message("note", "Item(s) successfully added to your cart.");
    $app->redirect_to("/");
 });
+
+post("/",function($app){
+   require MODEL;
+   $title = $app->form('title');
+   $message = $app->form('message');
+   $userid = get_user_id();
+   if($title && $message && $userid){
+     try{
+        post_feedback($userid,$title,$message);
+     }
+     catch(Exception $e){
+       $app->set_flash("Feedback failed to send. {$e->getMessage()}");
+       $app->redirect_to("/");      
+     }
+   }
+   else{
+      $app->set_flash("Failed to send feedback, please enter all fields and try again.");
+      $app->redirect_to("/"); 
+   }
+   $app->set_flash("Feedback posted, thank you!");
+   $app->redirect_to("/"); 
+ });
 
 
 // End post ----------------------------------------

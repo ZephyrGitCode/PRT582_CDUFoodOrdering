@@ -66,11 +66,66 @@ function get_selections(){
    }
 }
 
+// grab single combo
+function get_combo($combono){
+   $combos = null;
+   try{
+      $db = get_db();
+      $query = "SELECT * from combos where comboNo = ?";
+      $statement = $db->prepare($query);
+      $binding = array($combono);
+      $statement -> execute($binding);
+      $combos = $statement->fetchall(PDO::FETCH_ASSOC);
+      return $combos;
+   }
+   catch(PDOException $e){
+      throw new Exception($e->getMessage());
+      return "";
+   }
+}
+
+// grab single selection
+function get_selection($selectid){
+   $selections = null;
+   try{
+      $db = get_db();
+      $query = "SELECT * from selections where selectionNo = ?";
+      $statement = $db->prepare($query);
+      $binding = array($selectid);
+      $statement -> execute($binding);
+      $selections = $statement->fetchall(PDO::FETCH_ASSOC);
+      return $selections;
+   }
+   catch(PDOException $e){
+      throw new Exception($e->getMessage());
+      return "";
+   }
+}
+
+function post_feedback($userid, $title, $message){
+   try{
+      $db = get_db();
+      $query = "INSERT INTO feedback (feedback.userNo, title, messageText) VALUES (?,?,?)";
+      if($statement = $db->prepare($query)){
+         $binding = array($userid, $title, $message);
+         if(!$statement -> execute($binding)){
+            throw new Exception("Could not execute query.");
+         }
+      }
+      else{
+      throw new Exception("Could not prepare statement.");
+      }
+   }
+   catch(Exception $e){
+       throw new Exception($e->getMessage());
+   }
+}
+
 function get_cartitems($id){
    $food = null;
    try{
       $db = get_db();
-      $query = "SELECT * FROM cartitems,items,combos WHERE cartitems.userId = ? AND cartitems.itemNo = items.itemNo AND combos.comboNo = cartitems.comboNo";
+      $query = "SELECT * FROM cartitems,items WHERE cartitems.userId = ? AND cartitems.itemNo = items.itemNo";
       $statement = $db->prepare($query);
       $binding = array($id);
       $statement -> execute($binding);
@@ -421,12 +476,12 @@ function get_user_name(){
    return $name;	
 }
 
-function checkout($orderNo, $userNo, $pickuptime, $date){
+function checkout($orderNo, $userNo, $pickuptime, $date, $total){
    try{
       $db = get_db();
-      $query = "INSERT INTO orders(orderNo, userNo, pickuptime, orderdate) VALUES (?,?,?,?)";
+      $query = "INSERT INTO orders(orderNo, userNo, pickuptime, orderdate, totalPrice) VALUES (?,?,?,?,?)";
       if($statement = $db->prepare($query)){
-         $binding = array($orderNo, $userNo,$pickuptime, $date);
+         $binding = array($orderNo, $userNo,$pickuptime, $date, $total);
          if(!$statement -> execute($binding)){
             throw new Exception("Could not execute query.");
          }

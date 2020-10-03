@@ -20,30 +20,6 @@ if(!empty($item)){
       $price = htmlspecialchars($item['price'],ENT_QUOTES, 'UTF-8');
       $image = htmlspecialchars($item['itemImage'],ENT_QUOTES, 'UTF-8');
   ?>
-    <script src='jquery-3.2.1.min.js'></script>
-    <script type="text/javascript">
-function increaseValue() {
-  var value = parseInt(document.getElementById('quantity').value, 10);
-  value = isNaN(value) ? 0 : value;
-  value++;
-  document.getElementById('quantity').value = value;
-  price = 'AUD $'+`<span>${(p * value).toFixed(2)}</span>`;
-  document.getElementById('price').innerHTML=price;
-}
-
-function decreaseValue() {
-  var value = parseInt(document.getElementById('quantity').value, 10);
-  value = isNaN(value) ? 0 : value;
-  value < 1 ? value = 1 : '';
-  value--;
-  document.getElementById('quantity').value = value;
-  price = 'AUD $'+`<span>${(p * value).toFixed(2)}</span>`;
-  document.getElementById('price').innerHTML=price;
-}
-var p= <?php echo "{$price}";?>;
-var price = 'AUD $ '+`<span>${p}</span>`;
-document.getElementById('price').innerHTML=price;
-    </script>
 
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
       <div class="productcontainer">
@@ -67,7 +43,7 @@ document.getElementById('price').innerHTML=price;
             <div class="input-group plus-minus-input">
               <div class="input-group-button">
                 <button type="button" class="button hollow circle" data-quantity="minus" data-field="quantity" id="decrease" onclick="decreaseValue()" value="Decrease Value">
-                <i class="fa fa-minus" aria-hidden="true"></i>
+                  <i class="fa fa-minus" aria-hidden="true"></i>
                 </button>
               </div>
               <div class="input-custom">
@@ -128,4 +104,6 @@ document.getElementById('price').innerHTML=price;
   else{
     echo "<h2>Food item failed to load</h2>";
 }
+
+require PARTIALS."/quantityscript.html.php";
 ?>
