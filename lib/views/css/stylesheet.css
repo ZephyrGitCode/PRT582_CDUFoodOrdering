@@ -146,8 +146,13 @@ a.item:hover{
 }
 
 .vendorimage{
-  padding: 5px;
+  padding: 10px;
   border-radius: 40px;
+  margin: 10px auto;
+}
+
+.vendorselect{
+  text-align: center;
 }
 
 @media (min-width: 500px) {

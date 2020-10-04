@@ -8,9 +8,9 @@
     <p class="font_9" style="line-height:1.4em;text-align:center;font-size:14px">For any Catering, Bulk orders or Inquiries, please feel free to contact us using below form or Call Us!</p>
     <form action='/' method='POST'>
       <input type='hidden' name='_method' value='post' />
-      <label for='title'>Title</label>
+      <label for='title'>Title:</label>
       <input type='text' id='title' name='title' placeholder="Title"/>
-      <label for='message'>Message</label>
+      <label for='message'>The detail:</label>
       <textarea id='message' name='message' placeholder="*Feedback Here*"></textarea>
       <input type="submit" class="btn btn-default cart" value="Send Feedback" name="Send Feedback">
     </form>

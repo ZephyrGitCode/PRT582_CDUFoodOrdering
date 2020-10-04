@@ -74,5 +74,7 @@
 </div>
 
 <?php
-  require PARTIALS."/footer.html.php";
+  if(is_authenticated()){
+    require PARTIALS."/footer.html.php";
+  }
 ?>
