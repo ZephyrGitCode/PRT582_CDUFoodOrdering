@@ -35,7 +35,7 @@
 
             <p class="acctext">Phone:</p>
             <div class="inputBox">
-                <input type="text" id="phone" name="phone" value="<?php echo $user['phone']?>" pattern="^[0-9]*$" onkeyup="trigger()">
+                <input type="text" id="phone" name="phone" value="<?php echo $user['phone']?>" pattern="^[0-9]*$" onkeypress='return restrictAlphabets(event)' maxlength="10">
                 <span><i class="fa fa-user fa-icon" aria-hidden="true"></i></span>
             </div>
 
@@ -63,4 +63,12 @@
             etext.innerHTML = "Invalid Email"
         }
     });
+
+    function restrictAlphabets(e){
+       var x = e.which || e.keycode;
+        if((x>=48 && x<=57))
+            return true;
+        else
+            return false;
+    }
 </script>
