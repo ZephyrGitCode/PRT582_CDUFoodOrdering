@@ -149,8 +149,7 @@ get("/cart",function($app){
 
 get("/change/:id;[\d]+",function($app){
    $id = $app->route_var("id");
-   $app->set_message("title","Darwin Art Company");
-   $app->set_message("message","Welcome".$id);
+   $app->set_message("title","Change password");
    require MODEL;
    try{
       if(is_authenticated()){
@@ -419,10 +418,11 @@ put("/myaccount/:id[\d]+",function($app){
    }
 });
 
-put("/change/:id[\d]+",function($app){
-   $id = $app->route_var("id");
-   $app->set_message("title","Change password");
+put("/change/:id;[\d]+",function($app){
    require MODEL;
+   $id = $app->route_var("id");
+   $userid = get_user_id();
+   $app->set_message("title","Change password");
    try{
       if(is_authenticated()){
          $pw_old = $app->form('old-password');
@@ -430,8 +430,8 @@ put("/change/:id[\d]+",function($app){
          $pw_confirm = $app->form('passw-c');
          if($pw_old && $pw_new && $pw_confirm){
             try{
-               change_password($id,$pw_old,$pw_new,$pw_confirm);
-               $app->set_flash("Password successfully changed.");
+               change_password($userid,$pw_old,$pw_new,$pw_confirm);
+               $app->set_flash("Password successfully changed. Please now signin.");
                $app->redirect_to("/");   
             }
             catch(Exception $e){
@@ -446,7 +446,7 @@ put("/change/:id[\d]+",function($app){
       }
       else{
          $app->set_flash("You are not logged in.");  
-         $app->redirect_to("/signin");           
+         $app->redirect_to("/change/".$id);           
       }
    }
    catch(Exception $e){

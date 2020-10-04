@@ -388,7 +388,7 @@ try{
                throw new Exception("Could not prepare statement.");
                }
             }else{
-               throw new Exception("New password and confirm password did not match.");
+               throw new Exception("Ensure that the New password and confirm password match, also both passwords must contain at least 8 characters, one Capital letter and one number.");
             }
          }
       }
@@ -595,44 +595,3 @@ function add_combo($selectionone, $selectiontwo, $selectionthree){
   }
   return ($db->lastInsertId());
 }
-
-/*
-function add_testimonial($id,$artno,$test){
-   try{
-      $db = get_db();
-      $query = "INSERT INTO testimonial (id,artNo,test) VALUES (?,?,?)";
-      if($statement = $db->prepare($query)){
-         $binding = array($id,$artno,$test);
-         if(!$statement -> execute($binding)){
-            throw new Exception("Could not execute query.");
-         }
-      }
-      else{
-      throw new Exception("Could not prepare statement.");
-      }
-   }
-   catch(Exception $e){
-       throw new Exception($e->getMessage());
-   }
-}
-
-function approve($id){
-   try{
-      $db = get_db();
-      $query = "UPDATE testimonial SET approved=? WHERE testNo=?";
-      if($statement = $db->prepare($query)){
-         $binding = array('true', $id);
-         if(!$statement -> execute($binding)){
-            throw new Exception("Could not execute query.");
-         }
-      }
-      else{
-      throw new Exception("Could not prepare statement.");
-      }
-   }
-   catch(Exception $e){
-       throw new Exception($e->getMessage());
-   }
-
-}
-*/

@@ -4,7 +4,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
-<body class="accountBody">
+<body>
     <p id="response"></p>
     <div class="userBox">
         

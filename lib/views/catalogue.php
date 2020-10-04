@@ -15,18 +15,21 @@ if(!empty($items)){
     $itemimage = htmlspecialchars($item['itemImage'],ENT_QUOTES, 'UTF-8');
     ?>
     <div class="menuitem">
-    <a href="<?php echo "/"."singleitem/"."{$itemno}"?>">
-          <div class="fimage">
-            <img href="" src="<?php echo "{$itemimage}"?>" class="itemimage"/>
-          </div>
-        </a>
+      <a class="item" href="<?php echo "/"."singleitem/"."{$itemno}"?>">
+      <!--
+        <div class="fimage">
+          <img href="" src="<?php echo "{$itemimage}"?>" class="itemimage"/>
+        </div>
+      
+    -->
 <?php
       echo "<div class=\"singlelist\">";
       echo "<li>{$itemname}</li>";
-      echo "<li>\${$price}</li>";
+      echo "<li style='font-size:.7rem;color:#B6B1A6;'>{$itemdesc}</li>";
+      echo "<li style='text-align:right;padding-right:5px;'>\${$price}</li>";
       echo "</div>";
 ?>
-      <!-- <a href="<?php //echo "/"."singleitem/"."{$itemno}"?>" class="inspect"><p>Inspect</p></a>-->
+        </a>
       </div>
 <?php
     }
