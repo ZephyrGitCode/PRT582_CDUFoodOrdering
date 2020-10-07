@@ -1,47 +1,80 @@
 <p><?php echo $message ?></p>
 
-<ol class="breadcrumb">
-  <li><a href="/home">Home</a></li>
-  <li class="active"><a href="#">The Lunch Room</a></li>
-</ol>
-
-<h2>Menu</h2>
-
 <div class="foodmenu">
-  
-<?php
-if(!empty($items)){
-  
-  
-  foreach($items As $item){
-    $itemno = htmlspecialchars($item['itemNo'],ENT_QUOTES, 'UTF-8');
-    $vendorno = htmlspecialchars($item['vendorNo'],ENT_QUOTES, 'UTF-8');
-    $itemname = htmlspecialchars($item['itemName'],ENT_QUOTES, 'UTF-8');
-    $itemdesc = htmlspecialchars($item['itemDesc'],ENT_QUOTES, 'UTF-8');
-    $price = htmlspecialchars($item['price'],ENT_QUOTES, 'UTF-8');
-    $itemimage = htmlspecialchars($item['itemImage'],ENT_QUOTES, 'UTF-8');
-    ?>
-    <div class="menuitem">
-    <a href="<?php echo "/"."singleitem/"."{$itemno}"?>">
+  <?php
+  if(!empty($items)){
+    foreach($items As $item){
+      $itemno = htmlspecialchars($item['itemNo'],ENT_QUOTES, 'UTF-8');
+      $vendorno = htmlspecialchars($item['vendorNo'],ENT_QUOTES, 'UTF-8');
+      $itemname = htmlspecialchars($item['itemName'],ENT_QUOTES, 'UTF-8');
+      $itemdesc = htmlspecialchars($item['itemDesc'],ENT_QUOTES, 'UTF-8');
+      $price = htmlspecialchars($item['price'],ENT_QUOTES, 'UTF-8');
+      $itemimage = htmlspecialchars($item['itemImage'],ENT_QUOTES, 'UTF-8');
+
+      if ($itemno == 1){
+        echo "<h3 class='menutitle'>Mains</h3>";
+        echo "<div class='break'></div>";
+      }
+
+      if ($itemno == 17){
+        echo "<div class='break'></div>";
+        echo "<h3 class='menutitle'>Combos</h3>";
+        echo "<div class='break'></div>";
+      }
+
+      if ($itemno == 20){
+        echo "<h3 class='menutitle'>Hot Drinks</h3>";
+        echo "<div class='break'></div>";
+      }
+
+      if ($itemno == 32){
+        echo "<div class='break'></div>";
+        echo "<h3 class='menutitle'>Juices and Milkshakes</h3>";
+        echo "<div class='break'></div>";
+      }
+
+      if ($itemno == 46){
+        echo "<div class='break'></div>";
+        echo "<h3 class='menutitle'>Pizzas</h3>";
+        echo "<div class='break'></div>";
+      }
+
+      if ($itemno == 58){
+        echo "<div class='break'></div>";
+        echo "<h3 class='menutitle'>Mains</h3>";
+        echo "<div class='break'></div>";
+      }
+      ?>
+      
+      <div class="menuitem">
+        <a class="item" href="<?php echo "/"."singleitem/"."{$itemno}"?>">
+        <!--
           <div class="fimage">
             <img href="" src="<?php echo "{$itemimage}"?>" class="itemimage"/>
           </div>
-        </a>
-<?php
-      echo "<div class=\"singlelist\">";
-      echo "<li>{$itemname}</li>";
-      echo "<li>\${$price}</li>";
-      echo "</div>";
-?>
-      <a href="<?php echo "/"."singleitem/"."{$itemno}"?>" class="inspect"><p>Inspect</p></a>
-      <?php
-?>
-      </div>
-<?php
+        
+      -->
+  <?php
+        
+        echo "<div class=\"singlelist\">";
+        echo "<li>{$itemname}</li>";
+        echo "<li style='font-size:.7rem;color:#B6B1A6;'>{$itemdesc}</li>";
+        echo "<li style='text-align:right;padding-right:5px;'>\${$price}</li>";
+        echo "</div>";
+  ?>
+          </a>
+        </div>
+  <?php
+      }
     }
+    else{
+      echo "<h2>Database Failed to load.</h2>";
   }
-  else{
-    echo "<h2>Database Failed to load.</h2>";
-}
-?>
+  ?>
 </div>
+
+<?php
+  if(is_authenticated()){
+    require PARTIALS."/footer.html.php";
+  }
+?>

@@ -1,9 +1,14 @@
 <section class="products">
-<?php
 
-session_start();
-$isadmin = $_SESSION['isadmin'];
-session_write_close();
+<button class = "btn btn-primary" onclick="goBack()">&#8678; Back to Menu</button>
+
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
+
+<?php
 $item = $item[0];
 // Can utilize the following code for single food info
 if(!empty($item)){
@@ -15,36 +20,12 @@ if(!empty($item)){
       $price = htmlspecialchars($item['price'],ENT_QUOTES, 'UTF-8');
       $image = htmlspecialchars($item['itemImage'],ENT_QUOTES, 'UTF-8');
   ?>
-    <script src='jquery-3.2.1.min.js'></script>
-    <script type="text/javascript">
-function increaseValue() {
-  var value = parseInt(document.getElementById('quantity').value, 10);
-  value = isNaN(value) ? 0 : value;
-  value++;
-  document.getElementById('quantity').value = value;
-  price = 'AUD $'+`<span>${(p * value).toFixed(2)}</span>`;
-  document.getElementById('price').innerHTML=price;
-}
-
-function decreaseValue() {
-  var value = parseInt(document.getElementById('quantity').value, 10);
-  value = isNaN(value) ? 0 : value;
-  value < 1 ? value = 1 : '';
-  value--;
-  document.getElementById('quantity').value = value;
-  price = 'AUD $'+`<span>${(p * value).toFixed(2)}</span>`;
-  document.getElementById('price').innerHTML=price;
-}
-var p= <?php echo "{$price}";?>;
-var price = 'AUD $ '+`<span>${p}</span>`;
-document.getElementById('price').innerHTML=price;
-    </script>
 
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
       <div class="productcontainer">
-        <img class="productimage" src="<?php echo "{$image}" ?>" class="itemimage"/>
+        <img class="productimage" src="<?php echo "{$image}" ?>"/>
         <div class="producttext">
-          <h2><i><?php echo "{$title}"?></i></h2>
+          <h3><i><?php echo "{$title}"?></i></h3>
           <p class="itemdesc"><?php echo "{$itemdesc}" ?></p>
           <p id="price">AUD $<?php echo "{$price}" ?></p>
           
@@ -52,7 +33,6 @@ document.getElementById('price').innerHTML=price;
             <input type='hidden' name='_method' value='post' />
             <input type='hidden' name='itemNo' value='<?php echo($itemno) ?>' />
             
-
             <?php
             // Start if NOT combo
             if (!preg_match('/Combo/', $title))
@@ -63,7 +43,7 @@ document.getElementById('price').innerHTML=price;
             <div class="input-group plus-minus-input">
               <div class="input-group-button">
                 <button type="button" class="button hollow circle" data-quantity="minus" data-field="quantity" id="decrease" onclick="decreaseValue()" value="Decrease Value">
-                <i class="fa fa-minus" aria-hidden="true"></i>
+                  <i class="fa fa-minus" aria-hidden="true"></i>
                 </button>
               </div>
               <div class="input-custom">
@@ -75,9 +55,6 @@ document.getElementById('price').innerHTML=price;
                 </button>
               </div>
             </div>
-
-
-
 
             <?php
             // Start Add to cart submit
@@ -91,33 +68,37 @@ document.getElementById('price').innerHTML=price;
               <a href='/signin'><button type="button" class="btn btn-default cart">Please sign in to add to cart</button></a>
             <?php
               }
-            // End add to cart submit
-            ?>
-
-            <?php
-              // End if Notcombo
+              // End add to cart submit
             }
-            else
-            {
-              
-              // start if combo
-              if (preg_match('/Small/', $title))
-              {
-                echo "<a href='#' ><button class='btn btn-default'>Combo selection Small</button></a>";
-              }elseif (preg_match('/Medium/', $title))
-              {
-                echo "<a href='#' ><button class='btn btn-default'>Combo selection Medium</button></a>";
-              }elseif (preg_match('/Large/', $title))
-              {
-                echo "<a href='#' ><button class='btn btn-default'>Combo selection Large</button></a>";
-              }
-              // end if combo
-            }
-            
+            // End if Notcombo
             ?>
-           
-            
           </form>
+          <?php
+
+          // Start Add to cart submit
+            
+            // start if combo
+            if (preg_match('/Small/', $title))
+            {
+              if (!is_authenticated()){ echo "<a href='/signin'><button type='button' class='btn btn-default cart'>Please sign in to add to cart</button></a>";}
+              else{
+                echo "<a href='/combobox/{$id}' ><button class='btn btn-default cart'>Create Small Combo</button></a>";
+              }
+            }elseif (preg_match('/Medium/', $title))
+            {
+              if (!is_authenticated()){ echo "<a href='/signin'><button type='button' class='btn btn-default cart'>Please sign in to add to cart</button></a>";}
+              else{
+                echo "<a href='/combobox/{$id}' ><button class='btn btn-default cart'>Create Medium Combo</button></a>";
+              }
+            }elseif (preg_match('/Large/', $title))
+            {
+              if (!is_authenticated()){ echo "<a href='/signin'><button type='button' class='btn btn-default cart'>Please sign in to add to cart</button></a>";}
+              else{
+                echo "<a href='/combobox/{$id}' ><button class='btn btn-default cart'>Create Large Combo</button></a>";
+              }
+            }
+              // end if combo
+            ?>
         </div>
       </div>
 <?php
@@ -127,4 +108,6 @@ document.getElementById('price').innerHTML=price;
   else{
     echo "<h2>Food item failed to load</h2>";
 }
+
+require PARTIALS."/quantityscript.html.php";
 ?>

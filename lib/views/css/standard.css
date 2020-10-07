@@ -3,7 +3,14 @@ body{
 }
 
 input{
-  background: #242424;
+  background: #313131;
+  border: 2px solid #1F1F1F;
+  border-radius: 3px;
+  color: #ddd;
+}
+
+textarea{
+  background: #313131;
   border: 2px solid #1F1F1F;
   border-radius: 3px;
   color: #ddd;
@@ -21,7 +28,7 @@ input{
 .flash{
   margin-top:-0.5em;
   color:#ddd;
-  background-color: #59136b;
+  background-color: #056571;
   padding: 0.5em;
   border-radius: 3px;  
 }
@@ -31,6 +38,7 @@ input{
   color:rgb(5, 146, 52);
   padding: 0.5em;
   border-radius: 3px;  
+  text-align: center;
 }
 
 nav ul{

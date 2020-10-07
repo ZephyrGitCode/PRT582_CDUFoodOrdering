@@ -104,8 +104,26 @@ get("/singleitem/:id;[\d]+",function($app){
    $id = $app->route_var("id");
    $app->set_message("item", get_item($id));
    $app->set_message("id", $id);
+   session_start();
+   $app->set_message("isadmin", $_SESSION['isadmin']);
+   session_write_close();
    //$app->set_message("testimonials", get_testimonials($id));
    $app->render(LAYOUT,"singleitem");
+});
+
+get("/combobox/:id;[\d]+",function($app){
+   require MODEL;
+   $id = $app->route_var("id");
+   if ($id != 17 && $id != 18 && $id != 19){
+      $id = 17;
+      $app->redirect_to("/combobox/".$id."");
+   }
+   session_start();
+   $app->set_message("comboitemno", $_SESSION['itemno']);
+   session_write_close();
+   $app->set_message("selection", get_selections());
+   $app->set_message("id", $id);
+   $app->render(LAYOUT,"combobox");
 });
 
 get("/cart",function($app){
@@ -131,8 +149,7 @@ get("/cart",function($app){
 
 get("/change/:id;[\d]+",function($app){
    $id = $app->route_var("id");
-   $app->set_message("title","Darwin Art Company");
-   $app->set_message("message","Welcome".$id);
+   $app->set_message("title","Change password");
    require MODEL;
    try{
       if(is_authenticated()){
@@ -231,31 +248,6 @@ post("/signin",function($app){
   $app->redirect_to("/");
 });
 
-/*
-post("/singleitem/:id[\d]+",function($app){
-   require MODEL;
-   $artno = $app->route_var("id");
-   $id = get_user_id();
-   $test = $app->form('test');
-   if($artno && $id && $test){
-     try{
-        add_testimonial($id,$artno,$test);
-        $app->redirect_to("/art/".$artno);
-     }
-     catch(Exception $e){
-       $app->set_flash("Failed to add testimonial. {$e->getMessage()}");
-       $app->redirect_to("/art/".$artno);      
-     }
-   }
-   else{
-        $app->set_flash("Please enter all fields.");
-        $app->redirect_to("/art/".$artno);
-   }
-   $app->set_flash("Failed");  
-   $app->redirect_to("/art/".$artno);        
-});*/
-
-
 post("/singleitem", function($app){
    require MODEL;
    $quantity = $app->form('quantity');
@@ -275,31 +267,33 @@ post("/singleitem", function($app){
       }
    }
    else{
-         if(in_array($itemNo,$item)){
+      if(in_array($itemNo,$item)){
 
-            try{
-               updatequantity($quantity, $itemNo, $userid);
-            }
-            catch(Exception $e){
-               $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
-            }
+         try{
+            updatequantity($quantity, $itemNo, $userid);
          }
-         else{
-            try{
-            addtocart($itemNo, $quantity, $userid);
-            }
-            catch(Exception $e){
+         catch(Exception $e){
             $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
-            }
          }
       }
+      else{
+         try{
+         addtocart($itemNo, $quantity, $userid);
+         }
+         catch(Exception $e){
+         $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
+         }
+      }
+   }
    $app->set_flash("Item Added to cart");
    // TO DO, set redirect to correct catalogue number
    $app->redirect_to("/catalogue/1"); 
 });
+
 post("/cart",function($app){
    require MODEL;
    $pickuptime = $app->form('pickup_time');
+   $total = $app->form('total');
    $userid = get_user_id();
    $cartitems = get_cartitems($userid);
    $date =  date("Y-m-d h:i:s");
@@ -308,7 +302,7 @@ post("/cart",function($app){
    foreach($orders as $order){
       $orderNo = $orderNo+1;
    }
-   checkout($orderNo, $userid, $pickuptime,$date);
+   checkout($orderNo, $userid, $pickuptime,$date, $total);
    foreach($cartitems as $item){
       checkoutitem($orderNo, $item['itemNo'], $item['quantity']);
       removefromcart($item['cartNo']);
@@ -316,6 +310,79 @@ post("/cart",function($app){
    }
    $app->redirect_to("/");
 });
+
+
+post("/combobox",function($app){
+   require MODEL;
+   $selectionone = $app->form('selectionone');
+   $selectiontwo = $app->form('selectiontwo');
+   $selectionthree = $app->form('selectionthree');
+   try{
+      $comboNo = add_combo($selectionone, $selectiontwo, $selectionthree);
+   }
+   catch(Exception $e){
+      $app->set_flash("Failed to add combo to cart. {$e->getMessage()}");   
+   }
+
+   $itemNo = $app->form('itemNo');
+   $quantity = 1;
+   $userid = get_user_id();
+
+   foreach($cartitems as $cartitem){
+      $item[]=$cartitem["itemNo"];
+   }
+   if(empty($cartitems)){
+      try{
+         addtocart($itemNo, $quantity, $userid, $comboNo);
+      }
+      catch(Exception $e){
+         $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
+      }
+   }
+   else{
+      if(in_array($itemNo,$item)){
+
+         try{
+            updatequantity($quantity, $itemNo, $userid);
+         }
+         catch(Exception $e){
+            $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
+         }
+      }
+      else{
+         try{
+            addtocart($itemNo, $quantity, $userid, $comboNo);
+         }
+         catch(Exception $e){
+         $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
+         }
+      }
+   }
+   $app->set_message("note", "Item(s) successfully added to your cart.");
+   $app->redirect_to("/");
+});
+
+post("/",function($app){
+   require MODEL;
+   $title = $app->form('title');
+   $message = $app->form('message');
+   $userid = get_user_id();
+   if($title && $message && $userid){
+     try{
+        post_feedback($userid,$title,$message);
+     }
+     catch(Exception $e){
+       $app->set_flash("Feedback failed to send. {$e->getMessage()}");
+       $app->redirect_to("/");      
+     }
+   }
+   else{
+      $app->set_flash("Failed to send feedback, please enter all fields and try again.");
+      $app->redirect_to("/"); 
+   }
+   $app->set_flash("Feedback posted, thank you!");
+   $app->redirect_to("/"); 
+ });
 
 
 // End post ----------------------------------------
@@ -351,10 +418,11 @@ put("/myaccount/:id[\d]+",function($app){
    }
 });
 
-put("/change/:id[\d]+",function($app){
-   $id = $app->route_var("id");
-   $app->set_message("title","Change password");
+put("/change/:id;[\d]+",function($app){
    require MODEL;
+   $id = $app->route_var("id");
+   $userid = get_user_id();
+   $app->set_message("title","Change password");
    try{
       if(is_authenticated()){
          $pw_old = $app->form('old-password');
@@ -362,8 +430,8 @@ put("/change/:id[\d]+",function($app){
          $pw_confirm = $app->form('passw-c');
          if($pw_old && $pw_new && $pw_confirm){
             try{
-               change_password($id,$pw_old,$pw_new,$pw_confirm);
-               $app->set_flash("Password successfully changed.");
+               change_password($userid,$pw_old,$pw_new,$pw_confirm);
+               $app->set_flash("Password successfully changed. Please now signin.");
                $app->redirect_to("/");   
             }
             catch(Exception $e){
@@ -378,7 +446,7 @@ put("/change/:id[\d]+",function($app){
       }
       else{
          $app->set_flash("You are not logged in.");  
-         $app->redirect_to("/signin");           
+         $app->redirect_to("/change/".$id);           
       }
    }
    catch(Exception $e){
@@ -392,7 +460,7 @@ put("/singleitem/:id;[\d]+",function($app){
    $id = $app->route_var("id");
    $app->set_flash("Approval attempt");
    try{
-      approve($id);
+      //approve($id);
       $app->set_flash("Testimonial approved.");
       $app->render(LAYOUT,"home");
    }catch(Exception $e){

@@ -94,8 +94,38 @@ meter {
 }
 
 .menuitem{
-  width: 40%;
-  height: 40%;
+  width: 100%;
+  background: #313130;
+  border-top: 2px solid #313130;
+  border-bottom: 2px solid #313130;
+  border-radius: 4px;
+  margin: 5px auto;
+}
+
+@media (min-width: 500px) {
+  .menuitem{width: 40%;}
+}
+
+a.item{
+  color: #DAD7D2;
+}
+
+a.item:hover{
+  text-decoration: none;
+}
+
+.singlelist:hover, .singlelist:active{
+  box-shadow: 0px 0px 15px background;
+}
+
+.break {
+  flex-basis: 100%;
+  height: 0;
+}
+
+.menutitle{
+  margin: auto;
+  padding: 20px 10px;
 }
 
 .itemimage{
@@ -116,8 +146,13 @@ meter {
 }
 
 .vendorimage{
-  padding: 5px;
+  padding: 10px;
   border-radius: 40px;
+  margin: 10px auto;
+}
+
+.vendorselect{
+  text-align: center;
 }
 
 @media (min-width: 500px) {
@@ -127,6 +162,7 @@ meter {
 .singlelist{
   list-style: none;
   margin: auto;
+  padding-left: 10px;
 }
 
 /* Home End*/
@@ -153,6 +189,10 @@ meter {
   background-color: #181A1B;
   overflow-x: hidden;
   transition: 0.5s;
+}
+
+@media (min-width: 500px) {
+  .sidenav{max-width: 450px;}
 }
 
 .sidenav a {
@@ -268,7 +308,12 @@ textarea{
 
 .productimage{
   width: 50%;
-  margin-right:10px;
+  border-radius: 20%;
+  margin-left: 25%;
+}
+
+.producttext{
+  margin-top: 10px;
 }
 
 #price
@@ -291,9 +336,36 @@ textarea{
 
 .plus-minus-input .input-group-button .circle {
   border-radius: 50%;
-  padding: 0.25em 0.8em;
+  background: #1F1F1F;
+  border: none;
+  padding: 0.2em 0.5em;
 }
 
+.fa-plus{
+  color: white;
+}
+
+.fa-minus{
+  color: white;
+}
+
+.fa-icon{
+  vertical-align: top;
+  margin-left: 5px;
+  text-align: left;
+}
+
+#increase{
+  background: #2B2B2B;
+  border: none;
+  vertical-align: text-top;
+}
+
+#decrease{
+  background: #2B2B2B;
+  border: none;
+  vertical-align: text-top;
+}
 
 .productinput
 {
@@ -322,7 +394,7 @@ textarea{
 }
 
 .shoppingcart td ,th{
-  padding:10px;
+  padding:5px;
   text-align: center;
 }
 
@@ -351,15 +423,7 @@ textarea{
 /* Products flex container end */
 
 /* My Account styles start */
-/*
-.accountBody
-{
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  color: #ffffff;
-}
-*/
+
 .userBox
 {
   top: 50%;
@@ -407,9 +471,8 @@ textarea{
   border-bottom: 2px solid #262626;
   outline: none;
   height: 40px;
-  background: transparent;
   font-size: 16px;
-  padding-left: 20px;
+  padding-left: 30px;
   box-sizing: border-box;
 }
 
@@ -422,7 +485,6 @@ textarea{
 .inputBox
 {
   position: relative;
-  display:inline-block;
 }
 
 .inputBox span
@@ -539,62 +601,69 @@ textarea{
   background-color: #59136b;
 }
 
+/* Footer CSS */
+
+.footer{
+  bottom: 5px;
+  margin: 5px;
+}
+
+
+/* Combobox */
+
+.selections{
+  margin: 10px;
+}
+
+
 /* Menu CSS */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
 
 *{
-  list-style: none;
   margin: 0;
   padding: 0;
+  list-style: none;
   box-sizing: border-box;
-  font-family: 'Open Sans', sans-serif;
-
+  font-family: 'Montserrat', sans-serif;
 }
 
 body{
   background: #1F1F1F;
   color: #555555;
-
 }
 
-.rice{
+.wrapper{
   position: absolute;
   top: 35%;
-  left: 40%;
-  transform: transform (-50%,-50%);
-
+  left: 50%;
+  transform: translate(-50%,-50%);
 }
 
-.rice .title{
+.wrapper .title{
   font-weight: 700;
   font-size: 24px;
   color: #fff;
-
 }
 
-.select_rice{
+.select_wrap{
   width: 225px;
   margin: 15px auto;
   position: relative;
   user-select: none;
-
 }
 
-.select_rice .default_option{
+.select_wrap .default_option{
   background: #fff;
   border-radius: 5px;
   position: relative;
-
+  cursor: pointer;
 }
-.select_rice .default_option li{
+
+.select_wrap .default_option li{
   padding: 10px 20px;
 }
 
-.select_rice .default_option li{
-  background: #fff4dd;
-}
-
-.select_rice .default_option:before{
+.select_wrap .default_option:before{
   content: "";
   position: absolute;
   top: 18px;
@@ -604,55 +673,47 @@ body{
   border: 2px solid;
   border-color: transparent transparent #555555 #555555;
   transform: rotate(-45deg);
-
 }
 
-.select_rice .select_ul{
+.select_wrap .select_ul{
   position: absolute;
   top: 55px;
   left: 0;
   width: 100%;
   background: #fff;
   border-radius: 5px;
-
+  display: none;
 }
 
-.select_rice .select_ul li{
+.select_wrap .select_ul li{
   padding: 10px 20px;
   cursor: pointer;
 }
 
-.select_rice .select_ul li::hover{
-background: #fff4dd;
-
-}
-
-.select_rice ..select_ul li::first-child::hover{
+.select_wrap .select_ul li:first-child:hover{
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-
 }
 
-.select_rice ..select_ul li::last-child::hover{
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-
+.select_wrap .select_ul li:last-child:hover{
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius:  5px;
 }
 
-.select_rice .option{
+.select_wrap .select_ul li:hover{
+  background: #fff4dd;
+}
+
+.select_wrap .option{
   display: flex;
   align-items: center;
-
 }
 
-.select_rice .option .icon{
-  background: url('Pasta.png') no repeat 0 0;
-  width: 32px;
-  height: 32px;
-  margin-right: 15px;
-
+.select_wrap.active .select_ul{
+  display: block;
 }
 
-.select_rice .option .pasta.icon{}
-.select_rice .option .curry.icon{}
-.select_rice .option .seafood.icon{}
+.select_wrap.active .default_option:before{
+  top: 25px;
+  transform: rotate(-225deg);
+}
