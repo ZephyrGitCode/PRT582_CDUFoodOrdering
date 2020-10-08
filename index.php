@@ -366,6 +366,7 @@ post("/combobox",function($app){
       }
    }
    $app->set_message("note", "Item(s) successfully added to your cart.");
+   $app->set_flash("Item(s) successfully added to your cart.");
    $app->redirect_to("/");
 });
 
