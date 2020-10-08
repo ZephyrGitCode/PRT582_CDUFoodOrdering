@@ -78,7 +78,7 @@
             </button>
 
         </td>
-        <td>$<?php echo "{$cost}"; $total += $cost?></td>
+        <td><p id="price">$<?php echo "{$cost}"; $total += $cost?></p></td>
         <td>
         <form action="/cart" method="POST">
             <input type='hidden' name='_method' value='delete' />
@@ -91,7 +91,7 @@
         <?php }}   ?>    
         
     </table>
-    <p style="text-align:center">Total : $<?php echo"$total"?>
+    <p id="price" style="text-align:center">Total : $<?php echo"$total"?>
     <form action="/cart" method="POST">
             <input type='hidden' name='_method' value='post' />
             <div class="pickup_time">

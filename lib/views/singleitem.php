@@ -28,7 +28,7 @@ if(!empty($item)){
         <div class="producttext">
           <h3><i><?php echo "{$title}"?></i></h3>
           <p class="itemdesc"><?php echo "{$itemdesc}" ?></p>
-          <p id="price">AUD $<?php echo "{$price}" ?></p>
+          
           
           <form action="/singleitem" method="POST">
             <input type='hidden' name='_method' value='post' />
@@ -41,7 +41,6 @@ if(!empty($item)){
             {
               ?>
               
-            <label  class="productlabel">Quantity:</label>
             <div class="input-group plus-minus-input">
               <div class="input-group-button">
                 <button type="button" class="button hollow circle" data-quantity="minus" data-field="quantity" id="decrease" onclick="decreaseValue()" value="Decrease Value">
@@ -57,6 +56,8 @@ if(!empty($item)){
                 </button>
               </div>
             </div>
+
+            <p id="price">AUD $<?php echo "{$price}" ?></p>
 
             <?php
             // Start Add to cart submit
