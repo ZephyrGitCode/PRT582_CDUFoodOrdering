@@ -61,7 +61,7 @@
         </div>
         <?php echo "{$itemname}"?>
         <?php
-        if (preg_match('/Combo/', $title)){
+        if ($item['comboNo'] == null){
             echo "{$itemdesc}</td>";
         }else{
             echo "{$selections}</td>";
@@ -72,7 +72,7 @@
             <button type="button" class="button hollow circle" data-quantity="plus" data-field="quantity" id="increase" onclick="increaseValue(<?php echo $count; ?>)" value="Increase Value">
                 <i class="fa fa-plus" aria-hidden="true"></i>
             </button>
-            <p id = "quantity<?php echo $count; ?>"><?php echo "{$quantity}"?></p>
+            <p id = "quantity<?php echo $count; ?>"><?php echo "{$quantity}"?></p> 
             <button type="button" class="button hollow circle" data-quantity="minus" data-field="quantity" id="decrease" onclick="decreaseValue(<?php echo $count; ?>)" value="Decrease Value">
                 <i class="fa fa-minus" aria-hidden="true"></i>
             </button>
@@ -109,6 +109,9 @@
             var value = parseInt(document.getElementById('quantity'+id).innerHTML, 10);
             value = isNaN(value) ? 0 : value;
             value++;
+            if (value >= 6){
+                value = 5;
+            }
             document.getElementById('quantity'+id).value = value;
             document.getElementById('quantity'+id).innerHTML = value;
         }
@@ -117,6 +120,9 @@
             var value = parseInt(document.getElementById('quantity'+id).innerHTML, 10);
             value = isNaN(value) ? 0 : value;
             value--;
+            if (value <= 0){
+                value = 1;
+            }
             document.getElementById('quantity'+id).value = value;
             document.getElementById('quantity'+id).innerHTML = value;
         }

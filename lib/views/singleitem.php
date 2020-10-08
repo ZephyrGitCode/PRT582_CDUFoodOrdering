@@ -47,7 +47,7 @@ if(!empty($item)){
                 </button>
               </div>
               <div class="input-custom">
-                <input class="input-group-field" type="number" id= "quantity" name="quantity" value="1">
+                <input class="input-group-field" type="number" id= "quantity" name="quantity" value="1" min="1">
               </div>
               <div class="input-group-button">
                 <button type="button" class="button hollow circle" data-quantity="plus" data-field="quantity" id="increase" onclick="increaseValue()" value="Increase Value">
