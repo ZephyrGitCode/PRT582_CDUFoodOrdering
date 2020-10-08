@@ -19,6 +19,7 @@ if(!empty($item)){
       $itemdesc = htmlspecialchars($item['itemDesc'],ENT_QUOTES, 'UTF-8');
       $price = htmlspecialchars($item['price'],ENT_QUOTES, 'UTF-8');
       $image = htmlspecialchars($item['itemImage'],ENT_QUOTES, 'UTF-8');
+      $vendorNo = htmlspecialchars($item['vendorNo'],ENT_QUOTES, 'UTF-8');
   ?>
 
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
@@ -32,6 +33,7 @@ if(!empty($item)){
           <form action="/singleitem" method="POST">
             <input type='hidden' name='_method' value='post' />
             <input type='hidden' name='itemNo' value='<?php echo($itemno) ?>' />
+            <input type='hidden' name='vendorNo' value='<?php echo($vendorNo) ?>' />
             
             <?php
             // Start if NOT combo

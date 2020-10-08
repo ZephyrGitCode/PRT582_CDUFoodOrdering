@@ -122,6 +122,7 @@ get("/combobox/:id;[\d]+",function($app){
    $app->set_message("comboitemno", $_SESSION['itemno']);
    session_write_close();
    $app->set_message("selection", get_selections());
+   $app->set_message("item", get_item($id));
    $app->set_message("id", $id);
    $app->render(LAYOUT,"combobox");
 });
@@ -252,6 +253,7 @@ post("/singleitem", function($app){
    require MODEL;
    $quantity = $app->form('quantity');
    $itemNo = $app->form('itemNo');
+   $vendorNo = $app->form('vendorNo');
    $userid = get_user_id();
    $cartitems = get_cartitems($userid);
 
@@ -260,7 +262,8 @@ post("/singleitem", function($app){
    }
    if(empty($cartitems)){
       try{
-         addtocart($itemNo, $quantity, $userid);
+         addtocart($itemNo, $quantity, $userid, $vendorNo);
+         $app->set_flash("Item Added to cart");
       }
       catch(Exception $e){
          $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
@@ -275,17 +278,20 @@ post("/singleitem", function($app){
          catch(Exception $e){
             $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
          }
+      }elseif(!in_array($vendorNo,$item)){
+         $app->set_flash("Cannot add to cart from another vendor.");
       }
       else{
          try{
-         addtocart($itemNo, $quantity, $userid);
+         addtocart($itemNo, $quantity, $userid, $vendorNo);
+         $app->set_flash("Item Added to cart");
          }
          catch(Exception $e){
          $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
          }
       }
    }
-   $app->set_flash("Item Added to cart");
+  
    // TO DO, set redirect to correct catalogue number
    $app->redirect_to("/catalogue/1"); 
 });
@@ -325,6 +331,7 @@ post("/combobox",function($app){
    }
 
    $itemNo = $app->form('itemNo');
+   $vendorNo = $app->form('vendorNo');
    $quantity = 1;
    $userid = get_user_id();
 
@@ -333,7 +340,7 @@ post("/combobox",function($app){
    }
    if(empty($cartitems)){
       try{
-         addtocart($itemNo, $quantity, $userid, $comboNo);
+         addtocart($itemNo, $quantity, $userid, $vendorNo, $comboNo);
       }
       catch(Exception $e){
          $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
@@ -351,7 +358,7 @@ post("/combobox",function($app){
       }
       else{
          try{
-            addtocart($itemNo, $quantity, $userid, $comboNo);
+            addtocart($itemNo, $quantity, $userid, $vendorNo, $comboNo);
          }
          catch(Exception $e){
          $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   

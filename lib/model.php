@@ -514,20 +514,20 @@ function checkoutitem($orderNo, $itemNo, $quantity){
   }
 }
 
-function addtocart($itemNo, $quantity,$userid, $comboNo = 0){
+function addtocart($itemNo, $quantity,$userid,$vendorNo, $comboNo = 0){
    try{
       $db = get_db();
       if ($comboNo != 0){
-      $query = "INSERT INTO cartitems(itemNo, quantity, userId, comboNo) VALUES (?,?,?,?)";
+      $query = "INSERT INTO cartitems(itemNo, quantity, userId, Vendorno,comboNo) VALUES (?,?,?,?,?)";
       }else{
-         $query = "INSERT INTO cartitems(itemNo, quantity, userId) VALUES (?,?,?)";
+         $query = "INSERT INTO cartitems(itemNo, quantity, userId, Vendorno) VALUES (?,?,?,?)";
       }
       if($statement = $db->prepare($query)){
          if ($comboNo != 0){
-            $binding = array($itemNo, $quantity,$userid, $comboNo);
+            $binding = array($itemNo, $quantity,$userid, $vendorNo, $comboNo);
          }
          else{
-            $binding = array($itemNo, $quantity,$userid);
+            $binding = array($itemNo, $quantity,  $userid, $vendorNo,);
          }
          if(!$statement -> execute($binding)){
             throw new Exception("Could not execute query.");
