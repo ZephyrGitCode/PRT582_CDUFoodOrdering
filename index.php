@@ -299,22 +299,29 @@ post("/singleitem", function($app){
 post("/cart",function($app){
    require MODEL;
    $pickuptime = $app->form('pickup_time');
+   $vendorNo = $app->form('vendorNo');
    $total = $app->form('total');
    $userid = get_user_id();
    $cartitems = get_cartitems($userid);
-   $date =  date("Y-m-d h:i:s");
+   $date =  date("d-m-Y h:i:s");
    $orders = get_orders();
    $orderNo = 1;
+   $vendors = get_vendor($vendorNo);
    foreach($orders as $order){
       $orderNo = $orderNo+1;
    }
-   checkout($orderNo, $userid, $pickuptime,$date, $total);
+   foreach($vendors as $vendor){
+      $vendorName = $vendor["vendorName"];
+   }
+   checkout($orderNo, $userid, $pickuptime, $date, $vendorNo, $total);
    foreach($cartitems as $item){
       checkoutitem($orderNo, $item['itemNo'], $item['quantity']);
       removefromcart($item['cartNo']);
 
    }
+   $app->set_flash("Please collect your order from    $vendorName    at   $pickuptime    today");
    $app->redirect_to("/");
+  
 });
 
 

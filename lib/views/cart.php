@@ -99,6 +99,7 @@
             <input style="width:200px; text-align:center;" type ='time' name='pickup_time'  id='pickup_time'/>
             </div>
             <input type='hidden' name='total' value='<?php echo($total) ?>' />
+            <input type='hidden' name='vendorNo' value='<?php echo($vendorno) ?>' />
             <input type="submit" class="btn btn-default cart" name="Checkout" value="Checkout">
     </form>
     </div>

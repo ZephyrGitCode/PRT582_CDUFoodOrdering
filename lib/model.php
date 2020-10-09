@@ -50,6 +50,24 @@ function get_item($id){
    }
 }
 
+function get_vendor($id){
+   $vendor = null;
+   try{
+      $db = get_db();
+      $query = "SELECT vendorName from vendors WHERE vendorNo = ?";
+      $statement = $db->prepare($query);
+      $binding = array($id);
+      $statement -> execute($binding);
+      $vendor= $statement->fetchall(PDO::FETCH_ASSOC);
+      return $vendor;
+   }
+   catch(PDOException $e){
+      throw new Exception($e->getMessage());
+      return "";
+   }
+   
+}
+
 function get_selections(){
    $selections = null;
    try{
@@ -476,12 +494,12 @@ function get_user_name(){
    return $name;	
 }
 
-function checkout($orderNo, $userNo, $pickuptime, $date, $total){
+function checkout($orderNo, $userNo, $pickuptime, $date, $vendorNo, $total){
    try{
       $db = get_db();
-      $query = "INSERT INTO orders(orderNo, userNo, pickuptime, orderdate, totalPrice) VALUES (?,?,?,?,?)";
+      $query = "INSERT INTO orders(orderNo, userNo, pickuptime, orderdate, vendorNo, totalPrice) VALUES (?,?,?,?,?,?)";
       if($statement = $db->prepare($query)){
-         $binding = array($orderNo, $userNo,$pickuptime, $date, $total);
+         $binding = array($orderNo, $userNo,$pickuptime, $date, $vendorNo, $total);
          if(!$statement -> execute($binding)){
             throw new Exception("Could not execute query.");
          }
