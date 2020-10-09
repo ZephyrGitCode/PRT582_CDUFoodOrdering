@@ -78,7 +78,7 @@
             </button>
 
         </td>
-        <td><p id="price">$<?php echo "{$cost}"; $total += $cost?></p></td>
+        <td><span>$</span><span id="price<?php echo $count; ?>"><?php echo "{$cost}"; $total += $cost?></span></td>
         <td>
         <form action="/cart" method="POST">
             <input type='hidden' name='_method' value='delete' />
@@ -112,24 +112,33 @@
     
     <script>
         function increaseValue(id){
-            var value = parseInt(document.getElementById('quantity'+id).innerHTML, 10);
+            var value = parseFloat(document.getElementById('quantity'+id).innerHTML);
+            var inprice = parseFloat(document.getElementById('price'+id).innerHTML);
+            inprice = inprice/value;
             value = isNaN(value) ? 0 : value;
             value++;
             if (value >= 6){
                 value = 5;
             }
             document.getElementById('quantity'+id).value = value;
+            price = (value*inprice).toFixed(2);
             document.getElementById('quantity'+id).innerHTML = value;
+            document.getElementById('price'+id).innerHTML = price;
         }
 
         function decreaseValue(id){
             var value = parseInt(document.getElementById('quantity'+id).innerHTML, 10);
+            var inprice = parseFloat(document.getElementById('price'+id).innerHTML);
+            inprice = inprice/value;
             value = isNaN(value) ? 0 : value;
             value--;
             if (value <= 0){
                 value = 1;
             }
             document.getElementById('quantity'+id).value = value;
+            price = (value*inprice).toFixed(2);
             document.getElementById('quantity'+id).innerHTML = value;
+            document.getElementById('price'+id).innerHTML = price;
         }
+
     </script>

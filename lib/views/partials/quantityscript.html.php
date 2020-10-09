@@ -14,6 +14,9 @@ function decreaseValue() {
   value = isNaN(value) ? 0 : value;
   value < 1 ? value = 1 : '';
   value--;
+  if (value <= 0){
+                value = 1;
+            }
   document.getElementById('quantity').value = value;
   price = 'AUD $'+`<span>${(p * value).toFixed(2)}</span>`;
   document.getElementById('price').innerHTML=price;

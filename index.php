@@ -270,6 +270,11 @@ post("/singleitem", function($app){
       }
    }
    else{
+      foreach($cartitems as $cartitem){
+         if(cartitem["Vendorno"] != $vendorNo){
+            $app->set_flash("Cannot add to cart from another vendor.");
+         }
+      }
       if(in_array($itemNo,$item)){
 
          try{
@@ -278,8 +283,6 @@ post("/singleitem", function($app){
          catch(Exception $e){
             $app->set_flash("Failed to add item to cart. {$e->getMessage()}");   
          }
-      }elseif(!in_array($vendorNo,$item)){
-         $app->set_flash("Cannot add to cart from another vendor.");
       }
       else{
          try{
