@@ -100,7 +100,12 @@
             </div>
             <input type='hidden' name='total' value='<?php echo($total) ?>' />
             <input type='hidden' name='vendorNo' value='<?php echo($vendorno) ?>' />
-            <input type="submit" class="btn btn-default cart" name="Checkout" value="Checkout">
+            <?php if(empty($cartitems)){
+                    ?>
+                      <a href='/'><button type="button" class="btn btn-default cart">Please add item(s) to cart to Checkout</button></a>
+                    <?php }else{?>
+                        <input type="submit" class="btn btn-default cart" name="Checkout" value="Checkout">
+                        <?php } ?>
     </form>
     </div>
 
