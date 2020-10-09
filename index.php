@@ -327,26 +327,29 @@ post("/cart",function($app){
 
 post("/combobox",function($app){
    require MODEL;
+   // Get all inputs from combo selection form
    $selectionone = $app->form('selectionone');
    $selectiontwo = $app->form('selectiontwo');
    $selectionthree = $app->form('selectionthree');
+   // Try add the new combo
    try{
       $comboNo = add_combo($selectionone, $selectiontwo, $selectionthree);
    }
    catch(Exception $e){
       $app->set_flash("Failed to add combo to cart. {$e->getMessage()}");   
    }
-
+   // Get other essential variables from page
    $itemNo = $app->form('itemNo');
    $vendorNo = $app->form('vendorNo');
    $quantity = 1;
    $userid = get_user_id();
-
+   // Insert new item into cart
    foreach($cartitems as $cartitem){
       $item[]=$cartitem["itemNo"];
    }
    if(empty($cartitems)){
       try{
+         // Attempt to add the item to cart with relavant variables
          addtocart($itemNo, $quantity, $userid, $vendorNo, $comboNo);
       }
       catch(Exception $e){
@@ -355,8 +358,8 @@ post("/combobox",function($app){
    }
    else{
       if(in_array($itemNo,$item)){
-
          try{
+            // Attempt to update the quantity of existing items with new quantity
             updatequantity($quantity, $itemNo, $userid);
          }
          catch(Exception $e){
@@ -365,6 +368,7 @@ post("/combobox",function($app){
       }
       else{
          try{
+            // Attempt to add item to cart
             addtocart($itemNo, $quantity, $userid, $vendorNo, $comboNo);
          }
          catch(Exception $e){
@@ -372,20 +376,25 @@ post("/combobox",function($app){
          }
       }
    }
-   $app->set_message("note", "Item(s) successfully added to your cart.");
+   // Succcess! combo item added to cart
+   $app->set_flash("Item(s) successfully added to your cart.");
    $app->redirect_to("/");
 });
 
 post("/",function($app){
    require MODEL;
+   // Grab feedback title, message and user ID
    $title = $app->form('title');
    $message = $app->form('message');
    $userid = get_user_id();
+   // Make sure all data is filled in
    if($title && $message && $userid){
      try{
+        // Attempt to submit to the feedback
         post_feedback($userid,$title,$message);
      }
      catch(Exception $e){
+        // Catch any errors
        $app->set_flash("Feedback failed to send. {$e->getMessage()}");
        $app->redirect_to("/");      
      }
@@ -394,7 +403,8 @@ post("/",function($app){
       $app->set_flash("Failed to send feedback, please enter all fields and try again.");
       $app->redirect_to("/"); 
    }
-   $app->set_flash("Feedback posted, thank you!");
+   // Success feedback is posted
+   $app->set_flash("Feedback successfully submitted, thank you!");
    $app->redirect_to("/"); 
  });
 

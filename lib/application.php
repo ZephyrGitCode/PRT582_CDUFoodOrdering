@@ -146,6 +146,8 @@ class Application{
        }
 
        $flash = $this->get_flash();
+       $note = $this->get_note();
+       $error = $this->get_error();
 
        $content = VIEWS."/{$content}.php";
 
@@ -241,6 +243,14 @@ class Application{
 
     public function get_flash(){
           return $this->get_session_message("flash");   
+    }
+
+    public function get_note(){
+          return $this->get_session_message("note");   
+    }
+    
+    public function get_error(){
+          return $this->get_session_message("error");   
     }
     
     /* added to remove global message from procedural technique*/
