@@ -95,7 +95,6 @@ get("/catalogue/:id;[\d]+",function($app){
    $id = $app->route_var("id");
    $app->set_message("items", get_products($id));
    $app->set_message("id", $id);
-   //$app->set_message("testimonials", get_testimonials($id));
    $app->render(LAYOUT,"catalogue");
 });
 
@@ -107,7 +106,6 @@ get("/singleitem/:id;[\d]+",function($app){
    session_start();
    $app->set_message("isadmin", $_SESSION['isadmin']);
    session_write_close();
-   //$app->set_message("testimonials", get_testimonials($id));
    $app->render(LAYOUT,"singleitem");
 });
 
@@ -135,7 +133,6 @@ get("/cart",function($app){
             $userid = get_user_id();
             $app->set_message("cartitems", get_cartitems($userid));
             $app->set_message("id", $userid);
-            //$app->set_message("testimonials", get_testimonials($id));
             $app->render(LAYOUT,"cart");
          }catch(Exception $e){
             // Failed to load DB
@@ -271,7 +268,7 @@ post("/singleitem", function($app){
    }
    else{
       foreach($cartitems as $cartitem){
-         if(cartitem["Vendorno"] != $vendorNo){
+         if($cartitem["Vendorno"] != $vendorNo){
             $app->set_flash("Cannot add to cart from another vendor.");
          }
       }
@@ -481,20 +478,6 @@ put("/change/:id;[\d]+",function($app){
    }
 });
 
-put("/singleitem/:id;[\d]+",function($app){
-   require MODEL;
-   $id = $app->route_var("id");
-   $app->set_flash("Approval attempt");
-   try{
-      //approve($id);
-      $app->set_flash("Testimonial approved.");
-      $app->render(LAYOUT,"home");
-   }catch(Exception $e){
-      $app->set_flash("Failed to approve");
-      $app->redirect_to("/");
-   }
-   $app->redirect_to("/");
-});
 // End put ---------------------------------------
 // Start delete ----------------------------------
 # The Delete call back is left for you to work out
