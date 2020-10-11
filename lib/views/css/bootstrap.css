@@ -2037,7 +2037,6 @@ pre code {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #495057;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
@@ -2062,7 +2061,6 @@ pre code {
 }
 
 .form-control:focus {
-  color: #495057;
   background-color: #fff;
   border-color: #80bdff;
   outline: 0;
@@ -2100,7 +2098,6 @@ pre code {
 }
 
 select.form-control:focus::-ms-value {
-  color: #495057;
   background-color: #fff;
 }
 

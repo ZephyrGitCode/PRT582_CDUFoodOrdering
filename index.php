@@ -316,15 +316,14 @@ post("/cart",function($app){
    foreach($vendors as $vendor){
       $vendorName = $vendor["vendorName"];
    }
+   // Perform checkout of cart items
    checkout($orderNo, $userid, $pickuptime, $date, $vendorNo, $total);
    foreach($cartitems as $item){
       checkoutitem($orderNo, $item['itemNo'], $item['quantity']);
       removefromcart($item['cartNo']);
-
    }
    $app->set_flash("Please collect your order from    $vendorName    at   $pickuptime    today");
    $app->redirect_to("/");
-  
 });
 
 

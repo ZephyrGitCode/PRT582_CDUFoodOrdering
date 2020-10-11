@@ -11,14 +11,28 @@
    }
    ?>
 <div class="productcontainer">
+  <?php
+  if ($id == 17){
+
+  echo "<h3 style='text-align:center;margin-bottom:20px;'>Small Combo</h3>";
+
+  }else if ($id == 18){
+
+  echo "<h3 style='text-align:center;margin-bottom:20px;'>Medium Combo</h3>";
+
+  }else{
+
+  echo "<h3 style='text-align:center;margin-bottom:20px;'>Large Combo</h3>";
+
+  }
+  ?>
   <form action="/combobox" method="POST">
 
     <div class="selections">
-      <select name = "selectionone">
+      <h4>Selection One</h4>
+      <select name = "selectionone" class="form-control">
       <?php
       // setting permanant variable
-     
-      
       $selections = $selection;
       if(!empty($selections)){
         //foreach($items As $item){
@@ -39,7 +53,8 @@
     </div>
 
     <div class="selections">
-      <select name = "selectiontwo">
+    <h4>Selection Two</h4>
+      <select name = "selectiontwo" class="form-control">
       <?php
       if(!empty($selection)){
         //foreach($items As $item){
@@ -58,8 +73,13 @@
       ?>
       </select>
     </div>
-    <div class="selections">
-      <select name = "selectionthree">
+    <?php 
+    if ($id != 17)
+    {
+      ?>
+      <div class="selections">
+      <h4>Selection Three</h4>
+      <select name = "selectionthree" class="form-control">
       <?php
       if(!empty($selection)){
         //foreach($items As $item){
@@ -78,6 +98,13 @@
       ?>
       </select>
     </div>
+    <?php
+    }else{
+      ?>
+      <!--<input type="hidden" name = "selectionthree" value=0 />-->
+      <?php
+    }
+    ?>
 
     <input type='hidden' name='_method' value='post' />
     <input type='hidden' name='itemNo' value='<?php echo($id) ?>' />

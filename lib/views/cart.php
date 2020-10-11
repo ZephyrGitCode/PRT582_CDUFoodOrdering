@@ -49,7 +49,11 @@
                             $s3 = $s['selectionName'];
                         }
                     }
-                $selections = $s1.", ".$s2." and ".$s3;
+                    if ($s3 ==""){
+                        $selections = $s1." and ".$s2;
+                    }else{
+                        $selections = $s1.", ".$s2." and ".$s3;
+                    }
                 }
                 $cost = $price * $quantity;
                 $count +=1;
@@ -62,9 +66,9 @@
         <?php echo "{$itemname}"?>
         <?php
         if ($item['comboNo'] == null){
-            echo "{$itemdesc}</td>";
+            echo "<span style='font-size:.7rem;color:#B6B1A6;'>Desc: {$itemdesc}</span></td>";
         }else{
-            echo "{$selections}</td>";
+            echo "<span style='font-size:.7rem;color:#B6B1A6;'>Selection: {$selections}</span></td>";
         }
         ?>
         </td>
