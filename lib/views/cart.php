@@ -112,7 +112,6 @@
                     <?php } ?>
     </form>
     </div>
-
     
     <script>
         function increaseValue(id){
