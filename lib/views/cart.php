@@ -95,7 +95,7 @@
         <?php }}   ?>    
         
     </table>
-    <p id="price" style="text-align:center">Total : $<?php echo"$total"?>
+    <p style="text-align: center;"><span>Total : $</span><span id="price" class="total" style="text-align:center"><?php echo"{$total}"?></span></p>
     <form action="/cart" method="POST">
             <input type='hidden' name='_method' value='post' />
             <div class="pickup_time">
@@ -109,7 +109,7 @@
                       <a href='/'><button type="button" class="btn btn-default cart">Please add item(s) to cart to Checkout</button></a>
                     <?php }else{?>
                         <input type="submit" class="btn btn-default cart" name="Checkout" value="Checkout">
-                        <?php } ?>
+                    <?php } ?>
     </form>
     </div>
 
@@ -117,32 +117,39 @@
     <script>
         function increaseValue(id){
             var value = parseFloat(document.getElementById('quantity'+id).innerHTML);
+            var total = parseFloat(document.getElementById('price').innerHTML);
             var inprice = parseFloat(document.getElementById('price'+id).innerHTML);
             inprice = inprice/value;
             value = isNaN(value) ? 0 : value;
             value++;
-            if (value >= 6){
-                value = 5;
-            }
             document.getElementById('quantity'+id).value = value;
             price = (value*inprice).toFixed(2);
             document.getElementById('quantity'+id).innerHTML = value;
             document.getElementById('price'+id).innerHTML = price;
+            total += inprice;
+            total = (total).toFixed(2);
+            document.getElementById('price').innerHTML = total;
         }
 
         function decreaseValue(id){
             var value = parseInt(document.getElementById('quantity'+id).innerHTML, 10);
+            var total = parseFloat(document.getElementById('price').innerHTML);
             var inprice = parseFloat(document.getElementById('price'+id).innerHTML);
             inprice = inprice/value;
             value = isNaN(value) ? 0 : value;
             value--;
             if (value <= 0){
                 value = 1;
+            }else{
+                document.getElementById('quantity'+id).value = value;
+                price = (value*inprice).toFixed(2);
+                document.getElementById('quantity'+id).innerHTML = value;
+                document.getElementById('price'+id).innerHTML = price;
+                total -= inprice;
+                total = (total).toFixed(2);
+                document.getElementById('price').innerHTML = total;
             }
-            document.getElementById('quantity'+id).value = value;
-            price = (value*inprice).toFixed(2);
-            document.getElementById('quantity'+id).innerHTML = value;
-            document.getElementById('price'+id).innerHTML = price;
+            
         }
 
     </script>
